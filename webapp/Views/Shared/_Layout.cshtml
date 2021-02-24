@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@ViewData["Title"] - Biblioteca Virtual John's</title>
+  <link rel="sortcut icon" href="~/images/logo.png" type="image/png" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+
+  <!-- Our Custom CSS -->
+  <link rel="stylesheet" href="~/css/site.css" />
+  <link rel="stylesheet" href="~/css/sidebar.css">
+
+  <!-- Font Awesome JS -->
+  <script defer src="~/lib/fontawesome/solid.js"></script>
+  <script defer src="~/lib/fontawesome/fontawesome.js"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- Sidebar  -->
+
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h4>Biblioteca Virtual John's</h4>
+        <strong>BVJ</strong>
+      </div>
+
+      <ul class="list-unstyled components navbar-nav">
+        <li class=""> @* class="active" *@
+          <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i> Home</a>
+        </li>
+
+        <li>
+          <a href="#alunoSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
+              class="fas fa-user-graduate"></i> Alunos</a>
+          <ul class="collapse list-unstyled" id="alunoSubmenu">
+            <li>
+              <a class="nav-link" asp-area="" asp-controller="Student" asp-action="Index">Gerenciar</a>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <a href="#livroSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fas fa-book"></i> Livros</a>
+          <ul class="collapse list-unstyled" id="livroSubmenu">
+            <li>
+              <a class="nav-link" asp-area="" asp-controller="Book" asp-action="Index">Gerenciar</a>
+            </li>
+            <li>
+              <a class="nav-link" asp-area="" asp-controller="Book" asp-action="Loan">Emprestar</a>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <a href="#relatorioSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fas fa-file-medical-alt"></i> Relatórios</a>
+          <ul class="collapse list-unstyled" id="relatorioSubmenu">
+            <li>
+              <a class="nav-link" asp-area="" asp-controller="Report" asp-action="Loans">Empréstimos</a>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <a href="#">
+            <i class="fas fa-briefcase"></i>
+            About
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-question"></i>
+            FAQ
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-paper-plane"></i>
+            Contact
+          </a>
+        </li>
+      </ul>
+
+      <ul class="list-unstyled CTAs">
+        <li>
+        <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
+        </li>
+        <li>
+        <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
+        </li>
+        </ul>
+    </nav>
+
+    <!-- End Sidebar  -->
+
+    <!-- Page Content  -->
+    <div id="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+
+          <a class="navbar-brand" href="#">
+            <img src="~/images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          </a>
+
+          <div>
+            <button type="button" id="sidebarCollapse" class="btn btn-info">
+              <i class="fas fa-align-left"></i>
+              <span>Menu</span>
+            </button>
+          </div>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+              <li class="nav-item active">
+                <a class="nav-link text-white" href="#">Olá, Elton!</a>
+              </li>
+              <li class="nav-item">
+                <button type="button" class="btn btn-info mt-1 ml-1">
+                  <i class="fas fa-sign-in-alt"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      @* @{ RenderBody(); } Ignorar Body *@
+      @RenderBody()
+    </div>
+  </div>
+
+  <!-- jQuery CDN -->
+  <script src="~/lib/jquery/dist/jquery.min.js"></script>
+  <!-- Popper.JS -->
+  <script src="~/lib/popper/popper.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Our JS -->
+  <script src="~/js/site.js" asp-append-version="true"></script>
+  @RenderSection("Scripts", required: false)
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+      });
+    });
+  </script>
+</body>
+
+</html>
