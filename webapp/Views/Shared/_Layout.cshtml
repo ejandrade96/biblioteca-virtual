@@ -15,9 +15,12 @@
   <link rel="stylesheet" href="~/css/site.css" />
   <link rel="stylesheet" href="~/css/sidebar.css">
 
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="~/lib/fontawesome/css/fontawesome.all.min.css">
+
   <!-- Font Awesome JS -->
-  <script defer src="~/lib/fontawesome/solid.js"></script>
-  <script defer src="~/lib/fontawesome/fontawesome.js"></script>
+  <script defer src="~/lib/fontawesome/js/solid.js"></script>
+  <script defer src="~/lib/fontawesome/js/fontawesome.js"></script>
 </head>
 
 <body>
@@ -32,7 +35,8 @@
 
       <ul class="list-unstyled components navbar-nav">
         <li class=""> @* class="active" *@
-          <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i> Home</a>
+          <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i>
+            Home</a>
         </li>
 
         <li>
@@ -90,14 +94,13 @@
 
       <ul class="list-unstyled CTAs">
         <li>
-        <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
+          <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
         </li>
         <li>
-        <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
+          <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
         </li>
-        </ul>
+      </ul>
     </nav>
-
     <!-- End Sidebar  -->
 
     <!-- Page Content  -->
@@ -132,6 +135,20 @@
       </nav>
       @* @{ RenderBody(); } Ignorar Body *@
       @RenderBody()
+
+      <div class="line"></div>
+
+      <div class="text-center" style="margin-top: 90%;">
+        <h5 style="font-size: 12pt;">Desenvolvido por
+          <span style="color: #7386D5;">Elton Andrade</span>
+          <a href="https://bit.ly/3pTtS0O" target="_blank" style="margin-left: 5px;"><i class="fab fa-github"></i></a>
+          <a href="https://bit.ly/3aRy5hj" target="_blank" style="margin-left: 5px;"><i
+              class="fab fa-facebook-square"></i></a>
+          <a href="https://bit.ly/3kk3ThY" target="_blank" style="margin-left: 5px;"><i
+              class="fab fa-instagram"></i></a>
+        </h5>
+      </div>
+
     </div>
   </div>
 
