@@ -9,5 +9,11 @@ namespace webapp.Controllers
     {
       return View(new IndexViewModel());
     }
+
+    [HttpPost]
+    public IActionResult CreateStudent()
+    {
+      return Ok();
+    }
   }
 }

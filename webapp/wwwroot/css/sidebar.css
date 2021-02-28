@@ -66,12 +66,12 @@ span {
     max-width: 250px;
     background: #7386D5;
     color: #fff;
-    transition: all 0.3s;
+    transition: all 0.7s;
 }
 
 #sidebar.active {
-    min-width: 80px;
-    max-width: 80px;
+    min-width: 100px;
+    max-width: 100px;
     text-align: center;
 }
 
@@ -208,8 +208,8 @@ a.article:hover {
 
 @media (max-width: 768px) {
     #sidebar {
-        min-width: 80px;
-        max-width: 80px;
+        min-width: 100px;
+        max-width: 100px;
         text-align: center;
         margin-left: -80px !important;
     }
