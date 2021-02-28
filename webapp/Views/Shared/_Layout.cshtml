@@ -18,6 +18,10 @@
   <!-- Font Awesome CSS -->
   <link rel="stylesheet" href="~/lib/fontawesome/css/fontawesome.all.min.css">
 
+  <!-- jQuery DataTables CSS -->
+  <link rel="stylesheet" href="~/lib/jquery/dist/css/jquery.dataTables.min.css" />
+  <link rel="stylesheet" href="~/lib/jquery/dist/css/buttons.dataTables.min.css">
+
   <!-- Font Awesome JS -->
   <script defer src="~/lib/fontawesome/js/solid.js"></script>
   <script defer src="~/lib/fontawesome/js/fontawesome.js"></script>
@@ -94,10 +98,10 @@
 
       <ul class="list-unstyled CTAs">
         <li>
-          <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
+          <a href="#" class="download">Download source</a>
         </li>
         <li>
-          <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
+          <a href="#" class="article">Back to article</a>
         </li>
       </ul>
     </nav>
@@ -153,17 +157,35 @@
   </div>
 
   <!-- jQuery CDN -->
-  <script src="~/lib/jquery/dist/jquery.min.js"></script>
+  <script src="~/lib/jquery/dist/js/jquery.min.js"></script>
+  <script src="~/lib/jquery/dist/js/jquery.mask.js"></script>
+
+  <!-- jQuery DataTables JS -->
+  <script src="~/lib/jquery/dist/js/jquery.dataTables.min.js"></script>
+  <script src="~/lib/jquery/dist/js/dataTables.buttons.min.js"></script>
+  <script src="~/lib/jquery/dist/js/jszip.min.js"></script>
+  <script src="~/lib/jquery/dist/js/pdfmake.min.js"></script>
+  <script src="~/lib/jquery/dist/js/vfs_fonts.js"></script>
+  <script src="/lib/jquery/dist/js/buttons.print.min.js"></script>
+  <script src="~/lib/jquery/dist/js/buttons.html5.min.js"></script>
+
   <!-- Popper.JS -->
   <script src="~/lib/popper/popper.min.js"></script>
+
   <!-- Bootstrap JS -->
   <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
   <!-- Our JS -->
   <script src="~/js/site.js" asp-append-version="true"></script>
+
   @RenderSection("Scripts", required: false)
   <script type="text/javascript">
     $(document).ready(function () {
+      jQuery(function () {
+        jQuery('#sidebarCollapse').click();
+      });
+
       $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('active');
       });

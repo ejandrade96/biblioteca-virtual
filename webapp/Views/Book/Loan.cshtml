@@ -1,8 +1,153 @@
-@model webapp.ViewModels.Book.LoanViewModel;
+@model webapp.ViewModels.Book.IndexViewModel;
 @{
   ViewData["Title"] = "Livros";
 }
 
-<div class="text-center">
-  <h3 class="display-4">LOAN BOOK</h3>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h3 class="text-center mb-5">Área de Empréstimos</h3>
+
+      <div class="row" id="divLoader">
+        <div class="col-md-12 text-center">
+          <h1>Aguarde, carregando...</h1>
+        </div>
+      </div>
+
+      <div style="display: none;" id="divTableLoans">
+        <table id="tblLoans" class="table table-striped table-bordered dt-responsive nowrap mt-4" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+          <thead>
+            <tr style="color: rgb(10, 17, 63);">
+              <th class="border-top-0">Id</th>
+              <th class="border-top-0">Título</th>
+              <th class="border-top-0">Autor</th>
+              <th class="border-top-0">ISBN</th>
+              <th class="border-top-0">Páginas</th>
+              <th class="border-top-0">Edição</th>
+              <th class="border-top-0">Emprestado?</th>
+              <th class="border-top-0">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                1
+              </td>
+              <td>
+                Clean Code
+              </td>
+              <td>
+                Robert Cecil Martin
+              </td>
+              <td>
+                108576082675
+              </td>
+              <td>
+                457
+              </td>
+              <td>
+                1
+              </td>
+              <td>
+                Disponível
+              </td>
+              <td class="text-center">
+                <button type="button" class="btn btn-success">Emprestar</button>
+                <button type="button" class="btn btn-primary" style="cursor: not-allowed" disabled>Devolver</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                2
+              </td>
+              <td>
+                Clean Code
+              </td>
+              <td>
+                Robert Cecil Martin
+              </td>
+              <td>
+                108576082675
+              </td>
+              <td>
+                457
+              </td>
+              <td>
+                2
+              </td>
+              <td>
+                elton.andrade
+              </td>
+              <td class="text-center">
+                <button type="button" class="btn btn-success" style="cursor: not-allowed" disabled>Emprestar</button>
+                <button type="button" class="btn btn-primary">Devolver</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
+
+@section Scripts{ 
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var buttonCommon = {
+            exportOptions: {
+                format: {
+                    body: function (data, column, row, node) {
+                        return (column >= 29 && column <= 30) ? data.replace(/[.]/g, '').replace(',', '.') : data;
+                    }
+                }
+            }
+        };
+
+        var dataTable = $("#tblLoans").DataTable({
+            "lengthMenu": [ [15, 25, 50, -1], [15, 25, 50, "Todos"] ],
+            "pageLength": 15,
+            'columnDefs': [
+                { responsivePriority: 1, targets: 0 },
+                { responsivePriority: 2, targets: 1 },
+                { responsivePriority: 3, targets: 2 },
+                { responsivePriority: 4, targets: 7 }
+            ],
+            language: {
+                "sProcessing": "A processar...",
+                "sDecimal": ",",
+                "sThousands": ".",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "Não foram encontrados resultados",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
+                "sInfoPostFix": "",
+                "sSearch": "Procurar:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Seguinte",
+                    "sLast": "Último"
+                },
+                "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json",
+                "sCopy": "Copiar"
+            },
+            dom: 'Blfrtip',
+            buttons: [
+              { extend: 'copy', text: 'Copiar' },
+              'excel', /* 'pdf', */ 'csv', 'print'
+            ],
+            "order": [[1, "asc"]],
+            "scrollX": true
+        }).on('init', function (e, settings, data) {
+            $("#divTableLoans").show();
+            $("#divLoader").hide();
+        });
+
+        $('#tblLoans').on('length.dt', function (e, settings, len) {
+          dataTable.columns.adjust().draw();
+        });
+   });
+    </script>
+}

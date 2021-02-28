@@ -10,9 +10,15 @@ namespace webapp.Controllers
       return View(new IndexViewModel());
     }
 
+    [HttpPost]
+    public IActionResult CreateBook()
+    {
+      return Ok();
+    }
+
     public IActionResult Loan()
     {
-      return View(new LoanViewModel());
+      return View(new IndexViewModel());
     }
   }
 }
