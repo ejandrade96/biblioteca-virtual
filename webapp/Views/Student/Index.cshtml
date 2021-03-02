@@ -30,11 +30,6 @@
             <input asp-for="Telephone" class="form-control" placeholder="Telefone">
             <span asp-validation-for="Telephone" class="text-danger"></span>
           </div>
-          <div class="form-group col-2">
-            <label asp-for="Record" class="control-label">Matrícula</label>
-            <input asp-for="Record" class="form-control" placeholder="Matrícula">
-            <span asp-validation-for="Record" class="text-danger"></span>
-          </div>
           <div class="form-group col-12">
             <button type="submit" class="btn btn-primary float-right">Cadastrar</button>
           </div>
@@ -178,7 +173,7 @@
               { extend: 'copy', text: 'Copiar' },
               'excel', /* 'pdf', */ 'csv', 'print'
             ],
-            "order": [[1, "asc"]],
+            "order": [[0, "asc"]],
             "scrollX": true
         }).on('init', function (e, settings, data) {
             $("#divTableStudents").show();
