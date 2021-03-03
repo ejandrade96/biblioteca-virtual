@@ -2,7 +2,7 @@ using Domain.ValueObjects;
 
 namespace Domain.Models
 {
-  public class Address : EntityBase
+  public class Address
   {
     public string ZipCode { get; protected set; }
 

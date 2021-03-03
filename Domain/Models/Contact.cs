@@ -1,12 +1,12 @@
 namespace Domain.Models
 {
-  public class Contact : EntityBase
+  public class Contact
   {
-    public string Email { get; set; }
+    public string Email { get; protected set; }
 
-    public string Telephone { get; set; }
+    public string Telephone { get; protected set; }
 
-    public string CellPhone { get; set; }
+    public string CellPhone { get; protected set; }
 
     public Contact(string email, string telephone, string cellPhone)
     {
