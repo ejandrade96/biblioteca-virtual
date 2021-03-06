@@ -19,7 +19,7 @@ namespace Domain.Models
     public string City { get; protected set; }
 
     public State State { get; protected set; }
-    
+
     public Address(string zipCode, StreetType streetType, string street, int number, string district, string city, State state)
     {
       ZipCode = zipCode;
@@ -30,5 +30,7 @@ namespace Domain.Models
       City = city;
       State = state;
     }
+
+    public void SetComplement(string complement) => Complement = complement;
   }
 }
