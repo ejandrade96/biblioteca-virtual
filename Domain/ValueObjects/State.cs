@@ -10,7 +10,12 @@ namespace Domain.ValueObjects
 
     public string Acronym { get; }
 
-    public State(int code, string name, string acronym)
+    public State(string acronym)
+    {
+      Acronym = acronym;
+    }
+
+    private State(int code, string name, string acronym)
     {
       Code = code;
       Name = name;

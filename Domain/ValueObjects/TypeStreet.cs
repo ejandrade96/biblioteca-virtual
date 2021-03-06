@@ -8,7 +8,12 @@ namespace Domain.ValueObjects
 
     public string Description { get; }
 
-    public StreetType(string code, string description)
+    public StreetType(string code)
+    {
+      Code = code;
+    }
+
+    private StreetType(string code, string description)
     {
       Code = code;
       Description = description;
