@@ -18,21 +18,21 @@ namespace Infrastructure.Mappings
 
       builder.OwnsOne(student => student.Contact, contact => 
       {
-        contact.Property(contact => contact.Email).IsRequired();
-        contact.Property(contact => contact.Telephone).IsRequired();
-        contact.Property(contact => contact.CellPhone);
+        contact.Property(contact => contact.Email).HasColumnName("Email").IsRequired();
+        contact.Property(contact => contact.Telephone).HasColumnName("Telephone").IsRequired();
+        contact.Property(contact => contact.CellPhone).HasColumnName("CellPhone");
       });
       
       builder.OwnsOne(student => student.Address, address =>
       {
-        address.Property(address => address.ZipCode).IsRequired();
-        address.Property(address => address.StreetType).IsRequired().HasConversion(streetType => streetType.Code, code => new StreetType(code)).HasColumnName("StreetType");
-        address.Property(address => address.Street).IsRequired();
-        address.Property(address => address.Number).IsRequired();
-        address.Property(address => address.Complement);
-        address.Property(address => address.District).IsRequired();
-        address.Property(address => address.City).IsRequired();
-        address.Property(address => address.State).IsRequired().HasConversion(state => state.Acronym, acronym => new State(acronym)).HasColumnName("State");
+        address.Property(address => address.ZipCode).HasColumnName("ZipCode").IsRequired();
+        address.Property(address => address.StreetType).HasConversion(streetType => streetType.Code, code => new StreetType(code)).HasColumnName("StreetType").IsRequired();
+        address.Property(address => address.Street).HasColumnName("Street").IsRequired();
+        address.Property(address => address.Number).HasColumnName("Number").IsRequired();
+        address.Property(address => address.Complement).HasColumnName("Complement");
+        address.Property(address => address.District).HasColumnName("District").IsRequired();
+        address.Property(address => address.City).HasColumnName("City").IsRequired();
+        address.Property(address => address.State).HasConversion(state => state.Acronym, acronym => new State(acronym)).HasColumnName("State").IsRequired();
       });
     }
   }

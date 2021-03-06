@@ -11,6 +11,10 @@ namespace Infrastructure.Contexts
     {
     }
 
+    public BibliotecaVirtualContext()
+    {
+    }
+
     public DbSet<Student> Students { get; set; }
 
     public DbSet<Book> Books { get; set; }
@@ -25,6 +29,7 @@ namespace Infrastructure.Contexts
                                           .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                                           .AddJsonFile("appsettings.json")
                                           .Build();
+
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("BibliotecaVirtualContext"));
         optionsBuilder.UseLazyLoadingProxies();
         optionsBuilder.EnableSensitiveDataLogging();

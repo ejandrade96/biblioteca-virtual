@@ -14,9 +14,6 @@ namespace Domain.Models
       Telephone = telephone;
     }
 
-    public void SetCellPhone(string cellPhone)
-    {
-      CellPhone = cellPhone;
-    }
+    public void SetCellPhone(string cellPhone) => CellPhone = cellPhone;
   }
 }

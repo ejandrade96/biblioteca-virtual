@@ -12,6 +12,9 @@ namespace Domain.Models
     
     public int Edition { get; protected set; }
 
+    protected Book()
+    {
+    }
     public Book(string title, string author, string isbn, int pages, int edition)
     {
       Title = title;
