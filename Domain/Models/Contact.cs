@@ -8,10 +8,14 @@ namespace Domain.Models
 
     public string CellPhone { get; protected set; }
 
-    public Contact(string email, string telephone, string cellPhone)
+    public Contact(string email, string telephone)
     {
       Email = email;
       Telephone = telephone;
+    }
+
+    public void SetCellPhone(string cellPhone)
+    {
       CellPhone = cellPhone;
     }
   }

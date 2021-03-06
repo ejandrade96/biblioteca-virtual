@@ -20,13 +20,12 @@ namespace Domain.Models
 
     public State State { get; protected set; }
     
-    public Address(string zipCode, StreetType streetType, string street, int number, string complement, string district, string city, State state)
+    public Address(string zipCode, StreetType streetType, string street, int number, string district, string city, State state)
     {
       ZipCode = zipCode;
       StreetType = streetType;
       Street = street;
       Number = number;
-      Complement = complement;
       District = district;
       City = city;
       State = state;
