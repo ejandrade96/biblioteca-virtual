@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using Domain.Models;
 using Domain.Repository;
 using Infrastructure.Contexts;
@@ -18,17 +18,16 @@ namespace Infrastructure.Repository
       _dataset = _context.Set<T>();
     }
 
-    public int Add(T entity)
+    public T Add(T entity)
     {
       _dataset.Add(entity);
       _context.SaveChanges();
-
-      return entity.Id;
+      return entity;
     }
 
     public T Get(int id) => _dataset.Find(id);
 
-    public IQueryable<T> GetAll() => _dataset;
+    public IEnumerable<T> GetAll() => _dataset;
 
     public void Remove(T entity)
     {
