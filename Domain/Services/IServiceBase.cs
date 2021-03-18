@@ -1,15 +1,15 @@
-using System.Linq;
+using System.Collections.Generic;
 using Domain.Models;
 
 namespace Domain.Services
 {
   public interface IServiceBase<T> where T : EntityBase
   {
-    int Add(T entity);
+    T Add(T entity);
 
     T Get(int id);
 
-    IQueryable<T> GetAll();
+    IEnumerable<T> GetAll();
 
     void Remove(T entity);
 

@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using Domain.Models;
 using Domain.Repository;
 using Domain.Services;
@@ -14,11 +14,11 @@ namespace Services
       _repository = repository;
     }
 
-    public int Add(T entity) => _repository.Add(entity);
+    public T Add(T entity) => _repository.Add(entity);
 
     public T Get(int id) => _repository.Get(id);
 
-    public IQueryable<T> GetAll() => _repository.GetAll();
+    public IEnumerable<T> GetAll() => _repository.GetAll();
 
     public void Remove(T entity) => _repository.Remove(entity);
 
