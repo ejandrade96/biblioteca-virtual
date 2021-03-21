@@ -78,8 +78,8 @@ namespace Services
     {
       IError error = null;
 
-      var studentFoundByEmail = _students.GetByEmail(student.Contact.Email);
-      var studentFoundByLogin = _students.GetByLogin(student.Login);
+      var studentFoundByEmail = _students.First(x => x.Contact.Email == student.Contact.Email);
+      var studentFoundByLogin = _students.First(x => x.Login == student.Login);
 
       if (studentFoundByEmail != null)
         error = new ErrorExistingObject("Estudante", "email");

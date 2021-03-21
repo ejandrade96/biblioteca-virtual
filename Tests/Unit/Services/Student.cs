@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Domain.Repository;
 using Domain.Services;
 using Domain.ValueObjects;
@@ -53,7 +55,7 @@ namespace Tests.Unit.Services
       var address = new Models.Address("09421700", streetType, "dos Vianas", 412, "Centro", "São Bernardo do Campo", state);
       var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
 
-      _students.Setup(repository => repository.GetByEmail(It.IsAny<string>())).Returns(student);
+      _students.Setup(repository => repository.First(x => x.Contact.Email == student.Contact.Email)).Returns(student);
 
       var response = _service.Add(student);
 
@@ -71,7 +73,7 @@ namespace Tests.Unit.Services
       var address = new Models.Address("09421700", streetType, "dos Vianas", 412, "Centro", "São Bernardo do Campo", state);
       var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
 
-      _students.Setup(repository => repository.GetByLogin(It.IsAny<string>())).Returns(student);
+      _students.Setup(repository => repository.First(x => x.Login == student.Login)).Returns(student);
 
       var response = _service.Add(student);
 
@@ -92,7 +94,7 @@ namespace Tests.Unit.Services
       var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 1 };
       var students = new List<Models.Student> { student, student };
 
-      _students.Setup(repository => repository.GetAll()).Returns(students);
+      _students.Setup(repository => repository.GetAll()).Returns(students.AsQueryable());
 
       var studentsFound = _service.GetAll();
 
@@ -163,7 +165,7 @@ namespace Tests.Unit.Services
       var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 1 };
 
       _students.Setup(repository => repository.Get(It.IsAny<int>())).Returns(student);
-      _students.Setup(repository => repository.GetByEmail(It.IsAny<string>())).Returns(student);
+      _students.Setup(repository => repository.First(x => x.Contact.Email == student.Contact.Email)).Returns(student);
 
       var response = _service.Update(student);
 
@@ -182,7 +184,7 @@ namespace Tests.Unit.Services
       var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 1 };
 
       _students.Setup(repository => repository.Get(It.IsAny<int>())).Returns(student);
-      _students.Setup(repository => repository.GetByLogin(It.IsAny<string>())).Returns(student);
+      _students.Setup(repository => repository.First(x => x.Login == student.Login)).Returns(student);
 
       var response = _service.Update(student);
 
@@ -200,7 +202,7 @@ namespace Tests.Unit.Services
       var address = new Models.Address("09421700", streetType, "dos Vianas", 412, "Centro", "São Bernardo do Campo", state);
       var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 1 };
 
-      _students.Setup(repository => repository.Get(It.IsAny<int>())).Returns(student);
+      _students.Setup(repository => repository.Get(1)).Returns(student);
 
       var response = _service.Remove(1);
 
@@ -228,11 +230,12 @@ namespace Tests.Unit.Services
       address.SetComplement("AP Torre 1");
       var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 1 };
 
-      _students.Setup(repository => repository.Get(It.IsAny<int>())).Returns(student);
+      _students.Setup(repository => repository.Get(1)).Returns(student);
 
       var response = _service.Get(1);
       var studentFound = response.Result;
 
+      response.Error.Should().BeNull();
       studentFound.Should().NotBeNull();
       studentFound.Id.Should().NotBe(null);
       studentFound.Id.Should().BeGreaterThan(0);

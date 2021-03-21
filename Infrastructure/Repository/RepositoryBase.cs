@@ -1,4 +1,6 @@
-using System.Collections.Generic;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 using Domain.Models;
 using Domain.Repository;
 using Infrastructure.Contexts;
@@ -25,9 +27,11 @@ namespace Infrastructure.Repository
       return entity;
     }
 
+    public T First(Expression<Func<T, bool>> predicate) =>_dataset.Where(predicate).FirstOrDefault();
+
     public T Get(int id) => _dataset.Find(id);
 
-    public IEnumerable<T> GetAll() => _dataset;
+    public IQueryable<T> GetAll() => _dataset;
 
     public void Remove(T entity)
     {

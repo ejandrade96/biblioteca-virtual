@@ -1,4 +1,6 @@
-using System.Collections.Generic;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 using Domain.Models;
 
 namespace Domain.Repository
@@ -9,10 +11,12 @@ namespace Domain.Repository
 
     T Get(int id);
 
-    IEnumerable<T> GetAll();
+    IQueryable<T> GetAll();
 
     void Remove(T entity);
 
     void Update(T entity);
+
+    T First(Expression<Func<T, bool>> predicate);
   }
 }
