@@ -4,6 +4,7 @@ using Domain.Repository;
 using Infrastructure.Errors;
 using System.Collections.Generic;
 using Domain.Errors;
+using System.Linq;
 
 namespace Services
 {
@@ -74,6 +75,16 @@ namespace Services
       return response;
     }
 
+    public int GetNextRecord()
+    {
+      var students = _students.GetAll();
+
+      if (students.Count() == 0)
+        return 125478;
+
+      return students.Max(x => x.Record) + 1;
+    }
+
     private IError CheckForErrorsToAdd(Models.Student student)
     {
       IError error = null;
@@ -93,15 +104,19 @@ namespace Services
     private IError CheckForErrorsToUpdate(Models.Student student)
     {
       IError error = null;
-      IError errorToAdd = CheckForErrorsToAdd(student);
 
+      var studentFoundByEmail = _students.First(x => x.Contact.Email == student.Contact.Email && x.Id != student.Id);
+      var studentFoundByLogin = _students.First(x => x.Login == student.Login && x.Id != student.Id);
       var studentFoundById = _students.Get(student.Id);
 
-      if (studentFoundById == null)
-        error = new ErrorObjectNotFound("Estudante");
+      if (studentFoundByEmail != null)
+        error = new ErrorExistingObject("Estudante", "email");
 
-      else if (errorToAdd != null)
-        error = errorToAdd;
+      else if (studentFoundByLogin != null)
+        error = new ErrorExistingObject("Estudante", "login");
+
+      else if (studentFoundById == null)
+        error = new ErrorObjectNotFound("Estudante");
 
       return error;
     }

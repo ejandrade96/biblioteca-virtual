@@ -21,7 +21,7 @@ namespace Domain.ValueObjects
 
     public static IEnumerable<StreetType> StreetTypes = new List<StreetType>
       {
-        new StreetType ("A", "Área"),
+        new StreetType ("", "Selecione"),
         new StreetType ("A", "Área"),
         new StreetType ("AC", "Acesso"),
         new StreetType ("ACA", "Acampamento"),

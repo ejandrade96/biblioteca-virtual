@@ -24,6 +24,7 @@ namespace Domain.ValueObjects
 
     public static IEnumerable<State> States = new List<State>
       {
+        new State(""),
         new State(11, "Rondônia", "RO"),
         new State(12, "Acre", "AC"),
         new State(13, "Amazonas", "AM"),

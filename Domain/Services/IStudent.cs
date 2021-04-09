@@ -14,5 +14,7 @@ namespace Domain.Services
     IResponse<Student> Remove(int id);
 
     IResponse<Student> Update(Student student);
+
+    int GetNextRecord();
   }
 }

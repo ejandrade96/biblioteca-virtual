@@ -8,32 +8,118 @@
     <div class="col-12">
       <h3 class="text-center mb-5">Cadastro de Alunos</h3>
 
-      <form asp-action="CreateStudent" asp-controller="Student" method="POST" class="mt-4">
-        <div class="row">
-          <div class="form-group col-4">
-            <label asp-for="Name" class="control-label">Nome</label>
-            <input asp-for="Name" class="form-control" placeholder="Nome do Aluno">
-            <span asp-validation-for="Name" class="text-danger"></span>
-          </div>
-          <div class="form-group col-4">
-            <label asp-for="Email" class="control-label">Email</label>
-            <input asp-for="Email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Email">
-            <span asp-validation-for="Email" class="text-danger"></span>
-          </div>
-          <div class="form-group col-2">
-            <label asp-for="Login" class="control-label">Login</label>
-            <input asp-for="Login" class="form-control" placeholder="Login">
-            <span asp-validation-for="Login" class="text-danger"></span>
-          </div>
-          <div class="form-group col-2">
-            <label asp-for="Telephone" class="control-label">Telefone</label>
-            <input asp-for="Telephone" class="form-control" placeholder="Telefone">
-            <span asp-validation-for="Telephone" class="text-danger"></span>
-          </div>
-          <div class="form-group col-12">
-            <button type="submit" class="btn btn-primary float-right">Cadastrar</button>
-          </div>
-        </div>
+      <form asp-action="SaveStudent" asp-controller="Student" method="POST" class="mt-4">
+          <fieldset style="border: 1px solid #999; padding: 10px; margin-bottom: 20px; width: 100%;">
+            <legend style="font-weight: 500; font-size: 15pt; width: auto; margin: 0;">Dados Pessoais</legend>
+            <div class="row">
+              <input asp-for="@Model.Student.Record" class="form-control" type="hidden" value="0" />
+              <div class="col-4">
+                <div class="form-group">
+                  <label asp-for="@Model.Student.Name" class="control-label">Nome*</label>
+                  <input asp-for="@Model.Student.Name" class="form-control" placeholder="Nome do Aluno">
+                  <span asp-validation-for="@Model.Student.Name" class="text-danger"></span>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group">
+                  <label asp-for="@Model.Student.Login" class="control-label">Login*</label>
+                  <input asp-for="@Model.Student.Login" class="form-control" placeholder="Login">
+                  <span asp-validation-for="@Model.Student.Login" class="text-danger"></span>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset style="border: 1px solid #999; padding: 10px; margin-bottom: 20px; width: 100%;">
+            <legend style="font-weight: 500; font-size: 15pt; width: auto; margin: 0;">Endereço</legend>
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label asp-for="@Model.Student.Address.ZipCode" class="control-label">Cep*</label>
+                      <input asp-for="@Model.Student.Address.ZipCode" class="form-control" placeholder="Cep">
+                      <span asp-validation-for="@Model.Student.Address.ZipCode" class="text-danger"></span>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                      <label asp-for="@Model.Student.Address.StreetType" class="control-label">Tipo Logradouro*</label>
+                      <select asp-for="@Model.Student.Address.StreetType" asp-items="@ViewBag.StreetTypes" class="form-control"></select>
+                      <span asp-validation-for="@Model.Student.Address.StreetType" class="text-danger"></span>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label asp-for="@Model.Student.Address.Street" class="control-label">Rua*</label>
+                      <input asp-for="@Model.Student.Address.Street" class="form-control" placeholder="Rua">
+                      <span asp-validation-for="@Model.Student.Address.Street" class="text-danger"></span>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label asp-for="@Model.Student.Address.Number" class="control-label">Número*</label>
+                      <input asp-for="@Model.Student.Address.Number" type="number" min="0" class="form-control" placeholder="0">
+                      <span asp-validation-for="@Model.Student.Address.Number" class="text-danger"></span>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label asp-for="@Model.Student.Address.Complement" class="control-label">Complemento</label>
+                      <input asp-for="@Model.Student.Address.Complement" class="form-control" placeholder="Complemento">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label asp-for="@Model.Student.Address.District" class="control-label">Bairro*</label>
+                      <input asp-for="@Model.Student.Address.District" class="form-control" placeholder="Bairro">
+                      <span asp-validation-for="@Model.Student.Address.District" class="text-danger"></span>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label asp-for="@Model.Student.Address.City" class="control-label">Cidade*</label>
+                      <input asp-for="@Model.Student.Address.City" class="form-control" placeholder="Cidade">
+                      <span asp-validation-for="@Model.Student.Address.City" class="text-danger"></span>
+                    </div>
+                  </div>
+                  <div class="col-2">
+                      <label asp-for="@Model.Student.Address.State" class="control-label">Estado*</label>
+                      <select asp-for="@Model.Student.Address.State" asp-items="@ViewBag.States" class="form-control"></select>
+                      <span asp-validation-for="@Model.Student.Address.State" class="text-danger"></span>
+                  </div>
+                </div>
+            </fieldset>
+            
+          <fieldset style="border: 1px solid #999; padding: 10px; margin-bottom: 20px; width: 100%;">
+            <legend style="font-weight: 500; font-size: 15pt; width: auto; margin: 0;">Contato</legend>
+              <div class="row">
+                <div class="col-4">
+                  <div class="form-group">
+                    <label asp-for="@Model.Student.Contact.Email" class="control-label">Email*</label>
+                    <input asp-for="@Model.Student.Contact.Email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Email">
+                    <span asp-validation-for="@Model.Student.Contact.Email" class="text-danger"></span>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label asp-for="@Model.Student.Contact.Telephone" class="control-label">Telefone*</label>
+                    <input asp-for="@Model.Student.Contact.Telephone" class="form-control" placeholder="Telefone">
+                    <span asp-validation-for="@Model.Student.Contact.Telephone" class="text-danger"></span>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label asp-for="@Model.Student.Contact.CellPhone" class="control-label">Celular</label>
+                    <input asp-for="@Model.Student.Contact.CellPhone" class="form-control" placeholder="Celular">
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <div class="row mb-5">
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="float-left">*Campo Obrigatório</label>
+                  <button type="submit" class="btn btn-primary float-right">Cadastrar</button>
+                </div>
+              </div>
+            </div>
       </form>
 
       <div class="row" id="divLoader">
@@ -52,58 +138,68 @@
               <th class="border-top-0">Login</th>
               <th class="border-top-0">Telefone</th>
               <th class="border-top-0">Matrícula</th>
+              <th class="border-top-0">Celular</th>
+              <th class="border-top-0">CEP</th>
+              <th class="border-top-0">Rua</th>
+              <th class="border-top-0">Número</th>
+              <th class="border-top-0">Bairro</th>
+              <th class="border-top-0">Cidade</th>
+              <th class="border-top-0">Estado</th>
               <th class="border-top-0">Ações</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                1
-              </td>
-              <td>
-                Elton John Fernandes de Andrade
-              </td>
-              <td>
-                eltonfernandesandrade@hotmail.com
-              </td>
-              <td>
-                ejandrade
-              </td>
-              <td>
-                11 998176197
-              </td>
-              <td>
-                275876
-              </td>
-              <td>
-                <a data-sid="1" style="cursor: pointer; color: rgb(10, 17, 63);"><i class="fas fa-edit"></i></a>
-                <a data-sid="1" style="cursor: pointer; color: rgb(10, 17, 63);"><i class="fas fa-trash-alt"></i></a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                2
-              </td>
-              <td>
-                Elton Andrade
-              </td>
-              <td>
-                eltonfernandesandrade@hotmail.com
-              </td>
-              <td>
-                ejandrade
-              </td>
-              <td>
-                11 998176197
-              </td>
-              <td>
-                275876
-              </td>
-              <td>
-                <a data-sid="2" style="cursor: pointer; color: rgb(10, 17, 63);"><i class="fas fa-edit"></i></a>
-                <a data-sid="2" style="cursor: pointer; color: rgb(10, 17, 63);"><i class="fas fa-trash-alt"></i></a>
-              </td>
-            </tr>
+            @if (Model.Students != null)
+            {
+              @foreach(var student in Model.Students)
+              {
+                <tr>
+                  <td>
+                    @student.Id
+                  </td>
+                  <td>
+                    @student.Name
+                  </td>
+                  <td>
+                    @student.Contact.Email
+                  </td>
+                  <td>
+                    @student.Login
+                  </td>
+                  <td>
+                    @student.Contact.Telephone
+                  </td>
+                  <td>
+                    @student.Record
+                  </td>
+                  <td>
+                    @student.Contact.CellPhone
+                  </td>
+                  <td>
+                    @student.Address.ZipCode
+                  </td>
+                  <td>
+                    @student.Address.Street
+                  </td>
+                  <td>
+                    @student.Address.Number
+                  </td>
+                  <td>
+                    @student.Address.District
+                  </td>
+                  <td>
+                    @student.Address.City
+                  </td>
+                  <td>
+                    @student.Address.State
+                  </td>
+                  <td>
+                    <a data-sid="1" style="cursor: pointer; color: rgb(10, 17, 63);"><i class="fas fa-edit"></i></a>
+                    <a data-sid="1" style="cursor: pointer; color: rgb(10, 17, 63);"><i class="fas fa-trash-alt"></i></a>
+                  </td>
+                </tr>
+              }
+            }
           </tbody>
         </table>
       </div>
@@ -114,16 +210,17 @@
 @section Scripts{ 
   <script type="text/javascript">
     $(document).ready(function () {
-        var SPMaskBehavior = function (val) {
-            return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00000';
+        var SPMaskBehaviorTelephone = function (val) {
+            return val.replace(/\D/g, '').length === 11 ? '(00) 0000-0000' : '(00) 0000-0000';
         },
           spOptions = {
               onKeyPress: function (val, e, field, options) {
-                  field.mask(SPMaskBehavior.apply({}, arguments), options);
+                  field.mask(SPMaskBehaviorTelephone.apply({}, arguments), options);
               }
           };
-
-        $("#Telephone").mask(SPMaskBehavior, spOptions);
+        $("#Student_Contact_Telephone").mask(SPMaskBehaviorTelephone, spOptions);
+        $("#Student_Contact_CellPhone").mask('(00) 00000-0000');
+        $("#Student_Address_ZipCode").mask('00000-000');
 
         var buttonCommon = {
             exportOptions: {
