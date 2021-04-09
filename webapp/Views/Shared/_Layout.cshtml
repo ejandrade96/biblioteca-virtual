@@ -159,6 +159,9 @@
   <!-- jQuery CDN -->
   <script src="~/lib/jquery/dist/js/jquery.min.js"></script>
   <script src="~/lib/jquery/dist/js/jquery.mask.js"></script>
+  <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+  <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+  <script src="~/js/swal2.js"></script>
 
   <!-- jQuery DataTables JS -->
   <script src="~/lib/jquery/dist/js/jquery.dataTables.min.js"></script>
@@ -166,7 +169,7 @@
   <script src="~/lib/jquery/dist/js/jszip.min.js"></script>
   <script src="~/lib/jquery/dist/js/pdfmake.min.js"></script>
   <script src="~/lib/jquery/dist/js/vfs_fonts.js"></script>
-  <script src="/lib/jquery/dist/js/buttons.print.min.js"></script>
+  <script src="~/lib/jquery/dist/js/buttons.print.min.js"></script>
   <script src="~/lib/jquery/dist/js/buttons.html5.min.js"></script>
 
   <!-- Popper.JS -->
@@ -180,6 +183,20 @@
   <script src="~/js/site.js" asp-append-version="true"></script>
 
   @RenderSection("Scripts", required: false)
+
+  @if (TempData["Success"] != null)
+  {
+    <script type="text/javascript">
+      Swal.fire("Sucesso!", "@TempData["Success"]", "success");
+    </script>
+  }
+  else if (TempData["Error"] != null)
+  {
+    <script type="text/javascript">
+      Swal.fire("Erro!", "@TempData["Error"]", "error");
+    </script>
+  }
+
   <script type="text/javascript">
     $(document).ready(function () {
       jQuery(function () {

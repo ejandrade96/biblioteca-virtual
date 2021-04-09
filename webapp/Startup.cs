@@ -25,6 +25,7 @@ namespace webapp
       services.AddServices();
       services.AddRepositories();
       services.AddDbContext<BibliotecaVirtualContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BibliotecaVirtualContext")));
+      services.AddAutoMapper(typeof(Mappings.Student));
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

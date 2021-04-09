@@ -163,11 +163,12 @@ namespace Tests.Unit.Services
       var state = State.States.First(x => x.Acronym == "SP");
       var address = new Models.Address("09421700", streetType, "dos Vianas", 412, "Centro", "São Bernardo do Campo", state);
       var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 1 };
+      var studentToUpdate = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 2 };
 
-      _students.Setup(repository => repository.Get(It.IsAny<int>())).Returns(student);
-      _students.Setup(repository => repository.First(x => x.Contact.Email == student.Contact.Email)).Returns(student);
+      _students.Setup(repository => repository.Get(It.IsAny<int>())).Returns(studentToUpdate);
+      _students.Setup(repository => repository.First(x => x.Contact.Email == studentToUpdate.Contact.Email && x.Id != studentToUpdate.Id)).Returns(student);
 
-      var response = _service.Update(student);
+      var response = _service.Update(studentToUpdate);
 
       response.Error.Message.Should().Be("Estudante já cadastrado(a) com este email!");
       response.Error.StatusCode.Should().Be(400);
@@ -182,11 +183,12 @@ namespace Tests.Unit.Services
       var state = State.States.First(x => x.Acronym == "SP");
       var address = new Models.Address("09421700", streetType, "dos Vianas", 412, "Centro", "São Bernardo do Campo", state);
       var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 1 };
+      var studentToUpdate = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 2 };
 
-      _students.Setup(repository => repository.Get(It.IsAny<int>())).Returns(student);
-      _students.Setup(repository => repository.First(x => x.Login == student.Login)).Returns(student);
+      _students.Setup(repository => repository.Get(It.IsAny<int>())).Returns(studentToUpdate);
+      _students.Setup(repository => repository.First(x => x.Login == studentToUpdate.Login && x.Id != studentToUpdate.Id)).Returns(student);
 
-      var response = _service.Update(student);
+      var response = _service.Update(studentToUpdate);
 
       response.Error.Message.Should().Be("Estudante já cadastrado(a) com este login!");
       response.Error.StatusCode.Should().Be(400);
@@ -265,6 +267,35 @@ namespace Tests.Unit.Services
       response.Error.Message.Should().Be("Estudante não encontrado(a)!");
       response.Error.StatusCode.Should().Be(404);
       response.Error.GetType().Should().Be(typeof(ErrorObjectNotFound));
+    }
+
+    [Fact]
+    public void Deve_Retornar_O_Proximo_Numero_De_Matricula_Do_Aluno()
+    {
+      var contact = new Models.Contact("joao.villar@live.com", "1154218547");
+      var streetType = StreetType.StreetTypes.First(x => x.Code == "R");
+      var state = State.States.First(x => x.Acronym == "SP");
+      var address = new Models.Address("09421700", streetType, "dos Vianas", 412, "Centro", "São Bernardo do Campo", state);
+      var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 1 };
+      var students = new List<Models.Student>
+      {
+        student,
+        new Models.Student("José Alves Gomes", "jose.gomes", 125479, contact, address) { Id = 2 }
+      };
+
+      _students.Setup(repository => repository.GetAll()).Returns(students.AsQueryable());
+
+      var record = _service.GetNextRecord();
+
+      record.Should().Be(125480);
+    }
+
+    [Fact]
+    public void Deve_Retornar_O_Numero_De_Matricula_125478_Quando_Nao_Existir_Aluno_Cadastrado()
+    {
+      var record = _service.GetNextRecord();
+
+      record.Should().Be(125478);
     }
   }
 }
