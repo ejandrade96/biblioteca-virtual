@@ -1,12 +1,13 @@
 @model webapp.ViewModels.Book.IndexViewModel;
 @{
   ViewData["Title"] = "Livros";
+  Layout = "~/Views/Shared/_LayoutPrincipal.cshtml";
 }
 
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <h3 class="text-center mb-5">Área de Empréstimos</h3>
+      <h3 class="text-center">Área de Empréstimos</h3>
 
       <div class="row" id="divLoader">
         <div class="col-md-12 text-center">

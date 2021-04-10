@@ -1,12 +1,13 @@
 @model webapp.ViewModels.Book.IndexViewModel;
 @{
   ViewData["Title"] = "Livros";
+  Layout = "~/Views/Shared/_LayoutPrincipal.cshtml";
 }
 
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <h3 class="text-center mb-5">Cadastro de Livros</h3>
+      <h3 class="text-center">Cadastro de Livros</h3>
 
       <form asp-action="CreateBook" asp-controller="Book" method="POST" class="mt-4">
         <div class="row">
@@ -48,7 +49,8 @@
       </div>
 
       <div style="display: none;" id="divTableBooks">
-        <table id="tblBooks" class="table table-striped table-bordered dt-responsive nowrap mt-4" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <table id="tblBooks" class="table table-striped table-bordered dt-responsive nowrap mt-4"
+          style="border-collapse: collapse; border-spacing: 0; width: 100%;">
           <thead>
             <tr style="color: rgb(10, 17, 63);">
               <th class="border-top-0">Id</th>
@@ -82,11 +84,16 @@
                 1
               </td>
               <td class="text-center">
-                <input type="checkbox" class="form-check-input" id="chkBorrowed" style="margin: 0 auto;" disabled checked >
+                <input type="checkbox" class="form-check-input" id="chkBorrowed" style="margin: 0 auto;" disabled
+                  checked>
               </td>
               <td class="text-center">
-                <a data-sid="1" style="cursor: pointer; color: rgb(10, 17, 63);"><i class="fas fa-edit"></i></a>
-                <a data-sid="1" style="cursor: pointer; color: rgb(10, 17, 63);"><i class="fas fa-trash-alt"></i></a>
+                <button data-sid="1" type="button" class="btn btn-primary btn-sm" style="font-size: 9pt;">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button data-sid="1" type="button" class="btn btn-primary btn-sm" style="font-size: 9pt;">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -96,64 +103,64 @@
   </div>
 </div>
 
-@section Scripts{ 
-  <script type="text/javascript">
-    $(document).ready(function () {
-      var buttonCommon = {
-            exportOptions: {
-                format: {
-                    body: function (data, column, row, node) {
-                        return (column >= 29 && column <= 30) ? data.replace(/[.]/g, '').replace(',', '.') : data;
-                    }
-                }
-            }
-        };
+@section Scripts{
+<script type="text/javascript">
+  $(document).ready(function () {
+    var buttonCommon = {
+      exportOptions: {
+        format: {
+          body: function (data, column, row, node) {
+            return (column >= 29 && column <= 30) ? data.replace(/[.]/g, '').replace(',', '.') : data;
+          }
+        }
+      }
+    };
 
-        var dataTable = $("#tblBooks").DataTable({
-            "lengthMenu": [ [15, 25, 50, -1], [15, 25, 50, "Todos"] ],
-            "pageLength": 15,
-            'columnDefs': [
-                { responsivePriority: 1, targets: 0 },
-                { responsivePriority: 2, targets: 1 },
-                { responsivePriority: 3, targets: 2 },
-                { responsivePriority: 4, targets: 7 }
-            ],
-            language: {
-                "sProcessing": "A processar...",
-                "sDecimal": ",",
-                "sThousands": ".",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "Não foram encontrados resultados",
-                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
-                "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
-                "sInfoPostFix": "",
-                "sSearch": "Procurar:",
-                "sUrl": "",
-                "oPaginate": {
-                    "sFirst": "Primeiro",
-                    "sPrevious": "Anterior",
-                    "sNext": "Seguinte",
-                    "sLast": "Último"
-                },
-                "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json",
-                "sCopy": "Copiar"
-            },
-            dom: 'Blfrtip',
-            buttons: [
-              { extend: 'copy', text: 'Copiar' },
-              'excel', /* 'pdf', */ 'csv', 'print'
-            ],
-            "order": [[0, "asc"]],
-            "scrollX": true
-        }).on('init', function (e, settings, data) {
-            $("#divTableBooks").show();
-            $("#divLoader").hide();
-        });
+    var dataTable = $("#tblBooks").DataTable({
+      "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "Todos"]],
+      "pageLength": 15,
+      'columnDefs': [
+        { responsivePriority: 1, targets: 0 },
+        { responsivePriority: 2, targets: 1 },
+        { responsivePriority: 3, targets: 2 },
+        { responsivePriority: 4, targets: 7 }
+      ],
+      language: {
+        "sProcessing": "A processar...",
+        "sDecimal": ",",
+        "sThousands": ".",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "Não foram encontrados resultados",
+        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+        "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
+        "sInfoPostFix": "",
+        "sSearch": "Procurar:",
+        "sUrl": "",
+        "oPaginate": {
+          "sFirst": "Primeiro",
+          "sPrevious": "Anterior",
+          "sNext": "Seguinte",
+          "sLast": "Último"
+        },
+        "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json",
+        "sCopy": "Copiar"
+      },
+      dom: 'Blfrtip',
+      buttons: [
+        { extend: 'copy', text: 'Copiar' },
+        'excel', /* 'pdf', */ 'csv', 'print'
+      ],
+      "order": [[0, "asc"]],
+      "scrollX": true
+    }).on('init', function (e, settings, data) {
+      $("#divTableBooks").show();
+      $("#divLoader").hide();
+    });
 
-        $('#tblBooks').on('length.dt', function (e, settings, len) {
-          dataTable.columns.adjust().draw();
-        });
-   });
-    </script>
+    $('#tblBooks').on('length.dt', function (e, settings, len) {
+      dataTable.columns.adjust().draw();
+    });
+  });
+</script>
 }
