@@ -1,10 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using webapp.ViewModels.Book;
 
 namespace webapp.Controllers
 {
-  public class BookController : Controller
+  public class BookController : ControllerBase
   {
+    [Authorize]
     public IActionResult Index()
     {
       return View(new IndexViewModel());

@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using webapp.ViewModels.Report;
 
 namespace webapp.Controllers
 {
-  public class ReportController : Controller
+  [Authorize(Roles = "Administrator, Moderator")]
+  public class ReportController : ControllerBase
   {
     public IActionResult Loans()
     {

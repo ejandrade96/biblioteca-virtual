@@ -1,9 +1,8 @@
 using Domain.Errors;
-using Domain.Models;
 
 namespace Domain.Services
 {
-  public interface IResponse<T> where T : EntityBase
+  public interface IResponse<T>
   {
     T Result { get; set; }
 

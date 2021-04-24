@@ -9,6 +9,7 @@ namespace webapp.Extensions
     public static void AddRepositories(this IServiceCollection services)
     {
       services.AddTransient<IStudents, Students>();
+      services.AddTransient<IUsers, Users>();
     }
   }
 }
