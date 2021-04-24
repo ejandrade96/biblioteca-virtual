@@ -1,10 +1,9 @@
 using Domain.Errors;
-using Domain.Models;
 using Domain.Services;
 
 namespace Services
 {
-  public class Response<T> : IResponse<T> where T : EntityBase
+  public class Response<T> : IResponse<T>
   {
     public T Result { get; set; }
 

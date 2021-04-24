@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using webapp.Models;
@@ -6,7 +7,8 @@ using webapp.ViewModels.Home;
 
 namespace webapp.Controllers
 {
-  public class HomeController : Controller
+  [Authorize]
+  public class HomeController : ControllerBase
   {
     private readonly ILogger<HomeController> _logger;
 

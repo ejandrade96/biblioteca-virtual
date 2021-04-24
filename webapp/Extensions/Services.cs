@@ -9,6 +9,8 @@ namespace webapp.Extensions
     public static void AddServices(this IServiceCollection services)
     {
       services.AddTransient<IStudent, Student>();
+      services.AddTransient<IToken, Token>();
+      services.AddTransient<IUser, User>();
     }
   }
 }

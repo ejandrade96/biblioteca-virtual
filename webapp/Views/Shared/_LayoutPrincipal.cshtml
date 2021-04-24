@@ -1,3 +1,15 @@
+@{
+  var loggedInUser = new webapp.ViewModels.Shared.LoggedInUserViewModel();
+
+  if (TempData["LoggedInUser"] != null)
+  {
+    loggedInUser = new
+    Nancy.Json.JavaScriptSerializer().Deserialize<webapp.ViewModels.Shared.LoggedInUserViewModel>(TempData["LoggedInUser"].ToString());
+  }
+  
+  var userName = string.IsNullOrWhiteSpace(loggedInUser.Name) ? "" : loggedInUser.Name.Split(" ").First();
+}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -124,7 +136,7 @@
           </a>
 
           <div>
-            <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <button type="button" id="sidebarCollapse" class="btn btn-info btn-md">
               <i class="fas fa-align-left"></i>
               <span>Menu</span>
             </button>
@@ -133,12 +145,13 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="nav navbar-nav ml-auto">
               <li class="nav-item active">
-                <a class="nav-link text-white" href="#">Olá, Elton!</a>
+                <span class="nav-link text-white">Olá, @userName!</span>
               </li>
               <li class="nav-item">
-                <button type="button" class="btn btn-info ml-1">
+                <a class="nav-link btn btn-info btn-md ml-1 text-white" asp-area="" asp-controller="Account"
+                  asp-action="Logout">
                   <i class="fas fa-sign-in-alt"></i>
-                </button>
+                </a>
               </li>
             </ul>
           </div>

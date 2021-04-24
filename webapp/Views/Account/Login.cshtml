@@ -1,0 +1,85 @@
+@model webapp.ViewModels.Account.LoginViewModel
+
+@{
+  ViewData["Title"] = "Login";
+  Layout = null;
+}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@ViewData["Title"] - Biblioteca Virtual John's</title>
+  <link rel="sortcut icon" href="~/images/logo.png" type="image/png" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="~/lib/bootstrap-material-design/dist/css/bootstrap-material-design.min.css" />
+
+  <!-- Snackbar CSS -->
+  <link rel="stylesheet" href="~/lib/snackbar/snackbar.min.css" />
+
+  <!-- Our Custom CSS -->
+  <link rel="stylesheet" href="~/css/account/style.css" />
+</head>
+
+<body>
+  <form asp-action="Login" asp-controller="Account" method="POST" class="form-signin">
+    <div class="text-center mb-3">
+      <img class="mb-3" src="~/images/logo.png" width="70" height="70" alt="">
+    </div>
+
+    <div class="form-label-group">
+      <input asp-for="@Model.Login" class="form-control" placeholder="Login" required autofocus />
+      <label asp-for="@Model.Login" class="control-label">Login</label>
+    </div>
+
+    <div class="form-label-group">
+      <input asp-for="@Model.Password" type="password" class="form-control" placeholder="Senha" required />
+      <label asp-for="@Model.Password" class="control-label">Senha</label>
+    </div>
+
+    <div class="text-right">
+      <a class="btn btn-md btn-secondary" href="#">Recuperar senha</a>
+      <button class="btn btn-md btn-primary" type="submit">Entrar</button>
+    </div>
+
+    @* <div class="text-center mt-4">
+        <span style="font-size: 11pt;">Ainda não tem cadastro? <a style="text-decoration: none;"
+        href="#">Cadastre-se</a></span>
+        </div> *@
+  </form>
+
+  <!-- jQuery CDN -->
+  <script src="~/lib/jquery/dist/js/jquery.min.js"></script>
+
+  <!-- Popper.JS -->
+  <script src="~/lib/popper/popper.min.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="~/lib/bootstrap-material-design/dist/js/bootstrap-material-design.js"></script>
+  <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Snackbar JS -->
+  <script type="text/javascript" src="~/lib/snackbar/snackbar.js"></script>
+
+  @if (TempData["Error"] != null)
+  {
+      <script type="text/javascript">
+        $(() => {
+          $.message({
+            type: "error",
+            text: "@TempData["Error"]",
+            duration: 3000,
+            positon: "top-center",
+            showClose: true,
+          });
+        });
+      </script>
+  }
+</body>
+
+</html>

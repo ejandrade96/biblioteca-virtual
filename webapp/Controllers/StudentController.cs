@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using Domain.Services;
 using Domain.ValueObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using webapp.Helpers;
@@ -11,7 +12,8 @@ using webapp.ViewModels.Student;
 
 namespace webapp.Controllers
 {
-  public class StudentController : Controller
+  [Authorize]
+  public class StudentController : ControllerBase
   {
     private readonly IStudent _service;
     

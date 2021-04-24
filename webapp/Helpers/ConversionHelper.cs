@@ -1,7 +1,9 @@
 using System.Linq;
 using Domain.Models;
 using Domain.ValueObjects;
+using webapp.ViewModels.Shared;
 using webapp.ViewModels.Student;
+using DTOs = Domain.DTOs;
 
 namespace webapp.Helpers
 {
@@ -27,6 +29,15 @@ namespace webapp.Helpers
       var student = new Student(viewModel.Name, viewModel.Login, viewModel.Record, contact, address);
 
       return student;
+    }
+
+    public static LoggedInUserViewModel ToLoggedInUserViewModel(this DTOs.User userModel)
+    {
+      return new LoggedInUserViewModel
+      {
+        Id = userModel.Id,
+        Name = userModel.Name
+      };
     }
   }
 }
