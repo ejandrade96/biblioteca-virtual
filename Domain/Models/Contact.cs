@@ -15,5 +15,12 @@ namespace Domain.Models
     }
 
     public void SetCellPhone(string cellPhone) => CellPhone = cellPhone;
+
+    public void UpdateValues(Contact contact)
+    {
+      Email = contact.Email;
+      Telephone = contact.Telephone;
+      CellPhone = contact.CellPhone;
+    }
   }
 }

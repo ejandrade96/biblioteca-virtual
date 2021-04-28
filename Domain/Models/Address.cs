@@ -32,5 +32,21 @@ namespace Domain.Models
     }
 
     public void SetComplement(string complement) => Complement = complement;
+
+    public void SetStreetType(StreetType streetType) => StreetType = streetType;
+
+    public void SetState(State state) => State = state;
+
+    public void UpdateValues(Address address)
+    {
+      ZipCode = address.ZipCode;
+      StreetType = address.StreetType;
+      Street = address.Street;
+      Number = address.Number;
+      Complement = address.Complement;
+      District = address.District;
+      City = address.City;
+      State = address.State;
+    }
   }
 }

@@ -26,7 +26,7 @@ namespace webapp.Helpers
         state
       );
       address.SetComplement(viewModel.Address.Complement);
-      var student = new Student(viewModel.Name, viewModel.Login, viewModel.Record, contact, address);
+      var student = new Student(viewModel.Name, viewModel.Login, viewModel.Record, contact, address) { Id = viewModel.Id };
 
       return student;
     }

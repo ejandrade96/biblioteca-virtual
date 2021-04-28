@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Domain.Models;
 using Domain.Services;
 using Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +16,7 @@ namespace webapp.Controllers
   public class StudentController : ControllerBase
   {
     private readonly IStudent _service;
-    
+
     private readonly IMapper _mapper;
 
     public StudentController(IStudent service, IMapper mapper)
@@ -25,11 +25,30 @@ namespace webapp.Controllers
       _mapper = mapper;
     }
 
-    public IActionResult Index()
+    private void FillViewBags()
     {
       ViewBag.StreetTypes = new SelectList(StreetType.StreetTypes.OrderBy(x => x.Code), "Code", "Description");
       ViewBag.States = new SelectList(State.States.OrderBy(x => x.Name), "Acronym", "Acronym");
+    }
+
+    public IActionResult Index()
+    {
+      FillViewBags();
       return View(new IndexViewModel(_service));
+    }
+
+    public IActionResult GetStudent(int id)
+    {
+      FillViewBags();
+
+      var response = _service.Get(id);
+
+      if (response.HasError())
+      {
+        return StatusCode(response.Error.StatusCode, new { Message = response.Error.Message });
+      }
+
+      return Ok(response.Result);
     }
 
     [HttpPost]
@@ -37,32 +56,38 @@ namespace webapp.Controllers
     {
       if (!ModelState.IsValid)
       {
-        ViewBag.StreetTypes = new SelectList(StreetType.StreetTypes.OrderBy(x => x.Code), "Code", "Description");
-        ViewBag.States = new SelectList(State.States.OrderBy(x => x.Name), "Acronym", "Acronym");
+        FillViewBags();
 
         TempData["Error"] = string.Join("\n", ModelState.Values.SelectMany(x => x.Errors.Select(y => y.ErrorMessage)));
-        
+
         viewModel.Students = _mapper.Map<List<StudentViewModel>>(_service.GetAll());
         return View("Index", viewModel);
       }
 
-      if (viewModel.Student.Record <= 0)
-        viewModel.Student.Record = _service.GetNextRecord();
+      IResponse<Student> response;
 
-      var response = _service.Add(viewModel.Student.ToModel());
+      if (viewModel.Student.Id >= 0)
+        response = _service.Update(viewModel.Student.ToModel());
+
+      else
+      {
+        if (viewModel.Student.Record <= 0)
+          viewModel.Student.Record = _service.GetNextRecord();
+
+          response = _service.Add(viewModel.Student.ToModel());
+      }
 
       if (response.HasError())
       {
-        ViewBag.StreetTypes = new SelectList(StreetType.StreetTypes.OrderBy(x => x.Code), "Code", "Description");
-        ViewBag.States = new SelectList(State.States.OrderBy(x => x.Name), "Acronym", "Acronym");
+        FillViewBags();
 
         TempData["Error"] = response.Error.Message;
-        
+
         viewModel.Students = _mapper.Map<List<StudentViewModel>>(_service.GetAll());
         return View("Index", viewModel);
       }
 
-      TempData["Success"] = "Aluno cadastrado com sucesso!";
+      TempData["Success"] = "Aluno salvo com sucesso!";
       return RedirectToAction("Index", "Student");
     }
   }
