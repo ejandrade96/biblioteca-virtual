@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Domain.Models;
+using Domain.ValueObjects;
 
 namespace Domain.Services
 {
@@ -9,7 +10,7 @@ namespace Domain.Services
 
     IResponse<Student> Get(int id);
 
-    IEnumerable<Student> GetAll();
+    IEnumerable<Student> GetAll(Status? status = null);
 
     IResponse<Student> Remove(int id);
 

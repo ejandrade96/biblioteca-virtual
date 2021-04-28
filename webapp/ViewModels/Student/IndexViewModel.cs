@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Domain.Services;
+using Domain.ValueObjects;
 
 namespace webapp.ViewModels.Student
 {
@@ -18,7 +19,7 @@ namespace webapp.ViewModels.Student
     {
       _service = service;
 
-      Students = _service.GetAll().Select(student => new StudentViewModel
+      Students = _service.GetAll(Status.Active).Select(student => new StudentViewModel
       {
         Id = student.Id,
         Name = student.Name,

@@ -1,3 +1,5 @@
+using Domain.ValueObjects;
+
 namespace Domain.Models
 {
   public class Student : EntityBase
@@ -12,6 +14,8 @@ namespace Domain.Models
 
     public virtual Address Address { get; protected set; }
 
+    public Status Status { get; protected set; }
+
     protected Student()
     {
     }
@@ -23,6 +27,7 @@ namespace Domain.Models
       Record = record;
       Contact = contact;
       Address = address;
+      Status = Status.Active;
     }
 
     public void UpdateValues(Student student)
@@ -31,5 +36,9 @@ namespace Domain.Models
       Login = student.Login;
       Record = student.Record;
     }
+
+    public void Inactivate() => Status = Status.Inactive;
+
+    public void Activate() => Status = Status.Active;
   }
 }

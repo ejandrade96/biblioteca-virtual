@@ -73,9 +73,9 @@ namespace Services
       return response;
     }
 
-    public IEnumerable<Models.Student> GetAll()
+    public IEnumerable<Models.Student> GetAll(Status? status = null)
     {
-      return _students.GetAll().AsEnumerable().Select(student => 
+      return _students.GetAll().Where(x => status == null ? true : x.Status == status).AsEnumerable().Select(student => 
       {
         student.Address.SetStreetType(StreetType.StreetTypes.First(x => x.Code == student.Address.StreetType.Code));
         student.Address.SetState(State.States.First(x => x.Acronym == student.Address.State.Acronym));
