@@ -2,6 +2,14 @@
 @{
   ViewData["Title"] = "Alunos";
   Layout = "~/Views/Shared/_LayoutPrincipal.cshtml";
+  var studentId = 0;
+  var studentRecord = 0;
+  
+  if (@Model.Student != null)
+  {
+    studentId = @Model.Student.Id;
+    studentRecord = @Model.Student.Record;
+  }
 }
 
 <div class="container-fluid">
@@ -10,117 +18,121 @@
       <h3 class="text-center">Cadastro de Alunos</h3>
 
       <form asp-action="SaveStudent" asp-controller="Student" method="POST" class="mt-4">
-          <fieldset style="border: 1px solid #999; padding: 10px; margin-bottom: 20px; width: 100%;">
-            <legend style="font-weight: 500; font-size: 15pt; width: auto; margin: 0;">Dados Pessoais</legend>
-            <div class="row">
-              <input asp-for="@Model.Student.Record" class="form-control" type="hidden" value="0" />
-              <div class="col-4">
-                <div class="form-group">
-                  <label asp-for="@Model.Student.Name" class="control-label">Nome*</label>
-                  <input asp-for="@Model.Student.Name" class="form-control" placeholder="Nome do Aluno">
-                  <span asp-validation-for="@Model.Student.Name" class="text-danger"></span>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-group">
-                  <label asp-for="@Model.Student.Login" class="control-label">Login*</label>
-                  <input asp-for="@Model.Student.Login" class="form-control" placeholder="Login">
-                  <span asp-validation-for="@Model.Student.Login" class="text-danger"></span>
-                </div>
+        <fieldset style="border: 1px solid #999; padding: 10px; margin-bottom: 20px; width: 100%;">
+          <legend style="font-weight: 500; font-size: 15pt; width: auto; margin: 0;">Dados Pessoais</legend>
+          <div class="row">
+            <input asp-for="@Model.Student.Id" class="form-control" type="hidden" value="@studentId" />
+            <input asp-for="@Model.Student.Record" class="form-control" type="hidden" value="@studentRecord" />
+            <div class="col-4">
+              <div class="form-group">
+                <label asp-for="@Model.Student.Name" class="control-label">Nome*</label>
+                <input asp-for="@Model.Student.Name" class="form-control" placeholder="Nome do Aluno">
+                <span asp-validation-for="@Model.Student.Name" class="text-danger"></span>
               </div>
             </div>
-          </fieldset>
+            <div class="col-2">
+              <div class="form-group">
+                <label asp-for="@Model.Student.Login" class="control-label">Login*</label>
+                <input asp-for="@Model.Student.Login" class="form-control" placeholder="Login">
+                <span asp-validation-for="@Model.Student.Login" class="text-danger"></span>
+              </div>
+            </div>
+          </div>
+        </fieldset>
 
-          <fieldset style="border: 1px solid #999; padding: 10px; margin-bottom: 20px; width: 100%;">
-            <legend style="font-weight: 500; font-size: 15pt; width: auto; margin: 0;">Endereço</legend>
-                <div class="row">
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label asp-for="@Model.Student.Address.ZipCode" class="control-label">Cep*</label>
-                      <input asp-for="@Model.Student.Address.ZipCode" class="form-control" placeholder="Cep">
-                      <span asp-validation-for="@Model.Student.Address.ZipCode" class="text-danger"></span>
-                    </div>
-                  </div>
-                  <div class="col-4">
-                      <label asp-for="@Model.Student.Address.StreetType" class="control-label">Tipo Logradouro*</label>
-                      <select asp-for="@Model.Student.Address.StreetType" asp-items="@ViewBag.StreetTypes" class="form-control"></select>
-                      <span asp-validation-for="@Model.Student.Address.StreetType" class="text-danger"></span>
-                  </div>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label asp-for="@Model.Student.Address.Street" class="control-label">Rua*</label>
-                      <input asp-for="@Model.Student.Address.Street" class="form-control" placeholder="Rua">
-                      <span asp-validation-for="@Model.Student.Address.Street" class="text-danger"></span>
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label asp-for="@Model.Student.Address.Number" class="control-label">Número*</label>
-                      <input asp-for="@Model.Student.Address.Number" type="number" min="0" class="form-control" placeholder="0">
-                      <span asp-validation-for="@Model.Student.Address.Number" class="text-danger"></span>
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label asp-for="@Model.Student.Address.Complement" class="control-label">Complemento</label>
-                      <input asp-for="@Model.Student.Address.Complement" class="form-control" placeholder="Complemento">
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label asp-for="@Model.Student.Address.District" class="control-label">Bairro*</label>
-                      <input asp-for="@Model.Student.Address.District" class="form-control" placeholder="Bairro">
-                      <span asp-validation-for="@Model.Student.Address.District" class="text-danger"></span>
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label asp-for="@Model.Student.Address.City" class="control-label">Cidade*</label>
-                      <input asp-for="@Model.Student.Address.City" class="form-control" placeholder="Cidade">
-                      <span asp-validation-for="@Model.Student.Address.City" class="text-danger"></span>
-                    </div>
-                  </div>
-                  <div class="col-2">
-                      <label asp-for="@Model.Student.Address.State" class="control-label">Estado*</label>
-                      <select asp-for="@Model.Student.Address.State" asp-items="@ViewBag.States" class="form-control"></select>
-                      <span asp-validation-for="@Model.Student.Address.State" class="text-danger"></span>
-                  </div>
-                </div>
-            </fieldset>
-            
-          <fieldset style="border: 1px solid #999; padding: 10px; margin-bottom: 20px; width: 100%;">
-            <legend style="font-weight: 500; font-size: 15pt; width: auto; margin: 0;">Contato</legend>
-              <div class="row">
-                <div class="col-4">
-                  <div class="form-group">
-                    <label asp-for="@Model.Student.Contact.Email" class="control-label">Email*</label>
-                    <input asp-for="@Model.Student.Contact.Email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Email">
-                    <span asp-validation-for="@Model.Student.Contact.Email" class="text-danger"></span>
-                  </div>
-                </div>
-                <div class="col-3">
-                  <div class="form-group">
-                    <label asp-for="@Model.Student.Contact.Telephone" class="control-label">Telefone*</label>
-                    <input asp-for="@Model.Student.Contact.Telephone" class="form-control" placeholder="Telefone">
-                    <span asp-validation-for="@Model.Student.Contact.Telephone" class="text-danger"></span>
-                  </div>
-                </div>
-                <div class="col-3">
-                  <div class="form-group">
-                    <label asp-for="@Model.Student.Contact.CellPhone" class="control-label">Celular</label>
-                    <input asp-for="@Model.Student.Contact.CellPhone" class="form-control" placeholder="Celular">
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-            <div class="row mb-5">
-              <div class="col-12">
-                <div class="form-group">
-                  <label class="float-left">*Campo Obrigatório</label>
-                  <button type="submit" class="btn btn-primary float-right">Cadastrar</button>
-                </div>
+        <fieldset style="border: 1px solid #999; padding: 10px; margin-bottom: 20px; width: 100%;">
+          <legend style="font-weight: 500; font-size: 15pt; width: auto; margin: 0;">Endereço</legend>
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <label asp-for="@Model.Student.Address.ZipCode" class="control-label">Cep*</label>
+                <input asp-for="@Model.Student.Address.ZipCode" class="form-control" placeholder="Cep">
+                <span asp-validation-for="@Model.Student.Address.ZipCode" class="text-danger"></span>
               </div>
             </div>
+            <div class="col-4">
+              <label asp-for="@Model.Student.Address.StreetType" class="control-label">Tipo Logradouro*</label>
+              <select asp-for="@Model.Student.Address.StreetType" asp-items="@ViewBag.StreetTypes"
+                class="form-control"></select>
+              <span asp-validation-for="@Model.Student.Address.StreetType" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label asp-for="@Model.Student.Address.Street" class="control-label">Rua*</label>
+                <input asp-for="@Model.Student.Address.Street" class="form-control" placeholder="Rua">
+                <span asp-validation-for="@Model.Student.Address.Street" class="text-danger"></span>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label asp-for="@Model.Student.Address.Number" class="control-label">Número*</label>
+                <input asp-for="@Model.Student.Address.Number" type="number" min="0" class="form-control"
+                  placeholder="0">
+                <span asp-validation-for="@Model.Student.Address.Number" class="text-danger"></span>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label asp-for="@Model.Student.Address.Complement" class="control-label">Complemento</label>
+                <input asp-for="@Model.Student.Address.Complement" class="form-control" placeholder="Complemento">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label asp-for="@Model.Student.Address.District" class="control-label">Bairro*</label>
+                <input asp-for="@Model.Student.Address.District" class="form-control" placeholder="Bairro">
+                <span asp-validation-for="@Model.Student.Address.District" class="text-danger"></span>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label asp-for="@Model.Student.Address.City" class="control-label">Cidade*</label>
+                <input asp-for="@Model.Student.Address.City" class="form-control" placeholder="Cidade">
+                <span asp-validation-for="@Model.Student.Address.City" class="text-danger"></span>
+              </div>
+            </div>
+            <div class="col-2">
+              <label asp-for="@Model.Student.Address.State" class="control-label">Estado*</label>
+              <select asp-for="@Model.Student.Address.State" asp-items="@ViewBag.States" class="form-control"></select>
+              <span asp-validation-for="@Model.Student.Address.State" class="text-danger"></span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset style="border: 1px solid #999; padding: 10px; margin-bottom: 20px; width: 100%;">
+          <legend style="font-weight: 500; font-size: 15pt; width: auto; margin: 0;">Contato</legend>
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <label asp-for="@Model.Student.Contact.Email" class="control-label">Email*</label>
+                <input asp-for="@Model.Student.Contact.Email" type="email" class="form-control"
+                  aria-describedby="emailHelp" placeholder="Email">
+                <span asp-validation-for="@Model.Student.Contact.Email" class="text-danger"></span>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label asp-for="@Model.Student.Contact.Telephone" class="control-label">Telefone*</label>
+                <input asp-for="@Model.Student.Contact.Telephone" class="form-control" placeholder="Telefone">
+                <span asp-validation-for="@Model.Student.Contact.Telephone" class="text-danger"></span>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label asp-for="@Model.Student.Contact.CellPhone" class="control-label">Celular</label>
+                <input asp-for="@Model.Student.Contact.CellPhone" class="form-control" placeholder="Celular">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <div class="row mb-5">
+          <div class="col-12">
+            <div class="form-group">
+              <label class="float-left">*Campo Obrigatório</label>
+              <button type="submit" class="btn btn-primary float-right">Cadastrar</button>
+            </div>
+          </div>
+        </div>
       </form>
 
       <div class="row" id="divLoader">
@@ -130,7 +142,8 @@
       </div>
 
       <div style="display: none;" id="divTableStudents">
-        <table id="tblStudents" class="table table-striped table-bordered dt-responsive nowrap mt-4" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <table id="tblStudents" class="table table-striped table-bordered dt-responsive nowrap mt-4"
+          style="border-collapse: collapse; border-spacing: 0; width: 100%;">
           <thead>
             <tr style="color: rgb(10, 17, 63);">
               <th class="border-top-0">Id</th>
@@ -152,7 +165,7 @@
           <tbody>
             @if (Model.Students != null)
             {
-              @foreach(var student in Model.Students)
+              @foreach (var student in Model.Students)
               {
                 <tr>
                   <td>
@@ -195,7 +208,8 @@
                     @student.Address.State
                   </td>
                   <td class="text-center">
-                    <button data-sid="@student.Id" type="button" class="btn btn-primary btn-sm" style="font-size: 9pt;">
+                    <button data-sid="@student.Id" type="button" class="btn btn-primary btn-sm btn-edit-student"
+                  style="font-size: 9pt;">
                       <i class="fas fa-edit"></i>
                     </button>
                     <button data-sid="@student.Id" type="button" class="btn btn-primary btn-sm" style="font-size: 9pt;">
@@ -212,77 +226,107 @@
   </div>
 </div>
 
-@section Scripts{ 
-  <script type="text/javascript">
-    $(document).ready(function () {
-        var SPMaskBehaviorTelephone = function (val) {
-            return val.replace(/\D/g, '').length === 11 ? '(00) 0000-0000' : '(00) 0000-0000';
+@section Scripts{
+<script type="text/javascript">
+  $(document).ready(function () {
+    var SPMaskBehaviorTelephone = function (val) {
+      return val.replace(/\D/g, '').length === 11 ? '(00) 0000-0000' : '(00) 0000-0000';
+    },
+      spOptions = {
+        onKeyPress: function (val, e, field, options) {
+          field.mask(SPMaskBehaviorTelephone.apply({}, arguments), options);
+        }
+      };
+    $("#Student_Contact_Telephone").mask(SPMaskBehaviorTelephone, spOptions);
+    $("#Student_Contact_CellPhone").mask('(00) 00000-0000');
+    $("#Student_Address_ZipCode").mask('00000-000');
+
+    var buttonCommon = {
+      exportOptions: {
+        format: {
+          body: function (data, column, row, node) {
+            return (column >= 29 && column <= 30) ? data.replace(/[.]/g, '').replace(',', '.') : data;
+          }
+        }
+      }
+    };
+
+    var dataTable = $("#tblStudents").DataTable({
+      "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "Todos"]],
+      "pageLength": 15,
+      'columnDefs': [
+        { responsivePriority: 1, targets: 0 },
+        { responsivePriority: 2, targets: 1 },
+        { responsivePriority: 3, targets: 2 },
+        { responsivePriority: 4, targets: 3 },
+        { responsivePriority: 5, targets: 13 }
+      ],
+      language: {
+        "sProcessing": "A processar...",
+        "sDecimal": ",",
+        "sThousands": ".",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "Não foram encontrados resultados",
+        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+        "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
+        "sInfoPostFix": "",
+        "sSearch": "Procurar:",
+        "sUrl": "",
+        "oPaginate": {
+          "sFirst": "Primeiro",
+          "sPrevious": "Anterior",
+          "sNext": "Seguinte",
+          "sLast": "Último"
         },
-          spOptions = {
-              onKeyPress: function (val, e, field, options) {
-                  field.mask(SPMaskBehaviorTelephone.apply({}, arguments), options);
-              }
-          };
-        $("#Student_Contact_Telephone").mask(SPMaskBehaviorTelephone, spOptions);
-        $("#Student_Contact_CellPhone").mask('(00) 00000-0000');
-        $("#Student_Address_ZipCode").mask('00000-000');
+        "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json",
+        "sCopy": "Copiar"
+      },
+      dom: 'Blfrtip',
+      buttons: [
+        { extend: 'copy', text: 'Copiar' },
+        'excel', /* 'pdf', */ 'csv', 'print'
+      ],
+      "order": [[0, "asc"]],
+      "scrollX": true
+    }).on('init', function (e, settings, data) {
+      $("#divTableStudents").show();
+      $("#divLoader").hide();
+    });;
 
-        var buttonCommon = {
-            exportOptions: {
-                format: {
-                    body: function (data, column, row, node) {
-                        return (column >= 29 && column <= 30) ? data.replace(/[.]/g, '').replace(',', '.') : data;
-                    }
-                }
-            }
-        };
+    $('#tblStudents').on('length.dt', function (e, settings, len) {
+      dataTable.columns.adjust().draw();
+    });
 
-      var dataTable = $("#tblStudents").DataTable({
-        "lengthMenu": [ [15, 25, 50, -1], [15, 25, 50, "Todos"] ],
-        "pageLength": 15,
-        'columnDefs': [
-          { responsivePriority: 1, targets: 0 },
-          { responsivePriority: 2, targets: 1 },
-          { responsivePriority: 3, targets: 2 },
-          { responsivePriority: 4, targets: 3 },
-          { responsivePriority: 5, targets: 13 }
-        ],
-        language: {
-          "sProcessing": "A processar...",
-          "sDecimal": ",",
-          "sThousands": ".",
-          "sLengthMenu": "Mostrar _MENU_ registros",
-          "sZeroRecords": "Não foram encontrados resultados",
-          "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-          "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
-          "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
-          "sInfoPostFix": "",
-          "sSearch": "Procurar:",
-          "sUrl": "",
-          "oPaginate": {
-              "sFirst": "Primeiro",
-              "sPrevious": "Anterior",
-              "sNext": "Seguinte",
-              "sLast": "Último"
-          },
-          "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json",
-          "sCopy": "Copiar"
-        },
-        dom: 'Blfrtip',
-        buttons: [
-              { extend: 'copy', text: 'Copiar' },
-              'excel', /* 'pdf', */ 'csv', 'print'
-        ],
-        "order": [[0, "asc"]],
-        "scrollX": true
-      }).on('init', function (e, settings, data) {
-            $("#divTableStudents").show();
-            $("#divLoader").hide();
-      });;
+    function fillInTheFormFields(student) {
+      $("#Student_Id").val(student.id);
+      $("#Student_Name").val(student.name);
+      $("#Student_Login").val(student.login);
+      $("#Student_Record").val(student.record);
+      $("#Student_Address_ZipCode").val(student.address.zipCode);
+      $("#Student_Address_City").val(student.address.city);
+      $("#Student_Address_Complement").val(student.address.complement);
+      $("#Student_Address_District").val(student.address.district);
+      $("#Student_Address_Number").val(student.address.number);
+      $("#Student_Address_Street").val(student.address.street);
+      $("#Student_Address_State").val(student.address.state.acronym);
+      $("#Student_Address_StreetType").val(student.address.streetType.code);
+      $("#Student_Contact_Telephone").val(student.contact.telephone);
+      $("#Student_Contact_CellPhone").val(student.contact.cellPhone);
+      $("#Student_Contact_Email").val(student.contact.email);
+    }
 
-      $('#tblStudents').on('length.dt', function (e, settings, len) {
-          dataTable.columns.adjust().draw();
+    $(".btn-edit-student").click(function () {
+      var studentId = $(this).data("sid");
+
+      $.get("@Url.Action("GetStudent", "Student")?id=" + studentId, function (data) {
+        fillInTheFormFields(data);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      })
+        .fail(function (err) {
+          Swal.fire({ icon: 'error', title: 'Erro!', text: err.responseJSON.message, });
         });
     });
-    </script>
+  });
+</script>
 }

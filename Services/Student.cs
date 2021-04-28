@@ -5,6 +5,7 @@ using Infrastructure.Errors;
 using System.Collections.Generic;
 using Domain.Errors;
 using System.Linq;
+using Domain.ValueObjects;
 
 namespace Services
 {
@@ -35,12 +36,21 @@ namespace Services
     {
       var response = new Response<Models.Student>();
       var error = CheckForErrorsToUpdate(student);
+      var studentFound = _students.Get(student.Id);
 
       if (error != null)
         response.Error = error;
 
+      else if (studentFound == null)
+        response.Error = new ErrorObjectNotFound("Estudante");
+
       else
-        _students.Update(student);
+      {
+        studentFound.UpdateValues(student);
+        studentFound.Address.UpdateValues(student.Address);
+        studentFound.Contact.UpdateValues(student.Contact);
+        _students.Update(studentFound);
+      }
 
       return response;
     }
@@ -54,12 +64,25 @@ namespace Services
         response.Error = new ErrorObjectNotFound("Estudante");
 
       else
+      {
+        student.Address.SetStreetType(StreetType.StreetTypes.First(x => x.Code == student.Address.StreetType.Code));
+        student.Address.SetState(State.States.First(x => x.Acronym == student.Address.State.Acronym));
         response.Result = student;
+      }
 
       return response;
     }
 
-    public IEnumerable<Models.Student> GetAll() => _students.GetAll();
+    public IEnumerable<Models.Student> GetAll()
+    {
+      return _students.GetAll().AsEnumerable().Select(student => 
+      {
+        student.Address.SetStreetType(StreetType.StreetTypes.First(x => x.Code == student.Address.StreetType.Code));
+        student.Address.SetState(State.States.First(x => x.Acronym == student.Address.State.Acronym));
+
+        return student;
+      });
+    }
 
     public IResponse<Models.Student> Remove(int id)
     {
@@ -107,16 +130,12 @@ namespace Services
 
       var studentFoundByEmail = _students.First(x => x.Contact.Email == student.Contact.Email && x.Id != student.Id);
       var studentFoundByLogin = _students.First(x => x.Login == student.Login && x.Id != student.Id);
-      var studentFoundById = _students.Get(student.Id);
 
       if (studentFoundByEmail != null)
         error = new ErrorExistingObject("Estudante", "email");
 
       else if (studentFoundByLogin != null)
         error = new ErrorExistingObject("Estudante", "login");
-
-      else if (studentFoundById == null)
-        error = new ErrorObjectNotFound("Estudante");
 
       return error;
     }

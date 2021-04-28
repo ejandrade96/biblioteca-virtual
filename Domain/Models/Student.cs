@@ -24,5 +24,12 @@ namespace Domain.Models
       Contact = contact;
       Address = address;
     }
+
+    public void UpdateValues(Student student)
+    {
+      Name = student.Name;
+      Login = student.Login;
+      Record = student.Record;
+    }
   }
 }

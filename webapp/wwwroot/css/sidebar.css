@@ -47,6 +47,18 @@ a:focus {
     margin: 40px 0;
 }
 
+@media screen and (max-width: 991px) {
+  #liUserName {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  #liUserName {
+    display: block;
+  }
+}
+
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
