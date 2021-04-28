@@ -90,13 +90,15 @@ namespace Tests.Unit.Services
       var address = new Models.Address("09421700", streetType, "dos Vianas", 412, "Centro", "São Bernardo do Campo", state);
       address.SetComplement("AP Torre 1");
       var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 1 };
-      var students = new List<Models.Student> { student, student };
+      var student2 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 2 };
+      student2.Inactivate();
+      var students = new List<Models.Student> { student, student2 };
 
       _students.Setup(repository => repository.GetAll()).Returns(students.AsQueryable());
 
       var studentsFound = _service.GetAll();
 
-      studentsFound.Should().HaveCountGreaterThan(0);
+      studentsFound.Should().HaveCount(2);
       studentsFound.ToList().ForEach(student =>
       {
         student.Id.Should().NotBe(null);
@@ -105,6 +107,101 @@ namespace Tests.Unit.Services
         student.Login.Should().NotBeNullOrWhiteSpace();
         student.Record.Should().NotBe(null);
         student.Record.Should().BeGreaterThan(0);
+        student.Status.Should().Should().NotBeNull();
+        student.Contact.Email.Should().NotBeNullOrWhiteSpace();
+        student.Contact.CellPhone.Should().NotBeNullOrWhiteSpace();
+        student.Contact.Telephone.Should().NotBeNullOrWhiteSpace();
+        student.Address.ZipCode.Should().NotBeNullOrWhiteSpace();
+        student.Address.StreetType.Code.Should().NotBeNullOrWhiteSpace();
+        student.Address.StreetType.Description.Should().NotBeNullOrWhiteSpace();
+        student.Address.Street.Should().NotBeNullOrWhiteSpace();
+        student.Address.Number.Should().NotBe(null);
+        student.Address.Number.Should().BeGreaterThan(0);
+        student.Address.District.Should().NotBeNullOrWhiteSpace();
+        student.Address.City.Should().NotBeNullOrWhiteSpace();
+        student.Address.State.Acronym.Should().NotBeNullOrWhiteSpace();
+        student.Address.State.Code.Should().BeGreaterThan(0);
+        student.Address.State.Code.Should().NotBe(null);
+        student.Address.State.Name.Should().NotBeNullOrWhiteSpace();
+        student.Address.Complement.Should().NotBeNullOrWhiteSpace();
+      });
+    }
+
+    [Fact]
+    public void Deve_Listar_Apenas_Alunos_Ativos()
+    {
+      var contact = new Models.Contact("joao.villar@live.com", "1154218547");
+      contact.SetCellPhone("11996582134");
+      var streetType = new StreetType("R");
+      var state = new State("SP");
+      var address = new Models.Address("09421700", streetType, "dos Vianas", 412, "Centro", "São Bernardo do Campo", state);
+      address.SetComplement("AP Torre 1");
+      var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 1 };
+      var student2 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 2 };
+      student2.Inactivate();
+      var students = new List<Models.Student> { student, student2, student2 };
+
+      _students.Setup(repository => repository.GetAll()).Returns(students.AsQueryable());
+
+      var studentsFound = _service.GetAll(Status.Active);
+
+      studentsFound.Should().HaveCount(1);
+      studentsFound.ToList().ForEach(student =>
+      {
+        student.Id.Should().NotBe(null);
+        student.Id.Should().BeGreaterThan(0);
+        student.Name.Should().NotBeNullOrWhiteSpace();
+        student.Login.Should().NotBeNullOrWhiteSpace();
+        student.Record.Should().NotBe(null);
+        student.Record.Should().BeGreaterThan(0);
+        student.Status.Should().Should().NotBeNull();
+        student.Contact.Email.Should().NotBeNullOrWhiteSpace();
+        student.Contact.CellPhone.Should().NotBeNullOrWhiteSpace();
+        student.Contact.Telephone.Should().NotBeNullOrWhiteSpace();
+        student.Address.ZipCode.Should().NotBeNullOrWhiteSpace();
+        student.Address.StreetType.Code.Should().NotBeNullOrWhiteSpace();
+        student.Address.StreetType.Description.Should().NotBeNullOrWhiteSpace();
+        student.Address.Street.Should().NotBeNullOrWhiteSpace();
+        student.Address.Number.Should().NotBe(null);
+        student.Address.Number.Should().BeGreaterThan(0);
+        student.Address.District.Should().NotBeNullOrWhiteSpace();
+        student.Address.City.Should().NotBeNullOrWhiteSpace();
+        student.Address.State.Acronym.Should().NotBeNullOrWhiteSpace();
+        student.Address.State.Code.Should().BeGreaterThan(0);
+        student.Address.State.Code.Should().NotBe(null);
+        student.Address.State.Name.Should().NotBeNullOrWhiteSpace();
+        student.Address.Complement.Should().NotBeNullOrWhiteSpace();
+      });
+    }
+
+    [Fact]
+    public void Deve_Listar_Apenas_Alunos_Inativos()
+    {
+      var contact = new Models.Contact("joao.villar@live.com", "1154218547");
+      contact.SetCellPhone("11996582134");
+      var streetType = new StreetType("R");
+      var state = new State("SP");
+      var address = new Models.Address("09421700", streetType, "dos Vianas", 412, "Centro", "São Bernardo do Campo", state);
+      address.SetComplement("AP Torre 1");
+      var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 1 };
+      var student2 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 2 };
+      student2.Inactivate();
+      var students = new List<Models.Student> { student, student2, student2 };
+
+      _students.Setup(repository => repository.GetAll()).Returns(students.AsQueryable());
+
+      var studentsFound = _service.GetAll(Status.Inactive);
+
+      studentsFound.Should().HaveCount(2);
+      studentsFound.ToList().ForEach(student =>
+      {
+        student.Id.Should().NotBe(null);
+        student.Id.Should().BeGreaterThan(0);
+        student.Name.Should().NotBeNullOrWhiteSpace();
+        student.Login.Should().NotBeNullOrWhiteSpace();
+        student.Record.Should().NotBe(null);
+        student.Record.Should().BeGreaterThan(0);
+        student.Status.Should().Should().NotBeNull();
         student.Contact.Email.Should().NotBeNullOrWhiteSpace();
         student.Contact.CellPhone.Should().NotBeNullOrWhiteSpace();
         student.Contact.Telephone.Should().NotBeNullOrWhiteSpace();
@@ -247,6 +344,7 @@ namespace Tests.Unit.Services
       studentFound.Login.Should().NotBeNullOrWhiteSpace();
       studentFound.Record.Should().NotBe(null);
       studentFound.Record.Should().BeGreaterThan(0);
+      studentFound.Status.ToString().Should().Be("Active");
       studentFound.Contact.Email.Should().NotBeNullOrWhiteSpace();
       studentFound.Contact.CellPhone.Should().NotBeNullOrWhiteSpace();
       studentFound.Contact.Telephone.Should().NotBeNullOrWhiteSpace();

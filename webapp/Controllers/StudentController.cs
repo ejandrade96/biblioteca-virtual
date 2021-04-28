@@ -60,13 +60,13 @@ namespace webapp.Controllers
 
         TempData["Error"] = string.Join("\n", ModelState.Values.SelectMany(x => x.Errors.Select(y => y.ErrorMessage)));
 
-        viewModel.Students = _mapper.Map<List<StudentViewModel>>(_service.GetAll());
+        viewModel.Students = _mapper.Map<List<StudentViewModel>>(_service.GetAll(Status.Active));
         return View("Index", viewModel);
       }
 
       IResponse<Student> response;
 
-      if (viewModel.Student.Id >= 0)
+      if (viewModel.Student.Id > 0)
         response = _service.Update(viewModel.Student.ToModel());
 
       else
@@ -83,7 +83,7 @@ namespace webapp.Controllers
 
         TempData["Error"] = response.Error.Message;
 
-        viewModel.Students = _mapper.Map<List<StudentViewModel>>(_service.GetAll());
+        viewModel.Students = _mapper.Map<List<StudentViewModel>>(_service.GetAll(Status.Active));
         return View("Index", viewModel);
       }
 
