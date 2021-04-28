@@ -93,7 +93,10 @@ namespace Services
         response.Error = new ErrorObjectNotFound("Estudante");
 
       else
-        _students.Remove(student);
+      {
+        student.Inactivate();
+        _students.Update(student);
+      }
 
       return response;
     }

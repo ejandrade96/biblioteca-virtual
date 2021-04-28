@@ -51,6 +51,19 @@ namespace webapp.Controllers
       return Ok(response.Result);
     }
 
+    [HttpDelete]
+    public IActionResult Delete(int id)
+    {
+      var response = _service.Remove(id);
+
+      if (response.HasError())
+      {
+        return StatusCode(response.Error.StatusCode, new { Message = response.Error.Message });
+      }
+
+      return NoContent();
+    }
+
     [HttpPost]
     public IActionResult SaveStudent(IndexViewModel viewModel)
     {
