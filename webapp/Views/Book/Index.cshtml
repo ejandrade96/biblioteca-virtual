@@ -9,32 +9,32 @@
     <div class="col-12">
       <h3 class="text-center">Cadastro de Livros</h3>
 
-      <form asp-action="CreateBook" asp-controller="Book" method="POST" class="mt-4">
+      <form asp-action="SaveBook" asp-controller="Book" method="POST" class="mt-4">
         <div class="row">
           <div class="form-group col-4">
-            <label asp-for="Title" class="control-label">Título</label>
-            <input asp-for="Title" class="form-control" placeholder="Título do Livro">
-            <span asp-validation-for="Title" class="text-danger"></span>
+            <label asp-for="@Model.Book.Title" class="control-label">Título</label>
+            <input asp-for="@Model.Book.Title" class="form-control" placeholder="Título do Livro">
+            <span asp-validation-for="@Model.Book.Title" class="text-danger"></span>
           </div>
           <div class="form-group col-4">
-            <label asp-for="Author" class="control-label">Autor</label>
-            <input asp-for="Author" class="form-control" placeholder="Autor">
-            <span asp-validation-for="Author" class="text-danger"></span>
+            <label asp-for="@Model.Book.Author" class="control-label">Autor</label>
+            <input asp-for="@Model.Book.Author" class="form-control" placeholder="Autor">
+            <span asp-validation-for="@Model.Book.Author" class="text-danger"></span>
           </div>
           <div class="form-group col-2">
-            <label asp-for="ISBN" class="control-label">ISBN</label>
-            <input asp-for="ISBN" class="form-control" placeholder="ISBN">
-            <span asp-validation-for="ISBN" class="text-danger"></span>
+            <label asp-for="@Model.Book.ISBN" class="control-label">ISBN</label>
+            <input asp-for="@Model.Book.ISBN" class="form-control" placeholder="ISBN">
+            <span asp-validation-for="@Model.Book.ISBN" class="text-danger"></span>
           </div>
           <div class="form-group col-2">
-            <label asp-for="Pages" class="control-label">Páginas</label>
-            <input asp-for="Pages" class="form-control" placeholder="Páginas">
-            <span asp-validation-for="Pages" class="text-danger"></span>
+            <label asp-for="@Model.Book.Pages" class="control-label">Páginas</label>
+            <input asp-for="@Model.Book.Pages" class="form-control" placeholder="Páginas">
+            <span asp-validation-for="@Model.Book.Pages" class="text-danger"></span>
           </div>
           <div class="form-group col-2">
-            <label asp-for="Edition" class="control-label">Edição</label>
-            <input asp-for="Edition" class="form-control" placeholder="Edição">
-            <span asp-validation-for="Edition" class="text-danger"></span>
+            <label asp-for="@Model.Book.Edition" class="control-label">Edição</label>
+            <input asp-for="@Model.Book.Edition" class="form-control" placeholder="Edição">
+            <span asp-validation-for="@Model.Book.Edition" class="text-danger"></span>
           </div>
           <div class="form-group col-12">
             <button type="submit" class="btn btn-primary float-right">Cadastrar</button>
@@ -64,38 +64,43 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                1
-              </td>
-              <td>
-                Clean Code
-              </td>
-              <td>
-                Robert Cecil Martin
-              </td>
-              <td>
-                108576082675
-              </td>
-              <td>
-                457
-              </td>
-              <td>
-                1
-              </td>
-              <td class="text-center">
-                <input type="checkbox" class="form-check-input" id="chkBorrowed" style="margin: 0 auto;" disabled
-                  checked>
-              </td>
-              <td class="text-center">
-                <button data-sid="1" type="button" class="btn btn-primary btn-sm" style="font-size: 9pt;">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button data-sid="1" type="button" class="btn btn-primary btn-sm" style="font-size: 9pt;">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </td>
-            </tr>
+            @if (Model.Books != null)
+            {
+              @foreach (var book in Model.Books)
+              {
+                <tr>
+                  <td>
+                    @Html.DisplayFor(modelItem => book.Id)
+                  </td>
+                  <td>
+                    @Html.DisplayFor(modelItem => book.Title)
+                  </td>
+                  <td>
+                    @Html.DisplayFor(modelItem => book.Author)
+                  </td>
+                  <td>
+                    @Html.DisplayFor(modelItem => book.ISBN)
+                  </td>
+                  <td>
+                    @Html.DisplayFor(modelItem => book.Pages)
+                  </td>
+                  <td class="text-center">
+                    @Html.DisplayFor(modelItem => book.Edition)
+                  </td>
+                  <td class="text-center">
+                    <input type="checkbox" asp-for="@book.Borrowed" style="margin: 0 auto; pointer-events: none;" />
+                  </td>
+                  <td class="text-center">
+                    <button data-sid="1" type="button" class="btn btn-primary btn-sm" style="font-size: 9pt;">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button data-sid="1" type="button" class="btn btn-primary btn-sm" style="font-size: 9pt;">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+            }
           </tbody>
         </table>
       </div>

@@ -1,73 +1,141 @@
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using Domain.Repository;
+using Domain.Services;
+using FluentAssertions;
+using Infrastructure.Errors;
+using Moq;
 using Xunit;
+using Models = Domain.Models;
+using Service = Services;
 
 namespace Tests.Unit.Services
 {
   public class Book
   {
-    [Fact]
-    public async Task Deve_Cadastrar_Um_Livro_Quando_Enviar_Dados_Certos()
+    private readonly IBook _service;
+
+    private readonly Mock<IBooks> _books;
+
+    public Book()
     {
+      _books = new Mock<IBooks>();
+      _service = new Service.Book(_books.Object);
     }
 
     [Fact]
-    public async Task Deve_Listar_Todos_Livros()
+    public void Deve_Cadastrar_Um_Livro_Quando_Enviar_Dados_Certos()
     {
+      var bookToAdd = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+
+      _books.Setup(repository => repository.Add(It.IsAny<Models.Book>()))
+        .Returns(new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1) { Id = 1 });
+
+      var book = _service.Add(bookToAdd);
+
+      book.Id.Should().BeGreaterThan(0);
     }
 
     [Fact]
-    public async Task Deve_Atualizar_Um_Livro_Quando_Enviar_Dados_Certos()
+    public void Deve_Listar_Todos_Livros()
     {
+      var book = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1) { Id = 1 };
+      var books = new List<Models.Book> { book, book };
+
+      _books.Setup(repository => repository.GetAll()).Returns(books.AsQueryable());
+
+      var booksFound = _service.GetAll();
+
+      booksFound.Should().HaveCount(2);
+      booksFound.ToList().ForEach(book =>
+      {
+        book.Id.Should().NotBe(null);
+        book.Id.Should().BeGreaterThan(0);
+        book.Title.Should().NotBeNullOrWhiteSpace();
+        book.Author.Should().NotBeNullOrWhiteSpace();
+        book.ISBN.Should().NotBeNullOrWhiteSpace();
+        book.Pages.Should().NotBe(null);
+        book.Pages.Should().BeGreaterThan(0);
+        book.Edition.Should().NotBe(null);
+        book.Edition.Should().BeGreaterThan(0);
+      });
     }
 
     [Fact]
-    public async Task Deve_Retornar_Erro_Quando_Tentar_Atualizar_Um_Livro_Inexistente()
+    public void Deve_Atualizar_Um_Livro_Quando_Enviar_Dados_Certos()
     {
+      var book = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+
+      _books.Setup(repository => repository.Get(It.IsAny<int>())).Returns(book);
+
+      var response = _service.Update(book);
+
+      response.Error.Should().BeNull();
     }
 
     [Fact]
-    public async Task Deve_Deletar_Um_Livro()
+    public void Deve_Retornar_Erro_Quando_Tentar_Atualizar_Um_Livro_Inexistente()
     {
+      var book = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+
+      var response = _service.Update(book);
+
+      response.Error.Message.Should().Be("Livro não encontrado(a)!");
+      response.Error.StatusCode.Should().Be(404);
+      response.Error.GetType().Should().Be(typeof(ErrorObjectNotFound));
     }
 
     [Fact]
-    public async Task Deve_Retornar_Erro_Quando_Tentar_Deletar_Um_Livro_Inexistente()
+    public void Deve_Deletar_Um_Livro()
     {
+      var book = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+
+      _books.Setup(repository => repository.Get(It.IsAny<int>())).Returns(book);
+
+      var response = _service.Remove(1);
+
+      response.Error.Should().BeNull();
     }
 
     [Fact]
-    public async Task Deve_Retornar_Um_Livro_Por_Id()
+    public void Deve_Retornar_Erro_Quando_Tentar_Deletar_Um_Livro_Inexistente()
     {
+      var response = _service.Remove(1);
+
+      response.Error.Message.Should().Be("Livro não encontrado(a)!");
+      response.Error.StatusCode.Should().Be(404);
+      response.Error.GetType().Should().Be(typeof(ErrorObjectNotFound));
     }
 
     [Fact]
-    public async Task Deve_Retornar_Erro_Quando_Tentar_Buscar_Um_Livro_Inexistente_Por_Id()
+    public void Deve_Retornar_Um_Livro_Por_Id()
     {
+      var book = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1) { Id = 1 };
+
+      _books.Setup(repository => repository.Get(It.IsAny<int>())).Returns(book);
+
+      var response = _service.Get(1);
+      var bookFound = response.Result;
+
+      bookFound.Id.Should().NotBe(null);
+      bookFound.Id.Should().BeGreaterThan(0);
+      bookFound.Title.Should().NotBeNullOrWhiteSpace();
+      bookFound.Author.Should().NotBeNullOrWhiteSpace();
+      bookFound.ISBN.Should().NotBeNullOrWhiteSpace();
+      bookFound.Pages.Should().NotBe(null);
+      bookFound.Pages.Should().BeGreaterThan(0);
+      bookFound.Edition.Should().NotBe(null);
+      bookFound.Edition.Should().BeGreaterThan(0);
     }
 
     [Fact]
-    public async Task Deve_Ser_Possivel_Emprestar_Um_Livro_A_Um_Aluno()
+    public void Deve_Retornar_Erro_Quando_Tentar_Buscar_Um_Livro_Inexistente_Por_Id()
     {
-    }
+      var response = _service.Get(1);
 
-    [Fact]
-    public async Task Deve_Retornar_Erro_Quando_Tentar_Emprestar_Um_Livro_A_Um_Aluno_Inexistente()
-    {
-    }
-
-    [Fact]
-    public async Task Deve_Retornar_Erro_Quando_Tentar_Emprestar_Um_Livro_Inexistente_A_Um_Aluno()
-    {
-    }
-
-    [Fact]
-    public async Task Deve_Retornar_Erro_Quando_Tentar_Emprestar_Um_Livro_Indisponivel_A_Um_Aluno()
-    {
-    }
-
-    [Fact]
-    public async Task Deve_Ser_Possivel_Registrar_A_Devolucao_De_Um_Livro()
-    {
+      response.Error.Message.Should().Be("Livro não encontrado(a)!");
+      response.Error.StatusCode.Should().Be(404);
+      response.Error.GetType().Should().Be(typeof(ErrorObjectNotFound));
     }
   }
 }

@@ -1,6 +1,7 @@
 using System.Linq;
 using Domain.Models;
 using Domain.ValueObjects;
+using webapp.ViewModels.Book;
 using webapp.ViewModels.Shared;
 using webapp.ViewModels.Student;
 using DTOs = Domain.DTOs;
@@ -39,5 +40,15 @@ namespace webapp.Helpers
         Name = userModel.Name
       };
     }
+
+    public static Book ToModel(this BookViewModel viewModel) => new Book
+    (
+      viewModel.Title,
+      viewModel.Author,
+      viewModel.ISBN,
+      viewModel.Pages,
+      viewModel.Edition
+    )
+    { Id = viewModel.Id };
   }
 }
