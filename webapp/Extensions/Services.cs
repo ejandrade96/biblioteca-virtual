@@ -11,6 +11,7 @@ namespace webapp.Extensions
       services.AddTransient<IStudent, Student>();
       services.AddTransient<IToken, Token>();
       services.AddTransient<IUser, User>();
+      services.AddTransient<IBook, Book>();
     }
   }
 }

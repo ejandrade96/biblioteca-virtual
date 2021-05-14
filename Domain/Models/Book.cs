@@ -23,5 +23,14 @@ namespace Domain.Models
       Pages = pages;
       Edition = edition;
     }
+
+    public void UpdateValues(Book book)
+    {
+      Title = book.Title;
+      Author = book.Author;
+      ISBN = book.ISBN;
+      Pages = book.Pages;
+      Edition = book.Edition;
+    }
   }
 }
