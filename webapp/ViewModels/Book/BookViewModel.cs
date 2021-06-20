@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace webapp.ViewModels.Book
 {
@@ -22,5 +23,9 @@ namespace webapp.ViewModels.Book
     public int Edition { get; set; }
 
     public bool Borrowed { get; set; }
+    
+    public IFormFile Image { get; set; }
+
+    public string ImagePath { get; set; }
   }
 }

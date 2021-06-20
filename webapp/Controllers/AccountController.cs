@@ -32,7 +32,7 @@ namespace webapp.Controllers
       var userData = _mapper.Map<DTOs.User>(loginViewModel);
 
       var response = _userService.Authenticate(userData);
-      
+
       if (response.HasError())
       {
         TempData["Error"] = response.Error.Message;
@@ -41,15 +41,15 @@ namespace webapp.Controllers
 
       var user = response.Result;
       LoggedInUser = user.ToLoggedInUserViewModel();
+      AccessToken = user.Token;
 
-      Response.Cookies.Append("authname", user.Token);
       return RedirectToAction("Index", "Home");
     }
 
     public IActionResult Logout()
     {
-      Response.Cookies.Delete("LoggedInUser");
-      Response.Cookies.Delete("authname");
+      LoggedInUser = null;
+      AccessToken = null;
       return RedirectToAction("Login");
     }
   }
