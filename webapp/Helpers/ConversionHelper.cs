@@ -41,7 +41,9 @@ namespace webapp.Helpers
       };
     }
 
-    public static Book ToModel(this BookViewModel viewModel) => new Book
+    public static Book ToModel(this BookViewModel viewModel)
+    {
+      var book = new Book
     (
       viewModel.Title,
       viewModel.Author,
@@ -49,6 +51,10 @@ namespace webapp.Helpers
       viewModel.Pages,
       viewModel.Edition
     )
-    { Id = viewModel.Id };
+      { Id = viewModel.Id };
+      book.SetImage(viewModel.ImagePath);
+
+      return book;
+    }
   }
 }

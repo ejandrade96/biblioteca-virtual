@@ -9,7 +9,7 @@
     <div class="col-12">
       <h3 class="text-center">Cadastro de Livros</h3>
 
-      <form asp-action="SaveBook" asp-controller="Book" method="POST" class="mt-4">
+      <form asp-action="SaveBook" asp-controller="Book" method="POST" class="mt-4" enctype="multipart/form-data">
         <div class="row">
           <div class="form-group col-4">
             <label asp-for="@Model.Book.Title" class="control-label">Título</label>
@@ -35,6 +35,13 @@
             <label asp-for="@Model.Book.Edition" class="control-label">Edição</label>
             <input asp-for="@Model.Book.Edition" class="form-control" placeholder="Edição">
             <span asp-validation-for="@Model.Book.Edition" class="text-danger"></span>
+          </div>
+          <div class="form-group col-4">
+            <img id="previewImageBook" src="" alt="Imagem indisponível" width="130" height style="display: block; margin: 0 auto; max-width: 130px !important;" onerror="this.onerror=null;this.src='@Url.Content("~/images/book/default.png")';"/>
+            <div class="text-center">
+              <label asp-for="@Model.Book.Image" class="control-label mt-1">Capa</label>
+            </div>
+            <input type="file" asp-for="@Model.Book.Image" class="form-control" accept="image/x-png,image/gif,image/jpeg,image/svg">
           </div>
           <div class="form-group col-12">
             <button type="submit" class="btn btn-primary float-right">Cadastrar</button>

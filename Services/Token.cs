@@ -31,6 +31,8 @@ namespace Services
                     new Claim(ClaimTypes.Role, user.AccessLevel.ToString())
           }),
         Expires = DateTime.UtcNow.AddHours(1),
+        Issuer = _config["JwtConfiguration:Issuer"],
+        Audience = _config["JwtConfiguration:Audience"],
         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
       };
 

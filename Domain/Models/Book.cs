@@ -12,6 +12,8 @@ namespace Domain.Models
     
     public int Edition { get; protected set; }
 
+    public string Image { get; protected set; }
+
     protected Book()
     {
     }
@@ -32,5 +34,7 @@ namespace Domain.Models
       Pages = book.Pages;
       Edition = book.Edition;
     }
+
+    public void SetImage(string image) => Image = image;
   }
 }

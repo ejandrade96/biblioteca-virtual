@@ -42,7 +42,7 @@ namespace webapp
       })
       .AddCookie(config =>
          {
-           config.Cookie.Name = "authname";
+           config.Cookie.Name = "access_token";
          })
       .AddJwtBearer(x =>
       {
@@ -51,7 +51,7 @@ namespace webapp
           OnMessageReceived = context =>
           {
             var value = "";
-            context.Request.Cookies.TryGetValue("authname", out value);
+            context.Request.Cookies.TryGetValue("access_token", out value);
             context.Token = value;
             return Task.CompletedTask;
           }
@@ -62,8 +62,10 @@ namespace webapp
         {
           ValidateIssuerSigningKey = true,
           IssuerSigningKey = new SymmetricSecurityKey(key),
-          ValidateIssuer = false,
-          ValidateAudience = false
+          ValidateIssuer = true,
+          ValidIssuer = Configuration["JwtConfiguration:Issuer"],
+          ValidateAudience = true,
+          ValidAudience = Configuration["JwtConfiguration:Audience"]
         };
       });
     }
@@ -100,12 +102,21 @@ namespace webapp
       app.UseHttpsRedirection();
       app.UseStaticFiles();
 
-      app.UseRouting();
+      if (env.IsDevelopment())
+      {
+        app.UseCors(x => x
+                  .AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader());
+      }
+      else
+      {
+        app.UseCors(options => options.WithOrigins("http://52.91.231.38/")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod());
+      }
 
-      app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+      app.UseRouting();
 
       app.UseAuthentication();
       app.UseAuthorization();

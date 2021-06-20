@@ -16,6 +16,7 @@ namespace Infrastructure.Mappings
       builder.Property(book => book.ISBN).IsRequired();
       builder.Property(book => book.Pages).IsRequired();
       builder.Property(book => book.Edition).IsRequired();
+      builder.Property(book => book.Image);
     }
   }
 }
