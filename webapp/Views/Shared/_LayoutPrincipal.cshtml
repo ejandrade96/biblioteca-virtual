@@ -98,19 +98,19 @@
         <li>
           <a href="#">
             <i class="fas fa-briefcase"></i>
-            About
+            Sobre
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-paper-plane"></i>
+            Contato
           </a>
         </li>
         <li>
           <a href="#">
             <i class="fas fa-question"></i>
             FAQ
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class="fas fa-paper-plane"></i>
-            Contact
           </a>
         </li>
       </ul>
@@ -138,7 +138,7 @@
             </button>
           </div>
 
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href='@Url.Action("Index", "Home")'>
             <img src="~/images/logo.png" width="35" height="33" class="d-inline-block align-top" alt="">
           </a>
 
@@ -158,9 +158,9 @@
       @* @{ RenderBody(); } Ignorar Body *@
       @RenderBody()
 
-      <hr>
 
       <footer>
+        <hr>
         <div class="text-center">
           <h5 style="font-size: 12pt;">Desenvolvido por
             <span style="color: #7386D5;">Elton Andrade</span>
