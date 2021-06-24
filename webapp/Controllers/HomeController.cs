@@ -19,7 +19,7 @@ namespace webapp.Controllers
 
     public IActionResult Index()
     {
-      return View(new IndexViewModel("Usuário"));
+      return View(new IndexViewModel());
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
