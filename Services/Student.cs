@@ -13,9 +13,12 @@ namespace Services
   {
     private readonly IStudents _students;
 
-    public Student(IStudents students)
+    private readonly ILog _logService;
+
+    public Student(IStudents students, ILog logService)
     {
       _students = students;
+      _logService = logService;
     }
 
     public IResponse<Models.Student> Add(Models.Student student)
@@ -27,7 +30,11 @@ namespace Services
         response.Error = error;
 
       else
-        response.Result = _students.Add(student);
+      {
+        var addedStudent = _students.Add(student);
+        response.Result = addedStudent;
+        _logService.Add(LogType.Create, "estudante", addedStudent.Id);
+      }
 
       return response;
     }
@@ -50,6 +57,7 @@ namespace Services
         studentFound.Address.UpdateValues(student.Address);
         studentFound.Contact.UpdateValues(student.Contact);
         _students.Update(studentFound);
+        _logService.Add(LogType.Update, "estudante", student.Id);
       }
 
       return response;
@@ -75,7 +83,7 @@ namespace Services
 
     public IEnumerable<Models.Student> GetAll(Status? status = null)
     {
-      return _students.GetAll().Where(x => status == null ? true : x.Status == status).AsEnumerable().Select(student => 
+      return _students.GetAll().Where(x => status == null ? true : x.Status == status).AsEnumerable().Select(student =>
       {
         student.Address.SetStreetType(StreetType.StreetTypes.First(x => x.Code == student.Address.StreetType.Code));
         student.Address.SetState(State.States.First(x => x.Acronym == student.Address.State.Acronym));
@@ -96,6 +104,7 @@ namespace Services
       {
         student.Inactivate();
         _students.Update(student);
+        _logService.Add(LogType.Delete, "estudante", id);
       }
 
       return response;

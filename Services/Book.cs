@@ -23,7 +23,7 @@ namespace Services
     {
       var addedBook = _books.Add(book);
 
-      _logService.Add(LogType.Create, "livro", 1);
+      _logService.Add(LogType.Create, "livro", addedBook.Id);
 
       return addedBook;
     }
@@ -53,7 +53,10 @@ namespace Services
         response.Error = new ErrorObjectNotFound("Livro");
 
       else
+      {
         _books.Remove(book);
+        _logService.Add(LogType.Delete, "livro", id);
+      }
 
       return response;
     }
@@ -70,6 +73,7 @@ namespace Services
       {
         bookFound.UpdateValues(book);
         _books.Update(book);
+        _logService.Add(LogType.Update, "livro", book.Id);
       }
 
       return response;
