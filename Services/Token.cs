@@ -28,7 +28,8 @@ namespace Services
         Subject = new ClaimsIdentity(new Claim[]
           {
                     new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.Role, user.AccessLevel.ToString())
+                    new Claim(ClaimTypes.Role, user.AccessLevel.ToString()),
+                    new Claim("user_login", user.Login)
           }),
         Expires = DateTime.UtcNow.AddHours(1),
         Issuer = _config["JwtConfiguration:Issuer"],

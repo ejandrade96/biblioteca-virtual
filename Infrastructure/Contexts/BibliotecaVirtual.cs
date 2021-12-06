@@ -22,6 +22,8 @@ namespace Infrastructure.Contexts
     public DbSet<Loan> Loans { get; set; }
 
     public DbSet<User> Users { get; set; }
+    
+    public DbSet<Log> Logs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -45,6 +47,7 @@ namespace Infrastructure.Contexts
       modelBuilder.Entity<Book>(new Mappings.Book().Configure);
       modelBuilder.Entity<Loan>(new Mappings.Loan().Configure);
       modelBuilder.Entity<User>(new Mappings.User().Configure);
+      modelBuilder.Entity<Log>(new Mappings.Log().Configure);
     }
   }
 }

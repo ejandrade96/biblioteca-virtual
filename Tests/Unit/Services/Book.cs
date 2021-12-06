@@ -15,12 +15,15 @@ namespace Tests.Unit.Services
   {
     private readonly IBook _service;
 
+    private readonly Mock<ILog> _logService;
+
     private readonly Mock<IBooks> _books;
 
     public Book()
     {
       _books = new Mock<IBooks>();
-      _service = new Service.Book(_books.Object);
+      _logService = new Mock<ILog>();
+      _service = new Service.Book(_books.Object, _logService.Object);
     }
 
     [Fact]

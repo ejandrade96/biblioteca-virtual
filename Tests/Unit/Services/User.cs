@@ -104,5 +104,43 @@ namespace Tests.Unit.Services
       response.Error.StatusCode.Should().Be(400);
       response.Error.GetType().Should().Be(typeof(ErrorInvalidAttribute));
     }
+
+    [Fact]  
+    public void Deve_Retornar_Um_Usuario_Por_Login()
+    {
+      var user = new Models.User
+        (
+          "Elton Andrade",
+          "ejandrade",
+          "elton@live.com",
+          "bHBlUVj1rFG48+Bd+4+yGA==.7KQGnYFMukLhkfSqhbfGhtqtqELUntz4AbGhrrqspLs=",
+          AccessLevel.Administrator
+        )
+      { Id = 1 };
+
+      _users.Setup(repository => repository.First(user => user.Login == "ejandrade")).Returns(user);
+
+      var response = _service.GetByLogin("ejandrade");
+      var userFound = response.Result;
+
+      response.Error.Should().BeNull();
+      userFound.Should().NotBeNull();
+      userFound.Id.Should().NotBe(null);
+      userFound.Id.Should().BeGreaterThan(0);
+      userFound.Name.Should().NotBeNullOrWhiteSpace();
+      userFound.Login.Should().NotBeNullOrWhiteSpace();
+      userFound.Email.Should().NotBeNullOrWhiteSpace();
+      userFound.AccessLevel.ToString().Should().NotBeNullOrWhiteSpace();
+    }
+
+    [Fact]
+    public void Deve_Retornar_Erro_Quando_Tentar_Buscar_Um_Usuario_Inexistente_Por_Login()
+    {
+      var response = _service.GetByLogin("xpto");
+
+      response.Error.Message.Should().Be("Usuário não encontrado(a)!");
+      response.Error.StatusCode.Should().Be(404);
+      response.Error.GetType().Should().Be(typeof(ErrorObjectNotFound));
+    }
   }
 }
