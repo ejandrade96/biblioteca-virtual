@@ -3,6 +3,7 @@ using Domain.Services;
 using Infrastructure;
 using Infrastructure.Errors;
 using DTOs = Domain.DTOs;
+using Models = Domain.Models;
 
 namespace Services
 {
@@ -49,6 +50,21 @@ namespace Services
 
       else
         response.Error = new ErrorInvalidAttribute("Senha");
+
+      return response;
+    }
+
+    public IResponse<Models.User> GetByLogin(string login)
+    {
+      var response = new Response<Models.User>();
+
+      var user = _users.First(x => x.Login == login);
+
+      if (user == null)
+        response.Error = new ErrorObjectNotFound("Usuário");
+
+      else
+        response.Result = user;
 
       return response;
     }

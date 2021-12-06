@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Domain.Repository;
 using Domain.Services;
+using Domain.ValueObjects;
 using Infrastructure.Errors;
 using Models = Domain.Models;
 
@@ -10,12 +11,22 @@ namespace Services
   {
     private readonly IBooks _books;
 
-    public Book(IBooks books)
+    private readonly ILog _logService;
+
+    public Book(IBooks books, ILog logService)
     {
       _books = books;
+      _logService = logService;
     }
 
-    public Models.Book Add(Models.Book book) => _books.Add(book);
+    public Models.Book Add(Models.Book book)
+    {
+      var addedBook = _books.Add(book);
+
+      _logService.Add(LogType.Create, "livro", 1);
+
+      return addedBook;
+    }
 
     public IResponse<Models.Book> Get(int id)
     {

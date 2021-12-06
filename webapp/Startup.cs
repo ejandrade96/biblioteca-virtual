@@ -31,6 +31,7 @@ namespace webapp
       services.AddControllersWithViews();
       services.AddServices();
       services.AddRepositories();
+      services.AddHttpContextAccessor();
       services.AddDbContext<BibliotecaVirtualContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BibliotecaVirtualContext")));
       services.AddAutoMapper(typeof(Mappings.Student));
 
