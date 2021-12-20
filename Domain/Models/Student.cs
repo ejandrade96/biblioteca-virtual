@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Domain.ValueObjects;
 
 namespace Domain.Models
@@ -10,11 +11,13 @@ namespace Domain.Models
 
     public int Record { get; protected set; }
 
-    public virtual Contact Contact { get; protected set; }
+    public Contact Contact { get; protected set; }
 
-    public virtual Address Address { get; protected set; }
+    public Address Address { get; protected set; }
 
     public Status Status { get; protected set; }
+
+    public List<Loan> Loans { get; protected set; }
 
     protected Student()
     {

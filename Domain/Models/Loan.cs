@@ -6,10 +6,10 @@ namespace Domain.Models
   public class Loan : EntityBase
   {
     [Required]
-    public virtual Student Student { get; protected set; }
+    public Student Student { get; protected set; }
     
     [Required]
-    public virtual Book Book { get; protected set; }
+    public Book Book { get; protected set; }
     
     public DateTime LoanDate { get; protected set; }
 
@@ -19,12 +19,11 @@ namespace Domain.Models
     {
     }
 
-    public Loan(Student student, Book book, DateTime loanDate, DateTime returnDate)
+    public Loan(Student student, Book book)
     {
       Student = student;
       Book = book;
-      LoanDate = loanDate;
-      ReturnDate = returnDate;
+      LoanDate = DateTime.Now;
     }
   }
 }

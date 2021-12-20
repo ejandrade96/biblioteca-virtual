@@ -35,7 +35,6 @@ namespace Infrastructure.Contexts
                                           .Build();
 
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("BibliotecaVirtualContext"));
-        optionsBuilder.UseLazyLoadingProxies();
         optionsBuilder.EnableSensitiveDataLogging();
       }
     }
