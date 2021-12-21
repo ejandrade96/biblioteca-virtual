@@ -1,17 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj"/>
-    <ProjectReference Include="..\Services\Services.csproj"/>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj"/>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Services\Services.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.1.1"/>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1"/>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0"/>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.14"/>
-    <PackageReference Include="Nancy" Version="2.0.0"/>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.14" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>c9c33d2b-2b7e-4b03-8ea7-4c0e22298cbf</UserSecretsId>
   </PropertyGroup>
 </Project>

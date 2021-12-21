@@ -43,6 +43,7 @@ namespace Tests.Unit.Services
     public void Deve_Listar_Todos_Livros()
     {
       var book = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1) { Id = 1 };
+      book.SetImage("~/image.jpg");
       var books = new List<Models.Book> { book, book };
 
       _books.Setup(repository => repository.GetAll()).Returns(books.AsQueryable());
@@ -61,6 +62,7 @@ namespace Tests.Unit.Services
         book.Pages.Should().BeGreaterThan(0);
         book.Edition.Should().NotBe(null);
         book.Edition.Should().BeGreaterThan(0);
+        book.Image.Should().NotBeNullOrWhiteSpace();
       });
     }
 
@@ -114,6 +116,7 @@ namespace Tests.Unit.Services
     public void Deve_Retornar_Um_Livro_Por_Id()
     {
       var book = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1) { Id = 1 };
+      book.SetImage("~/image.jpg");
 
       _books.Setup(repository => repository.Get(It.IsAny<int>())).Returns(book);
 
@@ -129,6 +132,7 @@ namespace Tests.Unit.Services
       bookFound.Pages.Should().BeGreaterThan(0);
       bookFound.Edition.Should().NotBe(null);
       bookFound.Edition.Should().BeGreaterThan(0);
+      bookFound.Image.Should().NotBeNullOrWhiteSpace();
     }
 
     [Fact]
