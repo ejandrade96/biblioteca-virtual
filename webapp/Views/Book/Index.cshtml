@@ -18,12 +18,12 @@
       <form asp-action="SaveBook" asp-controller="Book" method="POST" class="mt-4" enctype="multipart/form-data">
         <div class="row">
           <input asp-for="@Model.Book.Id" class="form-control" type="hidden" value="@bookId" />
-          <div class="form-group col-4">
+          <div class="form-group col-6">
             <label asp-for="@Model.Book.Title" class="control-label">Título</label>
             <input asp-for="@Model.Book.Title" class="form-control" placeholder="Título do Livro">
             <span asp-validation-for="@Model.Book.Title" class="text-danger"></span>
           </div>
-          <div class="form-group col-4">
+          <div class="form-group col-3">
             <label asp-for="@Model.Book.Author" class="control-label">Autor</label>
             <input asp-for="@Model.Book.Author" class="form-control" placeholder="Autor">
             <span asp-validation-for="@Model.Book.Author" class="text-danger"></span>
@@ -147,7 +147,8 @@
         { responsivePriority: 1, targets: 0 },
         { responsivePriority: 2, targets: 1 },
         { responsivePriority: 3, targets: 2 },
-        { responsivePriority: 4, targets: 7 }
+        { responsivePriority: 4, targets: 6 },
+        { responsivePriority: 5, targets: 7 }
       ],
       language: {
         "sProcessing": "A processar...",
