@@ -72,10 +72,47 @@ namespace webapp.Controllers
         viewModel.Book.ImagePath = $"~/images/book/{fileName}";
       }
 
-      _service.Add(viewModel.Book.ToModel());
+      if (viewModel.Book.Id > 0)
+      {
+        var response = _service.Update(viewModel.Book.ToModel());
+
+        if (response.HasError())
+        {
+          TempData["Error"] = response.Error.Message;
+          return View("Index", viewModel);
+        }
+      }
+
+      else
+        _service.Add(viewModel.Book.ToModel());
 
       TempData["Success"] = "Livro salvo com sucesso!";
       return RedirectToAction("Index");
+    }
+
+    [HttpDelete]
+    public IActionResult Delete(int id)
+    {
+      var book = _service.Get(id).Result;
+
+      if (!string.IsNullOrWhiteSpace(book.Image))
+      {
+        var mappedPath = Path.Combine(_webHostEnvironment.WebRootPath, book.Image.Replace("~/", ""));
+
+        if (System.IO.File.Exists(mappedPath))
+        {
+          System.IO.File.Delete(mappedPath);
+        }
+      }
+
+      var response = _service.Remove(id);
+
+      if (response.HasError())
+      {
+        return StatusCode(response.Error.StatusCode, new { Message = response.Error.Message });
+      }
+
+      return NoContent();
     }
 
     public IActionResult Loan()

@@ -72,7 +72,7 @@ namespace Services
       else
       {
         bookFound.UpdateValues(book);
-        _books.Update(book);
+        _books.Update(bookFound);
         _logService.Add(LogType.Update, "livro", book.Id);
       }
 

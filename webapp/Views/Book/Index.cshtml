@@ -2,6 +2,12 @@
 @{
   ViewData["Title"] = "Livros";
   Layout = "~/Views/Shared/_LayoutPrincipal.cshtml";
+  var bookId = 0;
+
+  if (@Model.Book != null)
+  {
+    bookId = @Model.Book.Id;
+  }
 }
 
 <div class="container-fluid">
@@ -11,12 +17,13 @@
 
       <form asp-action="SaveBook" asp-controller="Book" method="POST" class="mt-4" enctype="multipart/form-data">
         <div class="row">
-          <div class="form-group col-4">
+          <input asp-for="@Model.Book.Id" class="form-control" type="hidden" value="@bookId" />
+          <div class="form-group col-6">
             <label asp-for="@Model.Book.Title" class="control-label">Título</label>
             <input asp-for="@Model.Book.Title" class="form-control" placeholder="Título do Livro">
             <span asp-validation-for="@Model.Book.Title" class="text-danger"></span>
           </div>
-          <div class="form-group col-4">
+          <div class="form-group col-3">
             <label asp-for="@Model.Book.Author" class="control-label">Autor</label>
             <input asp-for="@Model.Book.Author" class="form-control" placeholder="Autor">
             <span asp-validation-for="@Model.Book.Author" class="text-danger"></span>
@@ -140,7 +147,8 @@
         { responsivePriority: 1, targets: 0 },
         { responsivePriority: 2, targets: 1 },
         { responsivePriority: 3, targets: 2 },
-        { responsivePriority: 4, targets: 7 }
+        { responsivePriority: 4, targets: 6 },
+        { responsivePriority: 5, targets: 7 }
       ],
       language: {
         "sProcessing": "A processar...",
@@ -180,6 +188,7 @@
     });
 
     function fillInTheFormFields(book) {
+      $("#Book_Id").val(book.id);
       $("#Book_Title").val(book.title);
       $("#Book_Author").val(book.author);
       $("#Book_ISBN").val(book.isbn);
@@ -203,6 +212,35 @@
         .fail(function (err) {
           Swal.fire({ icon: 'error', title: 'Erro!', text: err.responseJSON.message, });
         });
+    });
+
+    $(".btn-delete-book").click(function () {
+      var $button = $(this);
+      var bookId = $(this).data("bid");
+
+      Swal.fire({
+        title: 'Você realmente deseja excluir o livro?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: "@Url.Action("Delete", "Book")?id=" + bookId,
+            type: 'DELETE',
+            success: function (result) {
+              dataTable.row($button.parents('tr')).remove().draw();
+              Swal.fire("Sucesso!", "Livro excluído com sucesso", "success");
+            },
+            error: function (err) {
+              Swal.fire({ icon: 'error', title: 'Erro!', text: err.responseJSON.message, });
+            }
+          });
+        }
+      })
     });
   });
 </script>
