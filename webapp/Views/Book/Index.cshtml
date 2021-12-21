@@ -37,11 +37,14 @@
             <span asp-validation-for="@Model.Book.Edition" class="text-danger"></span>
           </div>
           <div class="form-group col-4">
-            <img id="previewImageBook" src="" alt="Imagem indisponível" width="130" height style="display: block; margin: 0 auto; max-width: 130px !important;" onerror="this.onerror=null;this.src='@Url.Content("~/images/book/default.png")';"/>
+            <img id="previewImageBook" src="" alt="Imagem indisponível" width="130" height
+              style="display: block; margin: 0 auto; max-width: 130px !important;"
+              onerror="this.onerror=null;this.src='@Url.Content("~/images/book/default.png")';" />
             <div class="text-center">
               <label asp-for="@Model.Book.Image" class="control-label mt-1">Capa</label>
             </div>
-            <input type="file" asp-for="@Model.Book.Image" class="form-control" accept="image/x-png,image/gif,image/jpeg,image/svg">
+            <input type="file" asp-for="@Model.Book.Image" class="form-control"
+              accept="image/x-png,image/gif,image/jpeg,image/svg">
           </div>
           <div class="form-group col-12">
             <button type="submit" class="btn btn-primary float-right">Cadastrar</button>
@@ -98,10 +101,12 @@
                     <input type="checkbox" asp-for="@book.Borrowed" style="margin: 0 auto; pointer-events: none;" />
                   </td>
                   <td class="text-center">
-                    <button data-sid="1" type="button" class="btn btn-primary btn-sm" style="font-size: 9pt;">
+                    <button data-bid="@book.Id" type="button" class="btn btn-primary btn-sm btn-edit-book"
+                  style="font-size: 9pt;">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button data-sid="1" type="button" class="btn btn-primary btn-sm" style="font-size: 9pt;">
+                    <button data-bid="@book.Id" type="button" class="btn btn-primary btn-sm btn-delete-book"
+                  style="font-size: 9pt;">
                       <i class="fas fa-trash-alt"></i>
                     </button>
                   </td>
@@ -172,6 +177,32 @@
 
     $('#tblBooks').on('length.dt', function (e, settings, len) {
       dataTable.columns.adjust().draw();
+    });
+
+    function fillInTheFormFields(book) {
+      $("#Book_Title").val(book.title);
+      $("#Book_Author").val(book.author);
+      $("#Book_ISBN").val(book.isbn);
+      $("#Book_Pages").val(book.pages);
+      $("#Book_Edition").val(book.edition);
+
+      if (book.image) {
+        $("#previewImageBook").attr("src", book.image.replace('~/', ''));
+      } else {
+        $("#previewImageBook").attr("src", 'images/book/default.png');
+      }
+    }
+
+    $(".btn-edit-book").click(function () {
+      var bookId = $(this).data("bid");
+
+      $.get("@Url.Action("GetBook", "Book")?id=" + bookId, function (data) {
+        fillInTheFormFields(data);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      })
+        .fail(function (err) {
+          Swal.fire({ icon: 'error', title: 'Erro!', text: err.responseJSON.message, });
+        });
     });
   });
 </script>

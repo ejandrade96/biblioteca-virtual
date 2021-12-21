@@ -16,12 +16,15 @@ namespace Tests.Unit.Services
   {
     private readonly IStudent _service;
 
+    private readonly Mock<ILog> _logService;
+
     private readonly Mock<IStudents> _students;
 
     public Student()
     {
       _students = new Mock<IStudents>();
-      _service = new Service.Student(_students.Object);
+      _logService = new Mock<ILog>();
+      _service = new Service.Student(_students.Object, _logService.Object);
     }
 
     [Fact]

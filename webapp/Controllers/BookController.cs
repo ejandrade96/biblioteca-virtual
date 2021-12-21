@@ -34,6 +34,19 @@ namespace webapp.Controllers
       return View(new IndexViewModel(_service));
     }
 
+    [HttpGet]
+    public IActionResult GetBook(int id)
+    {
+      var response = _service.Get(id);
+
+      if (response.HasError())
+      {
+        return StatusCode(response.Error.StatusCode, new { Message = response.Error.Message });
+      }
+
+      return Ok(response.Result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> SaveBook(IndexViewModel viewModel)
     {

@@ -8,7 +8,7 @@ namespace Domain.Models
 
     public string Description { get; protected set; }
 
-    public virtual User User { get; protected set; }
+    public User User { get; protected set; }
 
     public Log(User user, DateTime logDate, string description)
     {
