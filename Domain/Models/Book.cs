@@ -40,6 +40,7 @@ namespace Domain.Models
       ISBN = book.ISBN;
       Pages = book.Pages;
       Edition = book.Edition;
+      Image = book.Image;
     }
 
     public void SetImage(string image) => Image = image;

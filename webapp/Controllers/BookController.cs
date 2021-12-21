@@ -72,7 +72,19 @@ namespace webapp.Controllers
         viewModel.Book.ImagePath = $"~/images/book/{fileName}";
       }
 
-      _service.Add(viewModel.Book.ToModel());
+      if (viewModel.Book.Id > 0)
+      {
+        var response = _service.Update(viewModel.Book.ToModel());
+
+        if (response.HasError())
+        {
+          TempData["Error"] = response.Error.Message;
+          return View("Index", viewModel);
+        }
+      }
+
+      else
+        _service.Add(viewModel.Book.ToModel());
 
       TempData["Success"] = "Livro salvo com sucesso!";
       return RedirectToAction("Index");
