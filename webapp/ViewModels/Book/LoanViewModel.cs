@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Domain.Services;
+using Domain.ValueObjects;
 
 namespace webapp.ViewModels.Book
 {
@@ -8,7 +9,9 @@ namespace webapp.ViewModels.Book
   {
     public List<BookLoanViewModel> Books { get; set; }
 
-    public LoanViewModel(IBook service)
+    public List<StudentLoanViewModel> Students { get; set; }
+
+    public LoanViewModel(IBook service, IStudent studentService)
     {
       Books = service.GetAllWithLoansWithStudent().Select(book =>
       {
@@ -22,6 +25,13 @@ namespace webapp.ViewModels.Book
           Edition = book.Edition,
           LoanStatus = book.IsBorrowed() ? book.GetLoanStudentLogin() : "Disponível"
         };
+      }).ToList();
+
+      Students = studentService.GetAll(Status.Active).Select(student => new StudentLoanViewModel
+      {
+        Id = student.Id,
+        Name = student.Name,
+        Login = student.Login
       }).ToList();
     }
   }
