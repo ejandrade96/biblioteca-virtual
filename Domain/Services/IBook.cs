@@ -14,5 +14,9 @@ namespace Domain.Services
     IResponse<Book> Remove(int id);
 
     IResponse<Book> Update(Book book);
+
+    IEnumerable<Book> GetAllWithLoans();
+
+    IEnumerable<Book> GetAllWithLoansWithStudent();
   }
 }

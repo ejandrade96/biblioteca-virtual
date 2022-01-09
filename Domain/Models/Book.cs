@@ -45,6 +45,16 @@ namespace Domain.Models
 
     public void SetImage(string image) => Image = image;
 
-    public bool IsBorrowed() => (Loans.OrderByDescending(x => x.LoanDate).FirstOrDefault()?.ReturnDate).Equals(DateTime.MinValue);
+    public bool IsBorrowed()
+    {
+      var lastLoan = Loans.OrderByDescending(x => x.LoanDate).FirstOrDefault();
+
+      if (lastLoan == null)
+        return false;
+
+      return lastLoan.ReturnDate.Equals(DateTime.MinValue) || lastLoan.ReturnDate == null;
+    }
+
+    public string GetLoanStudentLogin() => Loans.OrderByDescending(x => x.LoanDate).First().Student.Login;
   }
 }

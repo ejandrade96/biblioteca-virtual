@@ -12,6 +12,8 @@ namespace Infrastructure.Repository
     {
     }
 
-    public new IQueryable<Book> GetAll() => _dataset.Include(x => x.Loans);
+    public IQueryable<Book> GetAllWithLoans() => _dataset.Include(x => x.Loans);
+
+    public IQueryable<Book> GetAllWithLoansWithStudent() => _dataset.Include(x => x.Loans).ThenInclude(x => x.Student);
   }
 }

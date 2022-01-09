@@ -4,14 +4,16 @@ using Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BibliotecaVirtualContext))]
-    partial class BibliotecaVirtualContextModelSnapshot : ModelSnapshot
+    [Migration("20211222143842_6-Column_ReturnDate_Nullable_Loan")]
+    partial class _6Column_ReturnDate_Nullable_Loan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

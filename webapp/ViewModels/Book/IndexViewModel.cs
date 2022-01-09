@@ -13,8 +13,8 @@ namespace webapp.ViewModels.Book
     public IndexViewModel() { }
 
     public IndexViewModel(IBook service)
-    { 
-      Books = service.GetAll().Select(book => new BookViewModel
+    {
+      Books = service.GetAllWithLoans().Select(book => new BookViewModel
       {
         Id = book.Id,
         Title = book.Title,
