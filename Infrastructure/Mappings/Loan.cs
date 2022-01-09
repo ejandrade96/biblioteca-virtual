@@ -12,7 +12,7 @@ namespace Infrastructure.Mappings
 
       builder.HasKey(loan => loan.Id);
       builder.Property(loan => loan.LoanDate).IsRequired();
-      builder.Property(loan => loan.ReturnDate).IsRequired();
+      builder.Property(loan => loan.ReturnDate);
       builder.HasOne(loan => loan.Student).WithMany(student => student.Loans);
       builder.HasOne(loan => loan.Book).WithMany(book => book.Loans);
     }

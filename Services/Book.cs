@@ -44,6 +44,10 @@ namespace Services
 
     public IEnumerable<Models.Book> GetAll() => _books.GetAll();
 
+    public IEnumerable<Models.Book> GetAllWithLoans() => _books.GetAllWithLoans();
+
+    public IEnumerable<Models.Book> GetAllWithLoansWithStudent() => _books.GetAllWithLoansWithStudent();
+
     public IResponse<Models.Book> Remove(int id)
     {
       var response = new Response<Models.Book>();

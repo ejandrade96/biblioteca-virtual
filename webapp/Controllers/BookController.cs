@@ -54,7 +54,7 @@ namespace webapp.Controllers
       {
         TempData["Error"] = string.Join("\n", ModelState.Values.SelectMany(x => x.Errors.Select(y => y.ErrorMessage)));
 
-        viewModel.Books = _mapper.Map<List<BookViewModel>>(_service.GetAll());
+        viewModel.Books = _mapper.Map<List<BookViewModel>>(_service.GetAllWithLoans());
         return View("Index", viewModel);
       }
 
@@ -117,7 +117,7 @@ namespace webapp.Controllers
 
     public IActionResult Loan()
     {
-      return View();
+      return View(new LoanViewModel(_service));
     }
   }
 }
