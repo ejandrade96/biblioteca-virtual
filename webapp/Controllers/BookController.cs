@@ -18,13 +18,16 @@ namespace webapp.Controllers
   {
     private readonly IBook _service;
 
+    private readonly IStudent _studentService;
+
     private readonly IMapper _mapper;
 
     private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public BookController(IBook service, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+    public BookController(IBook service, IStudent studentService, IMapper mapper, IWebHostEnvironment webHostEnvironment)
     {
       _service = service;
+      _studentService = studentService;
       _mapper = mapper;
       _webHostEnvironment = webHostEnvironment;
     }
@@ -117,7 +120,7 @@ namespace webapp.Controllers
 
     public IActionResult Loan()
     {
-      return View(new LoanViewModel(_service));
+      return View(new LoanViewModel(_service, _studentService));
     }
   }
 }

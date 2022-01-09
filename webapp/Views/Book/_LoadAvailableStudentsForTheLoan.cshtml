@@ -1,0 +1,62 @@
+@model webapp.ViewModels.Book.LoanViewModel;
+
+<div class="modal fade modal-load-available-students-loan-lg" tabindex="-1" role="dialog"
+  aria-labelledby="myLargeModalLabel" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header text-center">
+        <h5 class="modal-title w-100">Alunos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-dark">×</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class=row>
+          <div class="col-md-12 text-center mb-4" style="border-bottom: 1px solid #dee2e6; color: rgb(10, 17, 63);">
+            <h6>Por favor, selecionar um aluno clicando na linha correspondente e clicar no botão <span
+                style="color: #007bff; font-weight: 600;">confirmar</span></h6>
+          </div>
+        </div>
+        <table id="tblAvailableStudentsForTheLoan" class="table table-bordered dt-responsive nowrap"
+          style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+          <thead>
+            <tr style="color: rgb(10, 17, 63);">
+              <th class="border-top-0">Id</th>
+              <th class="border-top-0">Nome</th>
+              <th class="border-top-0">Login</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (Model.Students != null)
+            {
+              @foreach (var student in Model.Students)
+              {
+                <tr data-sid="@student.Id" data-student-name="@student.Name" class="rowAvailableStudentsForTheLoan"
+              style="cursor: pointer;">
+                  <td>
+                    @Html.DisplayFor(modelItem => student.Id)
+                  </td>
+                  <td>
+                    @Html.DisplayFor(modelItem => student.Name)
+                  </td>
+                  <td>
+                    @Html.DisplayFor(modelItem => student.Login)
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <div id="btnGroupDefault">
+          <button id="btnConfirmLoan" type="button" class="btn btn-raised btn-primary" disabled>Confirmar</button>
+          <button type="button" class="btn btn-raised btn-danger" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
