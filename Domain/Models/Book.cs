@@ -18,7 +18,7 @@ namespace Domain.Models
 
     public string Image { get; protected set; }
 
-    public List<Loan> Loans { get; protected set; }
+    public List<Loan> Loans { get; protected set; } = new List<Loan>();
 
     protected Book()
     {
@@ -44,6 +44,8 @@ namespace Domain.Models
     }
 
     public void SetImage(string image) => Image = image;
+
+    public void SetLoan(Loan loan) => Loans.Add(loan);
 
     public bool IsBorrowed()
     {
