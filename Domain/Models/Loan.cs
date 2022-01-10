@@ -25,5 +25,7 @@ namespace Domain.Models
       Book = book;
       LoanDate = DateTime.Now;
     }
+
+    public void RegisterReturn() => ReturnDate = DateTime.Now;
   }
 }
