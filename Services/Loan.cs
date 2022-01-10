@@ -36,7 +36,7 @@ namespace Services
         return response;
       }
 
-      var responseBook = _bookService.Get(bookId);
+      var responseBook = _bookService.GetWithLoans(bookId);
 
       if (responseBook.HasError())
       {

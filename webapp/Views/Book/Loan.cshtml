@@ -205,7 +205,27 @@
         cancelButtonText: 'Não'
       }).then((result) => {
         if (result.isConfirmed) {
-
+          $.ajax({
+            url: "@Url.Action("ToLoan", "Book")?studentId=" + sidCurrentLoan + "&bookId=" + bidCurrentLoan,
+            type: 'POST',
+            success: function (result) {
+              $(".modal-load-available-students-loan-lg").modal("toggle");
+              Swal.fire({
+                title: 'Sucesso!',
+                icon: 'success',
+                text: 'Empréstimo salvo com sucesso!',
+                allowOutsideClick: false,
+                confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.reload();
+                }
+              });
+            },
+            error: function (err) {
+              Swal.fire({ icon: 'error', title: 'Erro!', text: err.responseJSON.message, });
+            }
+          });
         }
       })
     });

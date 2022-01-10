@@ -20,14 +20,17 @@ namespace webapp.Controllers
 
     private readonly IStudent _studentService;
 
+    private readonly ILoan _loanService;
+
     private readonly IMapper _mapper;
 
     private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public BookController(IBook service, IStudent studentService, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+    public BookController(IBook service, IStudent studentService, ILoan loanService, IMapper mapper, IWebHostEnvironment webHostEnvironment)
     {
       _service = service;
       _studentService = studentService;
+      _loanService = loanService;
       _mapper = mapper;
       _webHostEnvironment = webHostEnvironment;
     }
@@ -121,6 +124,19 @@ namespace webapp.Controllers
     public IActionResult Loan()
     {
       return View(new LoanViewModel(_service, _studentService));
+    }
+
+    [HttpPost]
+    public IActionResult ToLoan(int studentId, int bookId)
+    {
+      var response = _loanService.Add(studentId, bookId);
+
+      if (response.HasError())
+      {
+        return StatusCode(response.Error.StatusCode, new { Message = response.Error.Message });
+      }
+
+      return Ok();
     }
   }
 }

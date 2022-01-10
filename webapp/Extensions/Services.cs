@@ -14,6 +14,7 @@ namespace webapp.Extensions
       services.AddTransient<IBook, Book>();
       services.AddTransient<ILog, Log>();
       services.AddTransient<IApplicationUser, ApplicationUser>();
+      services.AddTransient<ILoan, Loan>();
     }
   }
 }
