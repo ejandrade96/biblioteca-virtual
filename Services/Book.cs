@@ -48,6 +48,20 @@ namespace Services
 
     public IEnumerable<Models.Book> GetAllWithLoansWithStudent() => _books.GetAllWithLoansWithStudent();
 
+    public IResponse<Models.Book> GetWithLoans(int id)
+    {
+      var response = new Response<Models.Book>();
+      var book = _books.GetWithLoans(id);
+
+      if (book == null)
+        response.Error = new ErrorObjectNotFound("Livro");
+
+      else
+        response.Result = book;
+
+      return response;
+    }
+
     public IResponse<Models.Book> Remove(int id)
     {
       var response = new Response<Models.Book>();

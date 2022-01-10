@@ -8,5 +8,7 @@ namespace Domain.Repository
     IQueryable<Book> GetAllWithLoans();
 
     IQueryable<Book> GetAllWithLoansWithStudent();
+
+    Book GetWithLoans(int id);
   }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Domain.Repository;
 using Domain.Services;
+using Domain.ValueObjects;
 using FluentAssertions;
 using Infrastructure.Errors;
 using Moq;
@@ -139,6 +140,52 @@ namespace Tests.Unit.Services
     public void Deve_Retornar_Erro_Quando_Tentar_Buscar_Um_Livro_Inexistente_Por_Id()
     {
       var response = _service.Get(1);
+
+      response.Error.Message.Should().Be("Livro não encontrado(a)!");
+      response.Error.StatusCode.Should().Be(404);
+      response.Error.GetType().Should().Be(typeof(ErrorObjectNotFound));
+    }
+
+     [Fact]
+    public void Deve_Retornar_Um_Livro_Com_Emprestimos_Por_Id()
+    {
+      var book = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1) { Id = 1 };
+
+      var contact = new Models.Contact("joao.villar@live.com", "1154218547");
+      contact.SetCellPhone("11996582134");
+      var streetType = StreetType.StreetTypes.First(x => x.Code == "R");
+      var state = State.States.First(x => x.Acronym == "SP");
+      var address = new Models.Address("09421700", streetType, "dos Vianas", 412, "Centro", "São Bernardo do Campo", state);
+      address.SetComplement("AP Torre 1");
+      var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address) { Id = 1 };
+
+      var loan = new Models.Loan(student, book) { Id = 1 };
+
+      book.SetLoan(loan);
+      book.SetImage("~/image.jpg");
+
+      _books.Setup(repository => repository.GetWithLoans(It.IsAny<int>())).Returns(book);
+
+      var response = _service.GetWithLoans(1);
+      var bookFound = response.Result;
+
+      bookFound.Id.Should().NotBe(null);
+      bookFound.Id.Should().BeGreaterThan(0);
+      bookFound.Title.Should().NotBeNullOrWhiteSpace();
+      bookFound.Author.Should().NotBeNullOrWhiteSpace();
+      bookFound.ISBN.Should().NotBeNullOrWhiteSpace();
+      bookFound.Pages.Should().NotBe(null);
+      bookFound.Pages.Should().BeGreaterThan(0);
+      bookFound.Edition.Should().NotBe(null);
+      bookFound.Edition.Should().BeGreaterThan(0);
+      bookFound.Image.Should().NotBeNullOrWhiteSpace();
+      bookFound.Loans.Should().HaveCountGreaterThan(0);
+    }
+
+    [Fact]
+    public void Deve_Retornar_Erro_Quando_Tentar_Buscar_Um_Livro_Com_Emprestimos_Inexistente_Por_Id()
+    {
+      var response = _service.GetWithLoans(1);
 
       response.Error.Message.Should().Be("Livro não encontrado(a)!");
       response.Error.StatusCode.Should().Be(404);

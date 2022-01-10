@@ -54,7 +54,7 @@ namespace Tests.Unit.Services
       var loan = new Models.Loan(student, book) { Id = 1 };
 
       _studentService.Setup(studentService => studentService.Get(1)).Returns(responseStudent);
-      _bookService.Setup(bookService => bookService.Get(1)).Returns(responseBook);
+      _bookService.Setup(bookService => bookService.GetWithLoans(1)).Returns(responseBook);
       _loans.Setup(repository => repository.Add(It.IsAny<Models.Loan>())).Returns(loan);
 
       var response = _service.Add(1, 1);
@@ -95,7 +95,7 @@ namespace Tests.Unit.Services
       responseBook.Error = new ErrorObjectNotFound("Livro");
 
       _studentService.Setup(studentService => studentService.Get(1)).Returns(responseStudent);
-      _bookService.Setup(studentService => studentService.Get(0)).Returns(responseBook);
+      _bookService.Setup(bookService => bookService.GetWithLoans(0)).Returns(responseBook);
 
       var response = _service.Add(1, 0);
 
@@ -125,7 +125,7 @@ namespace Tests.Unit.Services
       book.SetLoan(loan);
 
       _studentService.Setup(studentService => studentService.Get(1)).Returns(responseStudent);
-      _bookService.Setup(studentService => studentService.Get(2)).Returns(responseBook);
+      _bookService.Setup(bookService => bookService.GetWithLoans(2)).Returns(responseBook);
 
       var response = _service.Add(1, 2);
 

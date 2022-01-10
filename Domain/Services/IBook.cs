@@ -18,5 +18,7 @@ namespace Domain.Services
     IEnumerable<Book> GetAllWithLoans();
 
     IEnumerable<Book> GetAllWithLoansWithStudent();
+
+    IResponse<Book> GetWithLoans(int id);
   }
 }
