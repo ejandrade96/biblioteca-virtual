@@ -13,18 +13,16 @@ namespace webapp.ViewModels.Book
 
     public LoanViewModel(IBook service, IStudent studentService)
     {
-      Books = service.GetAllWithLoansWithStudent().Select(book =>
+      Books = service.GetAllWithLoansWithStudent().Select(book => new BookLoanViewModel
       {
-        return new BookLoanViewModel
-        {
-          Id = book.Id,
-          Title = book.Title,
-          Author = book.Author,
-          ISBN = book.ISBN,
-          Pages = book.Pages,
-          Edition = book.Edition,
-          LoanStatus = book.IsBorrowed() ? book.GetLoanStudentLogin() : "Disponível"
-        };
+        Id = book.Id,
+        Title = book.Title,
+        Author = book.Author,
+        ISBN = book.ISBN,
+        Pages = book.Pages,
+        Edition = book.Edition,
+        LoanStatus = book.IsBorrowed() ? book.GetLoanStudentLogin() : "Disponível",
+        LoanId = book.IsBorrowed() ? book.GetCurrentLoanId() : 0
       }).ToList();
 
       Students = studentService.GetAll(Status.Active).Select(student => new StudentLoanViewModel

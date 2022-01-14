@@ -138,5 +138,18 @@ namespace webapp.Controllers
 
       return Ok();
     }
+
+    [HttpPost]
+    public IActionResult RegisterBookReturn(int loanId)
+    {
+      var response = _loanService.RegisterBookReturn(loanId);
+
+      if (response.HasError())
+      {
+        return StatusCode(response.Error.StatusCode, new { Message = response.Error.Message });
+      }
+
+      return Ok();
+    }
   }
 }
