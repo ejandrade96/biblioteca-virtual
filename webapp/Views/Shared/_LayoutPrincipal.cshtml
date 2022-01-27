@@ -15,7 +15,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>@ViewData["Title"] - Biblioteca Virtual John's</title>
   <link rel="sortcut icon" href="~/images/logo.png" type="image/png" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -208,6 +208,13 @@
   <!-- Our JS -->
   <script src="~/js/site.js" asp-append-version="true"></script>
 
+  <!-- Chart JS -->
+  <script src="~/home/js/plugins/chartjs.min.js"></script>
+
+  <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="~/home/js/black-dashboard.min.js" asp-append-version="true"></script>
+  <script src="~/home/js/home.js" asp-append-version="true"></script>
+
   @RenderSection("Scripts", required: false)
 
   @if (TempData["Success"] != null)
@@ -240,6 +247,13 @@
         $('.collapse.in').toggleClass('in');
         $('a[aria-expanded=true]').attr('aria-expanded', 'false');
       });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      // O corpo do método Javascript pode ser encontrado em assets/js/demos.js
+      demo.initDashboardPageCharts();
     });
   </script>
 </body>

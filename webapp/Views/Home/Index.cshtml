@@ -4,10 +4,466 @@
   Layout = "~/Views/Shared/_LayoutPrincipal.cshtml";
 }
 
+<!-- Our Custom CSS -->
+<link rel="stylesheet" href="~/home/css/black-dashboard.css" asp-append-version="true" />
+
+<!-- Nucleo Icons -->
+<link rel="stylesheet" href="~/home/css/nucleo-icons.css">
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      
+      <div class="main-panel">
+        <div class="content">
+
+          <div class="row">
+            <div class="col-lg-3" style="padding-right: 8px !important;">
+              <div class="card-home card-home-chart">
+                <div class="card-home-header">
+                  <h5 class="card-home-category">Novos Alunos <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
+                  </h5>
+                </div>
+                <div class="card-home-body">
+                  <div class="chart-area">
+                    <canvas id="NewStudentsOfTheWeekChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3" style="padding-left: 4px !important; padding-right: 8px !important;">
+              <div class="card-home card-home-chart">
+                <div class="card-home-header">
+                  <h5 class="card-home-category">Novos Livros <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
+                  </h5>
+                </div>
+                <div class="card-home-body">
+                  <div class="chart-area">
+                    <canvas id="NewBooksOfTheWeekChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3" style="padding-left: 4px !important; padding-right: 8px !important;">
+              <div class="card-home card-home-chart">
+                <div class="card-home-header">
+                  <h5 class="card-home-category">Empréstimos <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
+                  </h5>
+                </div>
+                <div class="card-home-body">
+                  <div class="chart-area">
+                    <canvas id="LoansOfTheWeekChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3" style="padding-left: 4px !important;">
+              <div class="card-home card-home-chart">
+                <div class="card-home-header">
+                  <h5 class="card-home-category">Devoluções <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
+                  </h5>
+                </div>
+                <div class="card-home-body">
+                  <div class="chart-area">
+                    <canvas id="LoanReturnsTheWeekChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card-home card-home-chart">
+                <div class="card-home-header ">
+                  <div class="row">
+                    <div class="col-sm-6 text-left">
+                      <h2 class="card-home-title">Estatísticas</h2>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="btn-home-group btn-home-group-toggle float-right" data-toggle="buttons">
+                        <label class="btn btn-home-sm btn-home-primary btn-home-simple active" id="0"
+                          style="cursor: pointer !important;">
+                          <input type="radio" name="options" checked>
+                          <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Novos Alunos</span>
+                          <span class="d-block d-sm-none">
+                            <i class="tim-icons icon-single-02"></i>
+                          </span>
+                        </label>
+                        <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="1"
+                          style="cursor: pointer !important;">
+                          <input type="radio" class="d-none d-sm-none" name="options">
+                          <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Novos Livros</span>
+                          <span class="d-block d-sm-none">
+                            <i class="tim-icons icon-book-bookmark"></i>
+                          </span>
+                        </label>
+                        <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="2"
+                          style="cursor: pointer !important;">
+                          <input type="radio" class="d-none" name="options">
+                          <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Empréstimos</span>
+                          <span class="d-block d-sm-none">
+                            <i class="tim-icons icon-book-bookmark"></i>
+                          </span>
+                        </label>
+                        <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="3"
+                          style="cursor: pointer !important;">
+                          <input type="radio" class="d-none" name="options">
+                          <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Devoluções</span>
+                          <span class="d-block d-sm-none">
+                            <i class="tim-icons icon-book-bookmark"></i>
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-home-body">
+                  <div class="chart-area">
+                    <canvas id="chartBig1"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: -35px !important;">
+            <div class="col-lg-6 col-md-12" style="padding-right: 2px !important;">
+              <div class="card-home card-home-tasks">
+                <div class="card-home-header" style="padding: 15px 15px 0 !important;">
+                  <h6 class="title d-inline">ALUNOS 5 ESTRELAS</h6>
+                  <p class="sub-title d-inline">
+                    Pegaram mais
+                    empréstimos</p>
+                </div>
+                <div class="card-home-body ">
+                  <div class="table-home-full-width table-home-responsive">
+                    <table class="table-home">
+                      <thead>
+                        <tr>
+                          <th>Matrícula</th>
+                          <th>Nome/Login</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody style="font-size: 14px !important;">
+                        <tr>
+                          <td>
+                            125478
+                          </td>
+                          <td>
+                            <p class="title-home">Elton John Fernandes de Andrade</p>
+                            <p class="text-home-muted">ejandrade</p>
+                          </td>
+                          <td class="td-actions text-right">
+                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
+                              data-original-title="Send Email">
+                              <i class="tim-icons icon-send"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            125478
+                          </td>
+                          <td>
+                            <p class="title-home">Elton John Fernandes de Andrade</p>
+                            <p class="text-home-muted">ejandrade</p>
+                          </td>
+                          <td class="td-actions text-right">
+                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
+                              data-original-title="Send Email">
+                              <i class="tim-icons icon-send"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            125478
+                          </td>
+                          <td>
+                            <p class="title-home">Elton John Fernandes de Andrade</p>
+                            <p class="text-home-muted">ejandrade</p>
+                          </td>
+                          <td class="td-actions text-right">
+                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
+                              data-original-title="Send Email">
+                              <i class="tim-icons icon-send"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            125478
+                          </td>
+                          <td>
+                            <p class="title-home">Elton John Fernandes de Andrade</p>
+                            <p class="text-home-muted">ejandrade</p>
+                          </td>
+                          <td class="td-actions text-right">
+                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
+                              data-original-title="Send Email">
+                              <i class="tim-icons icon-send"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            125478
+                          </td>
+                          <td>
+                            <p class="title-home">Elton John Fernandes de Andrade</p>
+                            <p class="text-home-muted">ejandrade</p>
+                          </td>
+                          <td class="td-actions text-right">
+                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
+                              data-original-title="Send Email">
+                              <i class="tim-icons icon-send"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            125478
+                          </td>
+                          <td>
+                            <p class="title-home">Elton John Fernandes de Andrade</p>
+                            <p class="text-home-muted">ejandrade</p>
+                          </td>
+                          <td class="td-actions text-right">
+                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
+                              data-original-title="Send Email">
+                              <i class="tim-icons icon-send"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            125478
+                          </td>
+                          <td>
+                            <p class="title-home">Elton John Fernandes de Andrade</p>
+                            <p class="text-home-muted">ejandrade</p>
+                          </td>
+                          <td class="td-actions text-right">
+                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
+                              data-original-title="Send Email">
+                              <i class="tim-icons icon-send"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            125478
+                          </td>
+                          <td>
+                            <p class="title-home">Elton John Fernandes de Andrade</p>
+                            <p class="text-home-muted">ejandrade</p>
+                          </td>
+                          <td class="td-actions text-right">
+                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
+                              data-original-title="Send Email">
+                              <i class="tim-icons icon-send"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            125478
+                          </td>
+                          <td>
+                            <p class="title-home">Elton John Fernandes de Andrade</p>
+                            <p class="text-home-muted">ejandrade</p>
+                          </td>
+                          <td class="td-actions text-right">
+                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
+                              data-original-title="Send Email">
+                              <i class="tim-icons icon-send"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            125478
+                          </td>
+                          <td>
+                            <p class="title-home">Elton John Fernandes de Andrade</p>
+                            <p class="text-home-muted">ejandrade</p>
+                          </td>
+                          <td class="td-actions text-right">
+                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
+                              data-original-title="Send Email">
+                              <i class="tim-icons icon-send"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12" style="padding-left: 8px !important;">
+              <div class="card-home card-home-tasks">
+                <div class="card-home-header" style="padding: 15px 15px 0 !important;">
+                  <h6 class="title d-inline"> LIVROS 5
+                    ESTRELAS</h6>
+                  <p class="sub-title d-inline">
+                    Mais emprestados</p>
+                </div>
+                <div class="card-home-body">
+                  <div class="table-home-full-width table-home-responsive">
+                    <table class="table-home">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>
+                            Título
+                          </th>
+                          <th>
+                            Autor
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <img
+                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
+                              width="80" alt="" style="border-radius: 0.35rem !important;">
+                          </td>
+                          <td>
+                            Triste Fim de Policarpo Quaresma
+                          </td>
+                          <td>
+                            Lima Barreto
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <img
+                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
+                              width="80" alt="">
+                          </td>
+                          <td>
+                            Triste Fim de Policarpo Quaresma
+                          </td>
+                          <td>
+                            Lima Barreto
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <img
+                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
+                              width="80" alt="">
+                          </td>
+                          <td>
+                            Triste Fim de Policarpo Quaresma
+                          </td>
+                          <td>
+                            Lima Barreto
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <img
+                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
+                              width="80" alt="">
+                          </td>
+                          <td>
+                            Triste Fim de Policarpo Quaresma
+                          </td>
+                          <td>
+                            Lima Barreto
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <img
+                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
+                              width="80" alt="">
+                          </td>
+                          <td>
+                            Triste Fim de Policarpo Quaresma
+                          </td>
+                          <td>
+                            Lima Barreto
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <img
+                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
+                              width="80" alt="">
+                          </td>
+                          <td>
+                            Triste Fim de Policarpo Quaresma
+                          </td>
+                          <td>
+                            Lima Barreto
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <img
+                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
+                              width="80" alt="">
+                          </td>
+                          <td>
+                            Triste Fim de Policarpo Quaresma
+                          </td>
+                          <td>
+                            Lima Barreto
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <img
+                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
+                              width="80" alt="">
+                          </td>
+                          <td>
+                            Triste Fim de Policarpo Quaresma
+                          </td>
+                          <td>
+                            Lima Barreto
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <img
+                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
+                              width="80" alt="">
+                          </td>
+                          <td>
+                            Triste Fim de Policarpo Quaresma
+                          </td>
+                          <td>
+                            Lima Barreto
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <img
+                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
+                              width="80" alt="">
+                          </td>
+                          <td>
+                            Triste Fim de Policarpo Quaresma
+                          </td>
+                          <td>
+                            Lima Barreto
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
