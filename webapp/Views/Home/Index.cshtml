@@ -1,4 +1,5 @@
-﻿@model webapp.ViewModels.Home.IndexViewModel;
+﻿@using webapp.Helpers
+@model webapp.ViewModels.Home.IndexViewModel;
 @{
   ViewData["Title"] = "Home";
   Layout = "~/Views/Shared/_LayoutPrincipal.cshtml";
@@ -25,7 +26,7 @@
                 </div>
                 <div class="card-home-body">
                   <div class="chart-area">
-                    <canvas id="NewStudentsOfTheWeekChart"></canvas>
+                    <canvas id="newStudentsOfTheWeekChart"></canvas>
                   </div>
                 </div>
               </div>
@@ -38,7 +39,7 @@
                 </div>
                 <div class="card-home-body">
                   <div class="chart-area">
-                    <canvas id="NewBooksOfTheWeekChart"></canvas>
+                    <canvas id="newBooksOfTheWeekChart"></canvas>
                   </div>
                 </div>
               </div>
@@ -51,7 +52,7 @@
                 </div>
                 <div class="card-home-body">
                   <div class="chart-area">
-                    <canvas id="LoansOfTheWeekChart"></canvas>
+                    <canvas id="loansOfTheWeekChart"></canvas>
                   </div>
                 </div>
               </div>
@@ -64,7 +65,7 @@
                 </div>
                 <div class="card-home-body">
                   <div class="chart-area">
-                    <canvas id="LoanReturnsTheWeekChart"></canvas>
+                    <canvas id="loanReturnsTheWeekChart"></canvas>
                   </div>
                 </div>
               </div>
@@ -81,15 +82,15 @@
                     </div>
                     <div class="col-sm-6">
                       <div class="btn-home-group btn-home-group-toggle float-right" data-toggle="buttons">
-                        <label class="btn btn-home-sm btn-home-primary btn-home-simple active" id="0"
-                          style="cursor: pointer !important;">
+                        <label class="btn btn-home-sm btn-home-primary btn-home-simple active"
+                          id="generalChartTabNewStudents" style="cursor: pointer !important;">
                           <input type="radio" name="options" checked>
                           <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Novos Alunos</span>
                           <span class="d-block d-sm-none">
                             <i class="tim-icons icon-single-02"></i>
                           </span>
                         </label>
-                        <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="1"
+                        <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="generalChartTabNewBooks"
                           style="cursor: pointer !important;">
                           <input type="radio" class="d-none d-sm-none" name="options">
                           <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Novos Livros</span>
@@ -97,7 +98,7 @@
                             <i class="tim-icons icon-book-bookmark"></i>
                           </span>
                         </label>
-                        <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="2"
+                        <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="generalChartTabLoans"
                           style="cursor: pointer !important;">
                           <input type="radio" class="d-none" name="options">
                           <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Empréstimos</span>
@@ -105,7 +106,7 @@
                             <i class="tim-icons icon-book-bookmark"></i>
                           </span>
                         </label>
-                        <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="3"
+                        <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="generalChartTabLoanReturns"
                           style="cursor: pointer !important;">
                           <input type="radio" class="d-none" name="options">
                           <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Devoluções</span>
@@ -119,7 +120,7 @@
                 </div>
                 <div class="card-home-body">
                   <div class="chart-area">
-                    <canvas id="chartBig1"></canvas>
+                    <canvas id="homePageGeneralChartOfTheYear"></canvas>
                   </div>
                 </div>
               </div>
@@ -146,156 +147,27 @@
                         </tr>
                       </thead>
                       <tbody style="font-size: 14px !important;">
-                        <tr>
-                          <td>
-                            125478
-                          </td>
-                          <td>
-                            <p class="title-home">Elton John Fernandes de Andrade</p>
-                            <p class="text-home-muted">ejandrade</p>
-                          </td>
-                          <td class="td-actions text-right">
-                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
+                        @if (Model.FiveStarStudents != null)
+                        {
+                          @foreach (var student in Model.FiveStarStudents)
+                          {
+                            <tr>
+                              <td>
+                                @Html.DisplayFor(modelItem => student.Record)
+                              </td>
+                              <td>
+                                <p class="title-home">@Html.DisplayFor(modelItem => student.Name)</p>
+                                <p class="text-home-muted">@Html.DisplayFor(modelItem => student.Login)</p>
+                              </td>
+                              <td class="td-actions text-right">
+                                <button type="button" rel="tooltip" title="" class="btn btn-home-link"
                               data-original-title="Send Email">
-                              <i class="tim-icons icon-send"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            125478
-                          </td>
-                          <td>
-                            <p class="title-home">Elton John Fernandes de Andrade</p>
-                            <p class="text-home-muted">ejandrade</p>
-                          </td>
-                          <td class="td-actions text-right">
-                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
-                              data-original-title="Send Email">
-                              <i class="tim-icons icon-send"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            125478
-                          </td>
-                          <td>
-                            <p class="title-home">Elton John Fernandes de Andrade</p>
-                            <p class="text-home-muted">ejandrade</p>
-                          </td>
-                          <td class="td-actions text-right">
-                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
-                              data-original-title="Send Email">
-                              <i class="tim-icons icon-send"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            125478
-                          </td>
-                          <td>
-                            <p class="title-home">Elton John Fernandes de Andrade</p>
-                            <p class="text-home-muted">ejandrade</p>
-                          </td>
-                          <td class="td-actions text-right">
-                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
-                              data-original-title="Send Email">
-                              <i class="tim-icons icon-send"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            125478
-                          </td>
-                          <td>
-                            <p class="title-home">Elton John Fernandes de Andrade</p>
-                            <p class="text-home-muted">ejandrade</p>
-                          </td>
-                          <td class="td-actions text-right">
-                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
-                              data-original-title="Send Email">
-                              <i class="tim-icons icon-send"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            125478
-                          </td>
-                          <td>
-                            <p class="title-home">Elton John Fernandes de Andrade</p>
-                            <p class="text-home-muted">ejandrade</p>
-                          </td>
-                          <td class="td-actions text-right">
-                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
-                              data-original-title="Send Email">
-                              <i class="tim-icons icon-send"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            125478
-                          </td>
-                          <td>
-                            <p class="title-home">Elton John Fernandes de Andrade</p>
-                            <p class="text-home-muted">ejandrade</p>
-                          </td>
-                          <td class="td-actions text-right">
-                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
-                              data-original-title="Send Email">
-                              <i class="tim-icons icon-send"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            125478
-                          </td>
-                          <td>
-                            <p class="title-home">Elton John Fernandes de Andrade</p>
-                            <p class="text-home-muted">ejandrade</p>
-                          </td>
-                          <td class="td-actions text-right">
-                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
-                              data-original-title="Send Email">
-                              <i class="tim-icons icon-send"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            125478
-                          </td>
-                          <td>
-                            <p class="title-home">Elton John Fernandes de Andrade</p>
-                            <p class="text-home-muted">ejandrade</p>
-                          </td>
-                          <td class="td-actions text-right">
-                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
-                              data-original-title="Send Email">
-                              <i class="tim-icons icon-send"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            125478
-                          </td>
-                          <td>
-                            <p class="title-home">Elton John Fernandes de Andrade</p>
-                            <p class="text-home-muted">ejandrade</p>
-                          </td>
-                          <td class="td-actions text-right">
-                            <button type="button" rel="tooltip" title="" class="btn btn-home-link"
-                              data-original-title="Send Email">
-                              <i class="tim-icons icon-send"></i>
-                            </button>
-                          </td>
-                        </tr>
+                                  <i class="tim-icons icon-send"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          }
+                        }
                       </tbody>
                     </table>
                   </div>
@@ -325,136 +197,34 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>
-                            <img
-                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
-                              width="80" alt="" style="border-radius: 0.35rem !important;">
-                          </td>
-                          <td>
-                            Triste Fim de Policarpo Quaresma
-                          </td>
-                          <td>
-                            Lima Barreto
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img
-                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
-                              width="80" alt="">
-                          </td>
-                          <td>
-                            Triste Fim de Policarpo Quaresma
-                          </td>
-                          <td>
-                            Lima Barreto
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img
-                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
-                              width="80" alt="">
-                          </td>
-                          <td>
-                            Triste Fim de Policarpo Quaresma
-                          </td>
-                          <td>
-                            Lima Barreto
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img
-                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
-                              width="80" alt="">
-                          </td>
-                          <td>
-                            Triste Fim de Policarpo Quaresma
-                          </td>
-                          <td>
-                            Lima Barreto
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img
-                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
-                              width="80" alt="">
-                          </td>
-                          <td>
-                            Triste Fim de Policarpo Quaresma
-                          </td>
-                          <td>
-                            Lima Barreto
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img
-                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
-                              width="80" alt="">
-                          </td>
-                          <td>
-                            Triste Fim de Policarpo Quaresma
-                          </td>
-                          <td>
-                            Lima Barreto
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img
-                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
-                              width="80" alt="">
-                          </td>
-                          <td>
-                            Triste Fim de Policarpo Quaresma
-                          </td>
-                          <td>
-                            Lima Barreto
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img
-                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
-                              width="80" alt="">
-                          </td>
-                          <td>
-                            Triste Fim de Policarpo Quaresma
-                          </td>
-                          <td>
-                            Lima Barreto
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img
-                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
-                              width="80" alt="">
-                          </td>
-                          <td>
-                            Triste Fim de Policarpo Quaresma
-                          </td>
-                          <td>
-                            Lima Barreto
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img
-                              src="https://images-na.ssl-images-amazon.com/images/I/51aNTePhOmS._SX312_BO1,204,203,200_.jpg"
-                              width="80" alt="">
-                          </td>
-                          <td>
-                            Triste Fim de Policarpo Quaresma
-                          </td>
-                          <td>
-                            Lima Barreto
-                          </td>
-                        </tr>
+                        @if (Model.FiveStarBooks != null)
+                        {
+                          @foreach (var book in Model.FiveStarBooks)
+                          {
+                            <tr>
+                              <td>
+                                @if (string.IsNullOrWhiteSpace(book.ImagePath))
+                                {
+                                  <img src='@Url.Content("~/images/book/default.png")' ;" width="95" alt=""
+                              style="border-radius: 0.35rem !important;"
+                              onerror="this.onerror=null;this.src='@Url.Content("~/images/book/default.png")';">
+                                }
+                                else
+                                {
+                                  <img src="@Url.Content(@book.ImagePath)" width="80" alt=""
+                              style="border-radius: 0.35rem !important;"
+                              onerror="this.onerror=null;this.src='@Url.Content("~/images/book/default.png")';">
+                                }
+                              </td>
+                              <td>
+                                @Html.DisplayFor(modelItem => book.Title)
+                              </td>
+                              <td>
+                                @Html.DisplayFor(modelItem => book.Author)
+                              </td>
+                            </tr>
+                          }
+                        }
                       </tbody>
                     </table>
                   </div>
@@ -467,3 +237,25 @@
     </div>
   </div>
 </div>
+
+@section Scripts{
+<!-- Chart JS -->
+<script src="~/home/js/plugins/chartjs.min.js"></script>
+
+<!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="~/home/js/black-dashboard.min.js" asp-append-version="true"></script>
+<script src="~/home/js/home.js" asp-append-version="true"></script>
+
+<script type="text/javascript">
+  var dataConfigChartNewStudents = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.ChartModelNewStudents));
+  var dataConfigChartNewBooks = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.ChartModelNewBooks));
+  var dataConfigChartLoans = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.ChartModelLoans));
+  var dataConfigChartLoanReturns = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.ChartModelLoanReturns));
+  var dataConfigGeneralChart = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYear));
+  var generalChartLabels = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYear.Labels));
+  var generalChartData = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYear.DataSets[0].Data));
+  var generalChartDataTabNewBooks = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabNewBooks));
+  var generalChartDataTabLoans = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoans));
+  var generalChartDataTabLoanReturns = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoanReturns));
+</script>
+}

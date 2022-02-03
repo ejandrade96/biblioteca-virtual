@@ -166,188 +166,134 @@ demo = {
       }
     };
 
-    var chart_labels = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
-    var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 1000];
 
-    var ctx = document.getElementById("chartBig1").getContext('2d');
+    /**** chartBig1 AREA */
+
+    var ctx = document.getElementById("homePageGeneralChartOfTheYear").getContext('2d');
+    var config = {
+      type: 'line',
+      data: dataConfigGeneralChart,
+      options: gradientChartOptionsConfigurationWithTooltipBlue
+    };
     var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
     gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
     gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
     gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
-
-    var config = {
-      type: 'line',
-      data: {
-        labels: chart_labels,
-        datasets: [{
-          label: "Quantidade",
-          fill: true,
-          backgroundColor: gradientStroke,
-          borderColor: '#1f8ef1',
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          pointBackgroundColor: '#1f8ef1',
-          pointBorderColor: 'rgba(255,255,255,0)',
-          pointHoverBackgroundColor: '#1f8ef1',
-          pointBorderWidth: 20,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 15,
-          pointRadius: 4,
-          data: chart_data,
-        }]
-      },
-      options: gradientChartOptionsConfigurationWithTooltipBlue
-    };
+    config.data.datasets[0].backgroundColor = gradientStroke;
     
     var myChartData = new Chart(ctx, config);
     
-    $("#0").click(function() {
+    $("#generalChartTabNewStudents").click(function() {
       var data = myChartData.config.data;
-      data.datasets[0].data = chart_data;
-      data.labels = chart_labels;
+      data.labels = generalChartLabels;
+      data.datasets[0].data = generalChartData;
       myChartData.update();
     });
-    $("#1").click(function() {
-      var chart_data = [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120];
+    $("#generalChartTabNewBooks").click(function() {
       var data = myChartData.config.data;
-      data.datasets[0].data = chart_data;
-      data.labels = chart_labels;
+      data.labels = generalChartLabels;
+      data.datasets[0].data = generalChartDataTabNewBooks;
       myChartData.update();
     });
-    $("#2").click(function() {
-      var chart_data = [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130];
+    $("#generalChartTabLoans").click(function() {
       var data = myChartData.config.data;
-      data.datasets[0].data = chart_data;
-      data.labels = chart_labels;
+      data.labels = generalChartLabels;
+      data.datasets[0].data = generalChartDataTabLoans;
       myChartData.update();
     });
-    $("#3").click(function() {
-      var chart_data = [130, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 500];
+    $("#generalChartTabLoanReturns").click(function() {
       var data = myChartData.config.data;
-      data.datasets[0].data = chart_data;
-      data.labels = chart_labels;
+      data.labels = generalChartLabels;
+      data.datasets[0].data = generalChartDataTabLoanReturns;
       myChartData.update();
     });
 
 
-    var ctxNewStudents = document.getElementById("NewStudentsOfTheWeekChart").getContext("2d");
+    /**** ctxNewStudents AREA */
+
+    var ctxNewStudents = document.getElementById("newStudentsOfTheWeekChart").getContext("2d");
+    var configChartNewStudents = {
+      type: 'bar',
+      responsive: true,
+      legend: {
+        display: false
+      },
+      data: dataConfigChartNewStudents,
+      options: gradientBarChartConfiguration
+    };
     var gradientStroke = ctxNewStudents.createLinearGradient(0, 230, 0, 50);
     gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
     gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
     gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
+    configChartNewStudents.data.datasets[0].backgroundColor = gradientStroke;
+    configChartNewStudents.data.datasets[0].hoverBackgroundColor = gradientStroke;
+  
+    var myChartNewStudents = new Chart(ctxNewStudents, configChartNewStudents);
 
-    var myChartNewStudents = new Chart(ctxNewStudents, {
+    
+    /**** ctxNewBooks AREA */
+    
+    var ctxNewBooks = document.getElementById("newBooksOfTheWeekChart").getContext("2d");
+    var configChartNewBooks = {
       type: 'bar',
       responsive: true,
       legend: {
         display: false
       },
-      data: {
-        labels: ['SEG', 'TER', 'QUA', 'QUI', 'SEX'],
-        datasets: [{
-          label: "Quantidade",
-          fill: true,
-          backgroundColor: gradientStroke,
-          hoverBackgroundColor: gradientStroke,
-          borderColor: '#1f8ef1',
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          data: [53, 20, 10, 80, 100, 45],
-        }]
-      },
+      data: dataConfigChartNewBooks,
       options: gradientBarChartConfiguration
-    });
-
-
-    var ctxNewBooks = document.getElementById("NewBooksOfTheWeekChart").getContext("2d");
+    };
     var gradientStroke = ctxNewBooks.createLinearGradient(0, 230, 0, 50);
     gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
     gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
     gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
+    configChartNewBooks.data.datasets[0].backgroundColor = gradientStroke;
+    configChartNewBooks.data.datasets[0].hoverBackgroundColor = gradientStroke;
 
-    var myChartNewBooks = new Chart(ctxNewBooks, {
+    var myChartNewBooks = new Chart(ctxNewBooks, configChartNewBooks);
+
+    
+    /**** ctxLoans AREA */
+
+    var ctxLoans = document.getElementById("loansOfTheWeekChart").getContext("2d");
+    var configChartLoans = {
       type: 'bar',
       responsive: true,
       legend: {
         display: false
       },
-      data: {
-        labels: ['SEG', 'TER', 'QUA', 'QUI', 'SEX'],
-        datasets: [{
-          label: "Quantidade",
-          fill: true,
-          backgroundColor: gradientStroke,
-          hoverBackgroundColor: gradientStroke,
-          borderColor: '#1f8ef1',
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          data: [53, 20, 10, 80, 100, 45],
-        }]
-      },
+      data: dataConfigChartLoans,
       options: gradientBarChartConfiguration
-    });
-
-    
-    var ctxLoans = document.getElementById("LoansOfTheWeekChart").getContext("2d");
+    };
     var gradientStroke = ctxLoans.createLinearGradient(0, 230, 0, 50);
     gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
     gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
     gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
+    configChartLoans.data.datasets[0].backgroundColor = gradientStroke;
+    configChartLoans.data.datasets[0].hoverBackgroundColor = gradientStroke;
 
-    var myChartLoans = new Chart(ctxLoans, {
+    var myChartLoans = new Chart(ctxLoans, configChartLoans);
+
+
+    /**** ctxLoanReturns AREA */
+
+    var ctxLoanReturns = document.getElementById("loanReturnsTheWeekChart").getContext("2d");
+    var configChartLoanReturns = {
       type: 'bar',
       responsive: true,
       legend: {
         display: false
       },
-      data: {
-        labels: ['SEG', 'TER', 'QUA', 'QUI', 'SEX'],
-        datasets: [{
-          label: "Quantidade",
-          fill: true,
-          backgroundColor: gradientStroke,
-          hoverBackgroundColor: gradientStroke,
-          borderColor: '#1f8ef1',
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          data: [145, 120, 110, 147, 100, 143],
-        }]
-      },
+      data: dataConfigChartLoanReturns,
       options: gradientBarChartConfiguration
-    });
-
-
-    var ctxLoanReturns = document.getElementById("LoanReturnsTheWeekChart").getContext("2d");
+    }
     var gradientStroke = ctxLoanReturns.createLinearGradient(0, 230, 0, 50);
     gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
     gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
     gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
+    configChartLoanReturns.data.datasets[0].backgroundColor = gradientStroke;
+    configChartLoanReturns.data.datasets[0].hoverBackgroundColor = gradientStroke;
 
-    var myChartLoanReturns = new Chart(ctxLoanReturns, {
-      type: 'bar',
-      responsive: true,
-      legend: {
-        display: false
-      },
-      data: {
-        labels: ['SEG', 'TER', 'QUA', 'QUI', 'SEX'],
-        datasets: [{
-          label: "Quantidade",
-          fill: true,
-          backgroundColor: gradientStroke,
-          hoverBackgroundColor: gradientStroke,
-          borderColor: '#1f8ef1',
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          data: [21, 27, 35, 47, 24, 143],
-        }]
-      },
-      options: gradientBarChartConfiguration
-    });
+    var myChartLoanReturns = new Chart(ctxLoanReturns, configChartLoanReturns);
   },
 };
