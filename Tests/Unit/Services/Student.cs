@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Domain.Repository;
@@ -110,6 +111,7 @@ namespace Tests.Unit.Services
         student.Login.Should().NotBeNullOrWhiteSpace();
         student.Record.Should().NotBe(null);
         student.Record.Should().BeGreaterThan(0);
+        student.CreatedAt.Should().NotBe(DateTime.MinValue);
         student.Status.Should().Should().NotBeNull();
         student.Contact.Email.Should().NotBeNullOrWhiteSpace();
         student.Contact.CellPhone.Should().NotBeNullOrWhiteSpace();
@@ -157,6 +159,7 @@ namespace Tests.Unit.Services
         student.Login.Should().NotBeNullOrWhiteSpace();
         student.Record.Should().NotBe(null);
         student.Record.Should().BeGreaterThan(0);
+        student.CreatedAt.Should().NotBe(DateTime.MinValue);
         student.Status.Should().Should().NotBeNull();
         student.Contact.Email.Should().NotBeNullOrWhiteSpace();
         student.Contact.CellPhone.Should().NotBeNullOrWhiteSpace();
@@ -204,6 +207,7 @@ namespace Tests.Unit.Services
         student.Login.Should().NotBeNullOrWhiteSpace();
         student.Record.Should().NotBe(null);
         student.Record.Should().BeGreaterThan(0);
+        student.CreatedAt.Should().NotBe(DateTime.MinValue);
         student.Status.Should().Should().NotBeNull();
         student.Contact.Email.Should().NotBeNullOrWhiteSpace();
         student.Contact.CellPhone.Should().NotBeNullOrWhiteSpace();
@@ -347,6 +351,7 @@ namespace Tests.Unit.Services
       studentFound.Login.Should().NotBeNullOrWhiteSpace();
       studentFound.Record.Should().NotBe(null);
       studentFound.Record.Should().BeGreaterThan(0);
+      student.CreatedAt.Should().NotBe(DateTime.MinValue);
       studentFound.Status.ToString().Should().Be("Active");
       studentFound.Contact.Email.Should().NotBeNullOrWhiteSpace();
       studentFound.Contact.CellPhone.Should().NotBeNullOrWhiteSpace();

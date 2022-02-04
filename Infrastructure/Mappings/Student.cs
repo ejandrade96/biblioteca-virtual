@@ -16,6 +16,7 @@ namespace Infrastructure.Mappings
       builder.Property(student => student.Name).IsRequired();
       builder.Property(student => student.Login).IsRequired();
       builder.Property(student => student.Record).IsRequired();
+      builder.Property(student => student.CreatedAt).IsRequired();
       builder.Property(student => student.Status).HasConversion(status => status.ToString(),
                                                                 status => (Status)Enum.Parse(typeof(Status), status))
                                                  .HasColumnName("Status")
