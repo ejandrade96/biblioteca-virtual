@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - BibliotecaVirtual
 on:
   push:
     branches:
-      - main
+      - include_branch
   workflow_dispatch:
   
 defaults:
