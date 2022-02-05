@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Domain.ValueObjects;
 
@@ -10,6 +11,8 @@ namespace Domain.Models
     public string Login { get; protected set; }
 
     public int Record { get; protected set; }
+
+    public DateTime CreatedAt { get; protected set; }
 
     public Contact Contact { get; protected set; }
 
@@ -31,6 +34,7 @@ namespace Domain.Models
       Contact = contact;
       Address = address;
       Status = Status.Active;
+      CreatedAt = DateTime.Now;
     }
 
     public void UpdateValues(Student student)

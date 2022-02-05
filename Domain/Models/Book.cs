@@ -18,6 +18,8 @@ namespace Domain.Models
 
     public string Image { get; protected set; }
 
+    public DateTime CreatedAt { get; set; }
+
     public List<Loan> Loans { get; protected set; } = new List<Loan>();
 
     protected Book()
@@ -31,6 +33,7 @@ namespace Domain.Models
       ISBN = isbn;
       Pages = pages;
       Edition = edition;
+      CreatedAt = DateTime.Now;
     }
 
     public void UpdateValues(Book book)

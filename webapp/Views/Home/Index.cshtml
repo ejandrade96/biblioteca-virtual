@@ -1,13 +1,261 @@
-﻿@model webapp.ViewModels.Home.IndexViewModel;
+﻿@using webapp.Helpers
+@model webapp.ViewModels.Home.IndexViewModel;
 @{
   ViewData["Title"] = "Home";
   Layout = "~/Views/Shared/_LayoutPrincipal.cshtml";
 }
 
+<!-- Our Custom CSS -->
+<link rel="stylesheet" href="~/home/css/black-dashboard.css" asp-append-version="true" />
+
+<!-- Nucleo Icons -->
+<link rel="stylesheet" href="~/home/css/nucleo-icons.css">
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      
+      <div class="main-panel">
+        <div class="content">
+
+          <div class="row">
+            <div class="col-lg-3" style="padding-right: 8px !important;">
+              <div class="card-home card-home-chart">
+                <div class="card-home-header">
+                  <h5 class="card-home-category">Novos Alunos <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
+                  </h5>
+                </div>
+                <div class="card-home-body">
+                  <div class="chart-area">
+                    <canvas id="newStudentsOfTheWeekChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3" style="padding-left: 4px !important; padding-right: 8px !important;">
+              <div class="card-home card-home-chart">
+                <div class="card-home-header">
+                  <h5 class="card-home-category">Novos Livros <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
+                  </h5>
+                </div>
+                <div class="card-home-body">
+                  <div class="chart-area">
+                    <canvas id="newBooksOfTheWeekChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3" style="padding-left: 4px !important; padding-right: 8px !important;">
+              <div class="card-home card-home-chart">
+                <div class="card-home-header">
+                  <h5 class="card-home-category">Empréstimos <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
+                  </h5>
+                </div>
+                <div class="card-home-body">
+                  <div class="chart-area">
+                    <canvas id="loansOfTheWeekChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3" style="padding-left: 4px !important;">
+              <div class="card-home card-home-chart">
+                <div class="card-home-header">
+                  <h5 class="card-home-category">Devoluções <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
+                  </h5>
+                </div>
+                <div class="card-home-body">
+                  <div class="chart-area">
+                    <canvas id="loanReturnsTheWeekChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card-home card-home-chart">
+                <div class="card-home-header ">
+                  <div class="row">
+                    <div class="col-sm-6 text-left">
+                      <h2 class="card-home-title">Estatísticas <span style="font-size: 0.85rem;">(Últimos 12 meses)</span></h2>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="btn-home-group btn-home-group-toggle float-right" data-toggle="buttons">
+                        <label class="btn btn-home-sm btn-home-primary btn-home-simple active"
+                          id="generalChartTabNewStudents" style="cursor: pointer !important;">
+                          <input type="radio" name="options" checked>
+                          <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Novos Alunos</span>
+                          <span class="d-block d-sm-none">
+                            <i class="tim-icons icon-single-02"></i>
+                          </span>
+                        </label>
+                        <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="generalChartTabNewBooks"
+                          style="cursor: pointer !important;">
+                          <input type="radio" class="d-none d-sm-none" name="options">
+                          <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Novos Livros</span>
+                          <span class="d-block d-sm-none">
+                            <i class="tim-icons icon-book-bookmark"></i>
+                          </span>
+                        </label>
+                        <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="generalChartTabLoans"
+                          style="cursor: pointer !important;">
+                          <input type="radio" class="d-none" name="options">
+                          <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Empréstimos</span>
+                          <span class="d-block d-sm-none">
+                            <i class="tim-icons icon-book-bookmark"></i>
+                          </span>
+                        </label>
+                        <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="generalChartTabLoanReturns"
+                          style="cursor: pointer !important;">
+                          <input type="radio" class="d-none" name="options">
+                          <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Devoluções</span>
+                          <span class="d-block d-sm-none">
+                            <i class="tim-icons icon-book-bookmark"></i>
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-home-body">
+                  <div class="chart-area">
+                    <canvas id="homePageGeneralChartOfTheYear"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: -35px !important;">
+            <div class="col-lg-6 col-md-12" style="padding-right: 2px !important;">
+              <div class="card-home card-home-tasks">
+                <div class="card-home-header" style="padding: 15px 15px 0 !important;">
+                  <h6 class="title d-inline">ALUNOS 5 ESTRELAS</h6>
+                  <p class="sub-title d-inline">
+                    Pegaram mais
+                    empréstimos</p>
+                </div>
+                <div class="card-home-body ">
+                  <div class="table-home-full-width table-home-responsive">
+                    <table class="table-home">
+                      <thead>
+                        <tr>
+                          <th>Matrícula</th>
+                          <th>Nome/Login</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody style="font-size: 14px !important;">
+                        @if (Model.FiveStarStudents != null)
+                        {
+                          @foreach (var student in Model.FiveStarStudents)
+                          {
+                            <tr>
+                              <td>
+                                @Html.DisplayFor(modelItem => student.Record)
+                              </td>
+                              <td>
+                                <p class="title-home">@Html.DisplayFor(modelItem => student.Name)</p>
+                                <p class="text-home-muted">@Html.DisplayFor(modelItem => student.Login)</p>
+                              </td>
+                              <td class="td-actions text-right">
+                                <button type="button" rel="tooltip" title="" class="btn btn-home-link"
+                              data-original-title="Send Email">
+                                  <i class="tim-icons icon-send"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          }
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12" style="padding-left: 8px !important;">
+              <div class="card-home card-home-tasks">
+                <div class="card-home-header" style="padding: 15px 15px 0 !important;">
+                  <h6 class="title d-inline"> LIVROS 5
+                    ESTRELAS</h6>
+                  <p class="sub-title d-inline">
+                    Mais emprestados</p>
+                </div>
+                <div class="card-home-body">
+                  <div class="table-home-full-width table-home-responsive">
+                    <table class="table-home">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>
+                            Título
+                          </th>
+                          <th>
+                            Autor
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @if (Model.FiveStarBooks != null)
+                        {
+                          @foreach (var book in Model.FiveStarBooks)
+                          {
+                            <tr>
+                              <td>
+                                @if (string.IsNullOrWhiteSpace(book.ImagePath))
+                                {
+                                  <img src='@Url.Content("~/images/book/default.png")' ;" width="95" alt=""
+                              style="border-radius: 0.35rem !important;"
+                              onerror="this.onerror=null;this.src='@Url.Content("~/images/book/default.png")';">
+                                }
+                                else
+                                {
+                                  <img src="@Url.Content(@book.ImagePath)" width="80" alt=""
+                              style="border-radius: 0.35rem !important;"
+                              onerror="this.onerror=null;this.src='@Url.Content("~/images/book/default.png")';">
+                                }
+                              </td>
+                              <td>
+                                @Html.DisplayFor(modelItem => book.Title)
+                              </td>
+                              <td>
+                                @Html.DisplayFor(modelItem => book.Author)
+                              </td>
+                            </tr>
+                          }
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+@section Scripts{
+<!-- Chart JS -->
+<script src="~/home/js/plugins/chartjs.min.js"></script>
+
+<!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="~/home/js/black-dashboard.min.js" asp-append-version="true"></script>
+<script src="~/home/js/home.js" asp-append-version="true"></script>
+
+<script type="text/javascript">
+  var dataConfigChartNewStudents = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.ChartModelNewStudents));
+  var dataConfigChartNewBooks = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.ChartModelNewBooks));
+  var dataConfigChartLoans = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.ChartModelLoans));
+  var dataConfigChartLoanReturns = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.ChartModelLoanReturns));
+  var dataConfigGeneralChart = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYear));
+  var generalChartLabels = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYear.Labels));
+  var generalChartData = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYear.DataSets[0].Data));
+  var generalChartDataTabNewBooks = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabNewBooks));
+  var generalChartDataTabLoans = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoans));
+  var generalChartDataTabLoanReturns = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoanReturns));
+</script>
+}

@@ -59,10 +59,49 @@ body {
 }
 */
 
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+html {
+  font-family: sans-serif !important;
+  line-height: 1.15 !important;
+  -webkit-text-size-adjust: 100% !important;
+  -webkit-tap-highlight-color: rgba(34, 42, 66, 0) !important;
+}
+
+body {
+  margin: 0 !important;
+  font-family: 'Poppins', sans-serif !important;
+  background: #fafafa !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  color: black !important;
+  text-align: left !important;
+  -webkit-font-smoothing: antialiased !important;
+  display: block !important;
+  overflow-x: hidden !important;
+}
+
 footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   white-space: nowrap;
   line-height: 60px;
+}
+
+::-webkit-scrollbar
+{
+  width: 8px;  /* for vertical scrollbars */
+  height: 8px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track
+{
+  background: #fafafa;
+}
+
+::-webkit-scrollbar-thumb
+{
+  /* background: #17a2b8; */
+  background: #a7a6a4;
 }

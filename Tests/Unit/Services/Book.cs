@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Domain.Repository;
@@ -64,6 +65,7 @@ namespace Tests.Unit.Services
         book.Edition.Should().NotBe(null);
         book.Edition.Should().BeGreaterThan(0);
         book.Image.Should().NotBeNullOrWhiteSpace();
+        book.CreatedAt.Should().NotBe(DateTime.MinValue);
       });
     }
 
@@ -134,6 +136,7 @@ namespace Tests.Unit.Services
       bookFound.Edition.Should().NotBe(null);
       bookFound.Edition.Should().BeGreaterThan(0);
       bookFound.Image.Should().NotBeNullOrWhiteSpace();
+      book.CreatedAt.Should().NotBe(DateTime.MinValue);
     }
 
     [Fact]
@@ -179,6 +182,7 @@ namespace Tests.Unit.Services
       bookFound.Edition.Should().NotBe(null);
       bookFound.Edition.Should().BeGreaterThan(0);
       bookFound.Image.Should().NotBeNullOrWhiteSpace();
+      book.CreatedAt.Should().NotBe(DateTime.MinValue);
       bookFound.Loans.Should().HaveCountGreaterThan(0);
     }
 
