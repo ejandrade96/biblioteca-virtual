@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Domain.DTOs;
 using Domain.Models;
 using Domain.ValueObjects;
 
@@ -17,5 +18,7 @@ namespace Domain.Services
     IResponse<Student> Update(Student student);
 
     int GetNextRecord();
+
+    IEnumerable<ChartContent> GetNumberStudentsAddedInPeriod(int days);
   }
 }

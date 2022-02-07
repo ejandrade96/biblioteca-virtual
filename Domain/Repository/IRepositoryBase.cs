@@ -17,6 +17,16 @@ namespace Domain.Repository
 
     void Update(T entity);
 
+    /// <summary>
+    /// Returns the record that matches the predicate
+    /// </summary>
+    /// <param name="predicate"></param>
     T First(Expression<Func<T, bool>> predicate);
+
+    /// <summary>
+    /// Returns all records that match the predicate
+    /// </summary>
+    /// <param name="predicate"></param>
+    IQueryable<T> FindAll(Expression<Func<T, bool>> predicate);
   }
 }

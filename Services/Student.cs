@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using Domain.Errors;
 using System.Linq;
 using Domain.ValueObjects;
+using System;
+using Infrastructure.Helpers;
+using Domain.DTOs;
+using System.Globalization;
 
 namespace Services
 {
@@ -118,6 +122,20 @@ namespace Services
         return 125478;
 
       return students.Max(x => x.Record) + 1;
+    }
+
+    public IEnumerable<ChartContent> GetNumberStudentsAddedInPeriod(int days)
+    {
+      var startDay = DateTime.Now.AddDays(-(days - 1)).StartOfDay();
+      var endDay = DateTime.Now.EndOfDay();
+
+      return _students.FindAll(x => x.CreatedAt >= startDay && x.CreatedAt <= endDay)
+                              .GroupBy(x => x.CreatedAt.Date)
+                              .Select(x => new ChartContent
+                              {
+                                Day = x.Key.ToString("ddd", new CultureInfo("pt-BR")).ToUpper().Replace(".", ""),
+                                Number = x.Count()
+                              });
     }
 
     private IError CheckForErrorsToAdd(Models.Student student)

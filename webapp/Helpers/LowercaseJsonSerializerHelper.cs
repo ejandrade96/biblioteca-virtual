@@ -3,7 +3,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace webapp.Helpers
 {
-  public static class LowercaseJsonSerializer
+  public static class LowercaseJsonSerializerHelper
   {
     private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
     {

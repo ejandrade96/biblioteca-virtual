@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Domain.Services;
 
 namespace webapp.ViewModels.Home
 {
@@ -24,16 +26,17 @@ namespace webapp.ViewModels.Home
 
     public List<BookViewModel> FiveStarBooks { get; set; }
 
-    public IndexViewModel()
+    public IndexViewModel(IStudent studentService)
     {
+      var groupingNewStudents = studentService.GetNumberStudentsAddedInPeriod(5);
       ChartModelNewStudents = new ChartModelViewModel
       {
-        Labels = new List<string> { "SEG", "TER", "QUA", "QUI", "SEX" },
+        Labels = groupingNewStudents.Select(x => x.Day).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = new List<int> { 145, 120, 110, 147, 210, 143 }
+            Data = groupingNewStudents.Select(x => x.Number).ToList()
           }
         }
       };

@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
+using Domain.DTOs;
 using Domain.Repository;
 using Domain.Services;
 using Domain.ValueObjects;
 using FluentAssertions;
 using Infrastructure.Errors;
+using Infrastructure.Helpers;
 using Moq;
 using Xunit;
 using Models = Domain.Models;
@@ -408,6 +412,48 @@ namespace Tests.Unit.Services
       var record = _service.GetNextRecord();
 
       record.Should().Be(125478);
+    }
+
+    [Fact]
+    public void Deve_Retornar_Um_Agrupamento_Da_Quantidade_De_Alunos_Adicionados_Nos_Ultimos_Dias()
+    {
+      var numberOfDays = 5;
+      var startDay = DateTime.Now.AddDays(-(numberOfDays - 1)).StartOfDay();
+      var endDay = DateTime.Now.EndOfDay();
+
+      var contact = new Models.Contact("joao.villar@live.com", "1154218547");
+      var streetType = StreetType.StreetTypes.First(x => x.Code == "R");
+      var state = State.States.First(x => x.Acronym == "SP");
+      var address = new Models.Address("09421700", streetType, "dos Vianas", 412, "Centro", "São Bernardo do Campo", state);
+
+      var student1 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      var firstDay = DateTime.Now.AddDays(-(numberOfDays - 1)).StartOfDay();
+      student1.SetCreatedAt(firstDay);
+
+      var student2 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      var secondDay = DateTime.Now.AddDays(-(numberOfDays - 2));
+      student2.SetCreatedAt(secondDay);
+      var student3 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student3.SetCreatedAt(secondDay.EndOfDay());
+
+      var student4 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      var lastDay = DateTime.Now.EndOfDay();
+      student4.SetCreatedAt(lastDay);
+
+      var students = new List<Models.Student> { student1, student2, student3, student4 };
+
+      _students.Setup(repository => repository.FindAll(x => x.CreatedAt >= startDay && x.CreatedAt <= endDay)).Returns(students.AsQueryable());
+
+      var groupingNewStudents = _service.GetNumberStudentsAddedInPeriod(numberOfDays);
+
+      groupingNewStudents.GetType().Should().Be(typeof(System.Linq.EnumerableQuery<ChartContent>));
+      groupingNewStudents.Should().HaveCount(3);
+      groupingNewStudents.ElementAt(0).Day.Should().Be(firstDay.ToString("ddd", new CultureInfo("pt-BR")).ToUpper().Replace(".", ""));
+      groupingNewStudents.ElementAt(0).Number.Should().Be(1);
+      groupingNewStudents.ElementAt(1).Day.Should().Be(secondDay.ToString("ddd", new CultureInfo("pt-BR")).ToUpper().Replace(".", ""));
+      groupingNewStudents.ElementAt(1).Number.Should().Be(2);
+      groupingNewStudents.ElementAt(2).Day.Should().Be(lastDay.ToString("ddd", new CultureInfo("pt-BR")).ToUpper().Replace(".", ""));
+      groupingNewStudents.ElementAt(2).Number.Should().Be(1);
     }
   }
 }

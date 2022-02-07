@@ -47,5 +47,7 @@ namespace Domain.Models
     public void Inactivate() => Status = Status.Inactive;
 
     public void Activate() => Status = Status.Active;
+
+    public void SetCreatedAt(DateTime date) => CreatedAt = date;
   }
 }
