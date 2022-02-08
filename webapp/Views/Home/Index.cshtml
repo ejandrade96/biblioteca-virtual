@@ -247,15 +247,15 @@
 <script src="~/home/js/home.js" asp-append-version="true"></script>
 
 <script type="text/javascript">
-  var dataConfigChartNewStudents = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.ChartModelNewStudents));
-  var dataConfigChartNewBooks = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.ChartModelNewBooks));
-  var dataConfigChartLoans = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.ChartModelLoans));
-  var dataConfigChartLoanReturns = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.ChartModelLoanReturns));
-  var dataConfigGeneralChart = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYear));
-  var generalChartLabels = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYear.Labels));
-  var generalChartData = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYear.DataSets[0].Data));
-  var generalChartDataTabNewBooks = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabNewBooks));
-  var generalChartDataTabLoans = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoans));
-  var generalChartDataTabLoanReturns = @Html.Raw(LowercaseJsonSerializer.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoanReturns));
+  var dataConfigChartNewStudents = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.ChartModelNewStudents));
+  var dataConfigChartNewBooks = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.ChartModelNewBooks));
+  var dataConfigChartLoans = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.ChartModelLoans));
+  var dataConfigChartLoanReturns = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.ChartModelLoanReturns));
+  var dataConfigGeneralChart = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYear));
+  var generalChartLabels = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYear.Labels));
+  var generalChartData = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYear.DataSets[0].Data));
+  var generalChartDataTabNewBooks = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabNewBooks));
+  var generalChartDataTabLoans = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoans));
+  var generalChartDataTabLoanReturns = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoanReturns));
 </script>
 }

@@ -27,7 +27,9 @@ namespace Infrastructure.Repository
       return entity;
     }
 
-    public T First(Expression<Func<T, bool>> predicate) => _dataset.Where(predicate).FirstOrDefault();
+    public T First(Expression<Func<T, bool>> predicate) => _dataset.FirstOrDefault(predicate);
+
+    public IQueryable<T> FindAll(Expression<Func<T, bool>> predicate) => _dataset.Where(predicate);
 
     public T Get(int id) => _dataset.Find(id);
 
