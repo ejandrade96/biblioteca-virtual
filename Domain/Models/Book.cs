@@ -63,5 +63,7 @@ namespace Domain.Models
     public string GetLoanStudentLogin() => Loans.OrderByDescending(x => x.LoanDate).First().Student.Login;
 
     public int GetCurrentLoanId() => Loans.OrderByDescending(x => x.LoanDate).First().Id;
+
+    public void SetCreatedAt(DateTime date) => CreatedAt = date;
   }
 }

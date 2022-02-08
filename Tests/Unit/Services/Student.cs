@@ -415,7 +415,7 @@ namespace Tests.Unit.Services
     }
 
     [Fact]
-    public void Deve_Retornar_Um_Agrupamento_Da_Quantidade_De_Alunos_Adicionados_Nos_Ultimos_Dias()
+    public void Deve_Retornar_Um_Agrupamento_Da_Quantidade_De_Alunos_Adicionados_Em_Um_Determinado_Periodo_De_Dias()
     {
       var numberOfDays = 5;
       var startDay = DateTime.Now.AddDays(-(numberOfDays - 1)).StartOfDay();
@@ -446,14 +446,13 @@ namespace Tests.Unit.Services
 
       var groupingNewStudents = _service.GetNumberStudentsAddedInPeriod(numberOfDays);
 
-      groupingNewStudents.GetType().Should().Be(typeof(System.Linq.EnumerableQuery<ChartContent>));
       groupingNewStudents.Should().HaveCount(3);
-      groupingNewStudents.ElementAt(0).Day.Should().Be(firstDay.ToString("ddd", new CultureInfo("pt-BR")).ToUpper().Replace(".", ""));
-      groupingNewStudents.ElementAt(0).Number.Should().Be(1);
-      groupingNewStudents.ElementAt(1).Day.Should().Be(secondDay.ToString("ddd", new CultureInfo("pt-BR")).ToUpper().Replace(".", ""));
-      groupingNewStudents.ElementAt(1).Number.Should().Be(2);
-      groupingNewStudents.ElementAt(2).Day.Should().Be(lastDay.ToString("ddd", new CultureInfo("pt-BR")).ToUpper().Replace(".", ""));
-      groupingNewStudents.ElementAt(2).Number.Should().Be(1);
+      groupingNewStudents.ElementAt(0).Key.Should().Be(firstDay.Date);
+      groupingNewStudents.ElementAt(0).Elements.Count().Should().Be(1);
+      groupingNewStudents.ElementAt(1).Key.Should().Be(secondDay.Date);
+      groupingNewStudents.ElementAt(1).Elements.Count().Should().Be(2);
+      groupingNewStudents.ElementAt(2).Key.Should().Be(lastDay.Date);
+      groupingNewStudents.ElementAt(2).Elements.Count().Should().Be(1);
     }
   }
 }

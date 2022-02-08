@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using Domain.DTOs;
 using Domain.Repository;
 using Domain.Services;
 using Domain.ValueObjects;
 using FluentAssertions;
 using Infrastructure.Errors;
+using Infrastructure.Helpers;
 using Moq;
 using Xunit;
 using Models = Domain.Models;
@@ -194,6 +197,42 @@ namespace Tests.Unit.Services
       response.Error.Message.Should().Be("Livro não encontrado(a)!");
       response.Error.StatusCode.Should().Be(404);
       response.Error.GetType().Should().Be(typeof(ErrorObjectNotFound));
+    }
+
+    [Fact]
+    public void Deve_Retornar_Um_Agrupamento_Da_Quantidade_De_Livros_Adicionados_Em_Um_Determinado_Periodo_De_Dias()
+    {
+      var numberOfDays = 5;
+      var startDay = DateTime.Now.AddDays(-(numberOfDays - 1)).StartOfDay();
+      var endDay = DateTime.Now.EndOfDay();
+
+      var book = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      var firstDay = DateTime.Now.AddDays(-(numberOfDays - 1)).StartOfDay();
+      book.SetCreatedAt(firstDay);
+
+      var book2 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      var secondDay = DateTime.Now.AddDays(-(numberOfDays - 2));
+      book2.SetCreatedAt(secondDay);
+      var book3 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book3.SetCreatedAt(secondDay.EndOfDay());
+
+      var book4 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      var lastDay = DateTime.Now.EndOfDay();
+      book4.SetCreatedAt(lastDay);
+
+      var books = new List<Models.Book> { book, book2, book3, book4 };
+
+      _books.Setup(repository => repository.FindAll(x => x.CreatedAt >= startDay && x.CreatedAt <= endDay)).Returns(books.AsQueryable());
+
+      var groupingNewBooks = _service.GetNumberBooksAddedInPeriod(numberOfDays);
+
+      groupingNewBooks.Should().HaveCount(3);
+      groupingNewBooks.ElementAt(0).Key.Should().Be(firstDay.Date);
+      groupingNewBooks.ElementAt(0).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(1).Key.Should().Be(secondDay.Date);
+      groupingNewBooks.ElementAt(1).Elements.Count().Should().Be(2);
+      groupingNewBooks.ElementAt(2).Key.Should().Be(lastDay.Date);
+      groupingNewBooks.ElementAt(2).Elements.Count().Should().Be(1);
     }
   }
 }

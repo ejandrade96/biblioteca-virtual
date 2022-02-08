@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Domain.Models;
 
@@ -20,5 +21,7 @@ namespace Domain.Services
     IEnumerable<Book> GetAllWithLoansWithStudent();
 
     IResponse<Book> GetWithLoans(int id);
+
+    IEnumerable<IGroupingResponse<DateTime, Book>> GetNumberBooksAddedInPeriod(int days);
   }
 }

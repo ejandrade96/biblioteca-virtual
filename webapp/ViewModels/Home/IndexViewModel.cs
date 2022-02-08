@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Domain.Services;
 
@@ -26,29 +28,30 @@ namespace webapp.ViewModels.Home
 
     public List<BookViewModel> FiveStarBooks { get; set; }
 
-    public IndexViewModel(IStudent studentService)
+    public IndexViewModel(IStudent studentService, IBook bookService)
     {
       var groupingNewStudents = studentService.GetNumberStudentsAddedInPeriod(5);
       ChartModelNewStudents = new ChartModelViewModel
       {
-        Labels = groupingNewStudents.Select(x => x.Day).ToList(),
+        Labels = groupingNewStudents.Select(x => ToLabelFormat(x.Key)).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = groupingNewStudents.Select(x => x.Number).ToList()
+            Data = groupingNewStudents.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
 
+      var groupingNewBooks = bookService.GetNumberBooksAddedInPeriod(5);
       ChartModelNewBooks = new ChartModelViewModel
       {
-        Labels = new List<string> { "SEG", "TER", "QUA", "QUI", "SEX" },
+        Labels = groupingNewBooks.Select(x => ToLabelFormat(x.Key)).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = new List<int> { 53, 20, 10, 80, 100, 45 }
+            Data = groupingNewBooks.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
@@ -60,7 +63,7 @@ namespace webapp.ViewModels.Home
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = new List<int> { 145, 120, 110, 147, 100, 143 }
+            Data = new List<int> { 145, 120, 110, 147, 100 }
           }
         }
       };
@@ -72,7 +75,7 @@ namespace webapp.ViewModels.Home
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = new List<int> { 21, 27, 35, 47, 24, 143 }
+            Data = new List<int> { 21, 27, 35, 47, 24 }
           }
         }
       };
@@ -174,5 +177,7 @@ namespace webapp.ViewModels.Home
         }
       };
     }
+
+    private string ToLabelFormat(DateTime date) => date.ToString("ddd", new CultureInfo("pt-BR")).ToUpper().Replace(".", "");
   }
 }
