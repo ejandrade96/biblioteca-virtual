@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Domain.Repository;
 using Domain.Services;
 using Domain.ValueObjects;
 using Infrastructure.Errors;
+using Infrastructure.Helpers;
 using Models = Domain.Models;
 
 namespace Services
@@ -79,6 +82,38 @@ namespace Services
       }
 
       return response;
+    }
+
+    public IEnumerable<IGroupingResponse<DateTime, Models.Loan>> GetNumberLoansAddedInPeriod(int days)
+    {
+      var startDay = DateTime.Now.AddDays(-(days - 1)).StartOfDay();
+      var endDay = DateTime.Now.EndOfDay();
+
+      return _loans.FindAll(x => x.LoanDate >= startDay && x.LoanDate <= endDay)
+                   .ToList()
+                   .GroupBy(x => x.LoanDate.Date)
+                   .Select(x => new GroupingResponse<DateTime, Models.Loan>
+                   {
+                     Key = x.Key,
+                     Elements = x.ToList()
+                   })
+                   .OrderBy(x => x.Key);
+    }
+
+    public IEnumerable<IGroupingResponse<DateTime, Models.Loan>> GetNumberReturnsRecordedInPeriod(int days)
+    {
+      var startDay = DateTime.Now.AddDays(-(days - 1)).StartOfDay();
+      var endDay = DateTime.Now.EndOfDay();
+
+      return _loans.FindAll(x => x.ReturnDate >= startDay && x.ReturnDate <= endDay)
+                   .ToList()
+                   .GroupBy(x => x.ReturnDate.Value.Date)
+                   .Select(x => new GroupingResponse<DateTime, Models.Loan>
+                   {
+                     Key = x.Key,
+                     Elements = x.ToList()
+                   })
+                   .OrderBy(x => x.Key);
     }
   }
 }

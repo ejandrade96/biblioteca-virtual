@@ -14,15 +14,18 @@ namespace webapp.Controllers
 
     private readonly IBook _bookService;
 
-    public HomeController(IStudent studentService, IBook bookService)
+    private readonly ILoan _loanService;
+
+    public HomeController(IStudent studentService, IBook bookService, ILoan loanService)
     {
       _studentService = studentService;
       _bookService = bookService;
+      _loanService = loanService;
     }
 
     public IActionResult Index()
     {
-      return View(new IndexViewModel(_studentService, _bookService));
+      return View(new IndexViewModel(_studentService, _bookService, _loanService));
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
