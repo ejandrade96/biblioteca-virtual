@@ -27,5 +27,9 @@ namespace Domain.Models
     }
 
     public void RegisterReturn() => ReturnDate = DateTime.Now;
+
+    public void SetLoanDate(DateTime date) => LoanDate = date;
+
+    public void SetReturnDate(DateTime date) => ReturnDate = date;
   }
 }

@@ -28,7 +28,7 @@ namespace webapp.ViewModels.Home
 
     public List<BookViewModel> FiveStarBooks { get; set; }
 
-    public IndexViewModel(IStudent studentService, IBook bookService)
+    public IndexViewModel(IStudent studentService, IBook bookService, ILoan loanService)
     {
       var groupingNewStudents = studentService.GetNumberStudentsAddedInPeriod(5);
       ChartModelNewStudents = new ChartModelViewModel
@@ -56,26 +56,28 @@ namespace webapp.ViewModels.Home
         }
       };
 
+      var groupingNewLoans = loanService.GetNumberLoansAddedInPeriod(5);
       ChartModelLoans = new ChartModelViewModel
       {
-        Labels = new List<string> { "SEG", "TER", "QUA", "QUI", "SEX" },
+        Labels = groupingNewLoans.Select(x => ToLabelFormat(x.Key)).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = new List<int> { 145, 120, 110, 147, 100 }
+            Data = groupingNewLoans.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
 
+      var groupingNewReturns = loanService.GetNumberReturnsRecordedInPeriod(5);
       ChartModelLoanReturns = new ChartModelViewModel
       {
-        Labels = new List<string> { "SEG", "TER", "QUA", "QUI", "SEX" },
+        Labels = groupingNewReturns.Select(x => ToLabelFormat(x.Key)).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = new List<int> { 21, 27, 35, 47, 24 }
+            Data = groupingNewReturns.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
