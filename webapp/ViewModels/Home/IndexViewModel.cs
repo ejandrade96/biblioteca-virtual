@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Domain.Services;
+using Services;
 
 namespace webapp.ViewModels.Home
 {
   public class IndexViewModel
   {
+    private const int _periodInDays = 5;
+
     public ChartModelViewModel ChartModelNewStudents { get; set; }
 
     public ChartModelViewModel ChartModelNewBooks { get; set; }
@@ -28,56 +31,58 @@ namespace webapp.ViewModels.Home
 
     public List<BookViewModel> FiveStarBooks { get; set; }
 
+    public IndexViewModel() { }
+
     public IndexViewModel(IStudent studentService, IBook bookService, ILoan loanService)
     {
-      var groupingNewStudents = studentService.GetNumberStudentsAddedInPeriod(5);
+      var groupingNewStudents = studentService.GetNumberStudentsAddedInPeriod(_periodInDays);
       ChartModelNewStudents = new ChartModelViewModel
       {
-        Labels = groupingNewStudents.Select(x => ToLabelFormat(x.Key)).ToList(),
+        Labels = groupingNewStudents.Count() == 0 ? GetPeriodLabels() : groupingNewStudents.Select(x => ToLabelFormat(x.Key)).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = groupingNewStudents.Select(x => x.Elements.Count()).ToList()
+            Data = groupingNewStudents.Count() == 0 ? GetZeroData() : groupingNewStudents.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
 
-      var groupingNewBooks = bookService.GetNumberBooksAddedInPeriod(5);
+      var groupingNewBooks = bookService.GetNumberBooksAddedInPeriod(_periodInDays);
       ChartModelNewBooks = new ChartModelViewModel
       {
-        Labels = groupingNewBooks.Select(x => ToLabelFormat(x.Key)).ToList(),
+        Labels = groupingNewBooks.Count() == 0 ? GetPeriodLabels() : groupingNewBooks.Select(x => ToLabelFormat(x.Key)).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = groupingNewBooks.Select(x => x.Elements.Count()).ToList()
+            Data = groupingNewBooks.Count() == 0 ? GetZeroData() : groupingNewBooks.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
 
-      var groupingNewLoans = loanService.GetNumberLoansAddedInPeriod(5);
+      var groupingNewLoans = loanService.GetNumberLoansAddedInPeriod(_periodInDays);
       ChartModelLoans = new ChartModelViewModel
       {
-        Labels = groupingNewLoans.Select(x => ToLabelFormat(x.Key)).ToList(),
+        Labels = groupingNewLoans.Count() == 0 ? GetPeriodLabels() : groupingNewLoans.Select(x => ToLabelFormat(x.Key)).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = groupingNewLoans.Select(x => x.Elements.Count()).ToList()
+            Data = groupingNewLoans.Count() == 0 ? GetZeroData() : groupingNewLoans.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
 
-      var groupingNewReturns = loanService.GetNumberReturnsRecordedInPeriod(5);
+      var groupingNewReturns = loanService.GetNumberReturnsRecordedInPeriod(_periodInDays);
       ChartModelLoanReturns = new ChartModelViewModel
       {
-        Labels = groupingNewReturns.Select(x => ToLabelFormat(x.Key)).ToList(),
+        Labels = groupingNewReturns.Count() == 0 ? GetPeriodLabels() : groupingNewReturns.Select(x => ToLabelFormat(x.Key)).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = groupingNewReturns.Select(x => x.Elements.Count()).ToList()
+            Data = groupingNewReturns.Count() == 0 ? GetZeroData() :  groupingNewReturns.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
@@ -181,5 +186,19 @@ namespace webapp.ViewModels.Home
     }
 
     private string ToLabelFormat(DateTime date) => date.ToString("ddd", new CultureInfo("pt-BR")).ToUpper().Replace(".", "");
+
+    public List<string> GetPeriodLabels(int periodInDays = _periodInDays)
+    {
+      var labels = new List<string>();
+
+      for (var i = _periodInDays; i > 0; i--)
+      {
+        labels.Add(ToLabelFormat(DateTime.Now.AddDays(-(i - 1))));
+      }
+
+      return labels;
+    }
+
+    private List<int> GetZeroData() => Enumerable.Repeat(0, _periodInDays).ToList();
   }
 }
