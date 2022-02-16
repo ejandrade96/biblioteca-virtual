@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using Domain.Services;
+using FluentAssertions;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,11 +11,20 @@ namespace Tests.Unit.ViewModels.Home
 {
   public class IndexViewModel
   {
+    private readonly Mock<IStudent> _studentService;
+
+    private readonly Mock<IBook> _bookService;
+
+    private readonly Mock<ILoan> _loanService;
+
     private readonly webapp.ViewModels.Home.IndexViewModel _viewModel;
 
     public IndexViewModel()
     {
-      _viewModel = new webapp.ViewModels.Home.IndexViewModel();
+      _studentService = new Mock<IStudent>();
+      _bookService = new Mock<IBook>();
+      _loanService = new Mock<ILoan>();
+      _viewModel = new webapp.ViewModels.Home.IndexViewModel(_studentService.Object, _bookService.Object, _loanService.Object);
     }
 
     [Fact]
