@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Domain.Services;
-using Services;
 
 namespace webapp.ViewModels.Home
 {
@@ -30,8 +29,6 @@ namespace webapp.ViewModels.Home
     public List<StudentViewModel> FiveStarStudents { get; set; }
 
     public List<BookViewModel> FiveStarBooks { get; set; }
-
-    public IndexViewModel() { }
 
     public IndexViewModel(IStudent studentService, IBook bookService, ILoan loanService)
     {
