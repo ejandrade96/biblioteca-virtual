@@ -5,7 +5,7 @@ using Domain.ValueObjects;
 
 namespace Domain.Services
 {
-  public interface IStudent
+  public interface IStudent : IServiceBase<Student>
   {
     IResponse<Student> Add(Student student);
 

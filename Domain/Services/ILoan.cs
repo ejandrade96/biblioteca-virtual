@@ -4,7 +4,7 @@ using Domain.Models;
 
 namespace Domain.Services
 {
-  public interface ILoan
+  public interface ILoan : IServiceBase<Loan>
   {
     IResponse<Loan> Add(int studentId, int bookId);
 

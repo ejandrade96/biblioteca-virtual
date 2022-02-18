@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Domain.Repository;
 using Domain.Services;
 using Domain.ValueObjects;
@@ -10,7 +9,7 @@ using Models = Domain.Models;
 
 namespace Services
 {
-  public class Loan : ILoan
+  public class Loan : ServiceBase<Models.Loan>, ILoan
   {
     private readonly ILoans _loans;
 
@@ -20,7 +19,7 @@ namespace Services
 
     private readonly IBook _bookService;
 
-    public Loan(ILoans loans, ILog logService, IStudent studentService, IBook bookService)
+    public Loan(ILoans loans, ILog logService, IStudent studentService, IBook bookService) : base(loans)
     {
       _loans = loans;
       _logService = logService;
@@ -89,15 +88,7 @@ namespace Services
       var startDay = DateTime.Now.AddDays(-(days - 1)).StartOfDay();
       var endDay = DateTime.Now.EndOfDay();
 
-      return _loans.FindAll(x => x.LoanDate >= startDay && x.LoanDate <= endDay)
-                   .ToList()
-                   .GroupBy(x => x.LoanDate.Date)
-                   .Select(x => new GroupingResponse<DateTime, Models.Loan>
-                   {
-                     Key = x.Key,
-                     Elements = x.ToList()
-                   })
-                   .OrderBy(x => x.Key);
+      return base.GetNumberRecordsAddedInPeriod(x => x.LoanDate >= startDay && x.LoanDate <= endDay, x => x.LoanDate.Date);
     }
 
     public IEnumerable<IGroupingResponse<DateTime, Models.Loan>> GetNumberReturnsRecordedInPeriod(int days)
@@ -105,15 +96,7 @@ namespace Services
       var startDay = DateTime.Now.AddDays(-(days - 1)).StartOfDay();
       var endDay = DateTime.Now.EndOfDay();
 
-      return _loans.FindAll(x => x.ReturnDate >= startDay && x.ReturnDate <= endDay)
-                   .ToList()
-                   .GroupBy(x => x.ReturnDate.Value.Date)
-                   .Select(x => new GroupingResponse<DateTime, Models.Loan>
-                   {
-                     Key = x.Key,
-                     Elements = x.ToList()
-                   })
-                   .OrderBy(x => x.Key);
+      return base.GetNumberRecordsAddedInPeriod(x => x.ReturnDate >= startDay && x.ReturnDate <= endDay, x => x.ReturnDate.Value.Date);
     }
   }
 }

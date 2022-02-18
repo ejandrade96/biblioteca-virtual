@@ -8,17 +8,16 @@ using System.Linq;
 using Domain.ValueObjects;
 using System;
 using Infrastructure.Helpers;
-using System.Globalization;
 
 namespace Services
 {
-  public class Student : IStudent
+  public class Student : ServiceBase<Models.Student>, IStudent
   {
     private readonly IStudents _students;
 
     private readonly ILog _logService;
 
-    public Student(IStudents students, ILog logService)
+    public Student(IStudents students, ILog logService) : base(students)
     {
       _students = students;
       _logService = logService;
@@ -128,15 +127,7 @@ namespace Services
       var startDay = DateTime.Now.AddDays(-(days - 1)).StartOfDay();
       var endDay = DateTime.Now.EndOfDay();
 
-      return _students.FindAll(x => x.CreatedAt >= startDay && x.CreatedAt <= endDay)
-                      .ToList()
-                      .GroupBy(x => x.CreatedAt.Date)
-                      .Select(x => new GroupingResponse<DateTime, Models.Student>
-                      {
-                        Key = x.Key,
-                        Elements = x.ToList()
-                      })
-                      .OrderBy(x => x.Key);
+      return base.GetNumberRecordsAddedInPeriod(x => x.CreatedAt >= startDay && x.CreatedAt <= endDay, x => x.CreatedAt.Date);
     }
 
     private IError CheckForErrorsToAdd(Models.Student student)

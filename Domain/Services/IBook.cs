@@ -4,7 +4,7 @@ using Domain.Models;
 
 namespace Domain.Services
 {
-  public interface IBook
+  public interface IBook : IServiceBase<Book>
   {
     Book Add(Book book);
 
