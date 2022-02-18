@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Domain.Repository;
 using Domain.Services;
 using Domain.ValueObjects;
@@ -10,13 +9,13 @@ using Models = Domain.Models;
 
 namespace Services
 {
-  public class Book : IBook
+  public class Book : ServiceBase<Models.Book>, IBook
   {
     private readonly IBooks _books;
 
     private readonly ILog _logService;
 
-    public Book(IBooks books, ILog logService)
+    public Book(IBooks books, ILog logService) : base(books)
     {
       _books = books;
       _logService = logService;
@@ -56,15 +55,7 @@ namespace Services
       var startDay = DateTime.Now.AddDays(-(days - 1)).StartOfDay();
       var endDay = DateTime.Now.EndOfDay();
 
-      return _books.FindAll(x => x.CreatedAt >= startDay && x.CreatedAt <= endDay)
-                   .ToList()
-                   .GroupBy(x => x.CreatedAt.Date)
-                   .Select(x => new GroupingResponse<DateTime, Models.Book>
-                   {
-                     Key = x.Key,
-                     Elements = x.ToList()
-                   })
-                   .OrderBy(x => x.Key);
+      return base.GetNumberRecordsAddedInPeriod(x => x.CreatedAt >= startDay && x.CreatedAt <= endDay, x => x.CreatedAt.Date);
     }
 
     public IResponse<Models.Book> GetWithLoans(int id)
