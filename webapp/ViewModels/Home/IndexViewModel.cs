@@ -2,13 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Domain.Models;
 using Domain.Services;
+using Services;
 
 namespace webapp.ViewModels.Home
 {
   public class IndexViewModel
   {
     private const int _periodInDays = 5;
+
+    private readonly IndexViewModelAction _indexViewModelAction = new IndexViewModelAction();
 
     public ChartModelViewModel ChartModelNewStudents { get; set; }
 
@@ -33,53 +37,69 @@ namespace webapp.ViewModels.Home
     public IndexViewModel(IStudent studentService, IBook bookService, ILoan loanService)
     {
       var groupingNewStudents = studentService.GetNumberStudentsAddedInPeriod(_periodInDays);
+      if (groupingNewStudents.Count() != _periodInDays)
+      {
+        groupingNewStudents = _indexViewModelAction.ReshapeGrouping<DateTime, Domain.Models.Student>(groupingNewStudents);
+      }
       ChartModelNewStudents = new ChartModelViewModel
       {
-        Labels = groupingNewStudents.Count() == 0 ? GetPeriodLabels() : groupingNewStudents.Select(x => ToLabelFormat(x.Key)).ToList(),
+        Labels = groupingNewStudents.Select(x => _indexViewModelAction.ToLabelFormat(x.Key)).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = groupingNewStudents.Count() == 0 ? GetZeroData() : groupingNewStudents.Select(x => x.Elements.Count()).ToList()
+            Data = groupingNewStudents.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
 
       var groupingNewBooks = bookService.GetNumberBooksAddedInPeriod(_periodInDays);
+      if (groupingNewBooks.Count() != _periodInDays)
+      {
+        groupingNewBooks = _indexViewModelAction.ReshapeGrouping<DateTime, Domain.Models.Book>(groupingNewBooks);
+      }
       ChartModelNewBooks = new ChartModelViewModel
       {
-        Labels = groupingNewBooks.Count() == 0 ? GetPeriodLabels() : groupingNewBooks.Select(x => ToLabelFormat(x.Key)).ToList(),
+        Labels = groupingNewBooks.Select(x => _indexViewModelAction.ToLabelFormat(x.Key)).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = groupingNewBooks.Count() == 0 ? GetZeroData() : groupingNewBooks.Select(x => x.Elements.Count()).ToList()
+            Data = groupingNewBooks.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
 
       var groupingNewLoans = loanService.GetNumberLoansAddedInPeriod(_periodInDays);
+      if (groupingNewLoans.Count() != _periodInDays)
+      {
+        groupingNewLoans = _indexViewModelAction.ReshapeGrouping<DateTime, Domain.Models.Loan>(groupingNewLoans);
+      }
       ChartModelLoans = new ChartModelViewModel
       {
-        Labels = groupingNewLoans.Count() == 0 ? GetPeriodLabels() : groupingNewLoans.Select(x => ToLabelFormat(x.Key)).ToList(),
+        Labels = groupingNewLoans.Select(x => _indexViewModelAction.ToLabelFormat(x.Key)).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = groupingNewLoans.Count() == 0 ? GetZeroData() : groupingNewLoans.Select(x => x.Elements.Count()).ToList()
+            Data = groupingNewLoans.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
 
       var groupingNewReturns = loanService.GetNumberReturnsRecordedInPeriod(_periodInDays);
+      if (groupingNewReturns.Count() != _periodInDays)
+      {
+        groupingNewReturns = _indexViewModelAction.ReshapeGrouping<DateTime, Domain.Models.Loan>(groupingNewReturns);
+      }
       ChartModelLoanReturns = new ChartModelViewModel
       {
-        Labels = groupingNewReturns.Count() == 0 ? GetPeriodLabels() : groupingNewReturns.Select(x => ToLabelFormat(x.Key)).ToList(),
+        Labels = groupingNewReturns.Select(x => _indexViewModelAction.ToLabelFormat(x.Key)).ToList(),
         DataSets = new List<DataSetChartBaseModelViewModel>
         {
           new DataSetChartBaseModelViewModel
           {
-            Data = groupingNewReturns.Count() == 0 ? GetZeroData() :  groupingNewReturns.Select(x => x.Elements.Count()).ToList()
+            Data = groupingNewReturns.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
@@ -182,20 +202,59 @@ namespace webapp.ViewModels.Home
       };
     }
 
-    private string ToLabelFormat(DateTime date) => date.ToString("ddd", new CultureInfo("pt-BR")).ToUpper().Replace(".", "");
-
-    public List<string> GetPeriodLabels(int periodInDays = _periodInDays)
+    public sealed class IndexViewModelAction
     {
-      var labels = new List<string>();
-
-      for (var i = _periodInDays; i > 0; i--)
+      public IEnumerable<IGroupingResponse<System.DateTime, T>> ReshapeGrouping<DateTime, T>
+       (IEnumerable<IGroupingResponse<System.DateTime, T>> grouping, int periodInDays = _periodInDays) where T : EntityBase
       {
-        labels.Add(ToLabelFormat(DateTime.Now.AddDays(-(i - 1))));
+        if (grouping.Count() == 0)
+          return GetGroupingZeroedRecords<System.DateTime, T>();
+
+        var dayCounter = System.DateTime.Now.AddDays(-(periodInDays - 1));
+        var newGrouping = grouping.ToList();
+
+        for (var i = 0; i <= grouping.Count(); i++)
+        {
+          if (newGrouping[i].Key.Date != dayCounter.Date)
+          {
+            newGrouping.Add(new GroupingResponse<System.DateTime, T>
+            {
+              Key = dayCounter.Date,
+              Elements = new List<T> { }
+            });
+
+            i--;
+          }
+
+          if (dayCounter.Date == System.DateTime.Now.Date)
+            break;
+
+          dayCounter = dayCounter.AddDays(1);
+        }
+
+        return newGrouping.OrderBy(x => x.Key);
       }
 
-      return labels;
-    }
+      public IEnumerable<IGroupingResponse<System.DateTime, T>> GetGroupingZeroedRecords<DateTime, T>(int periodInDays = _periodInDays)
+      {
+        var dayCounter = System.DateTime.Now.AddDays(-(_periodInDays - 1));
+        var grouping = new List<IGroupingResponse<System.DateTime, T>>();
 
-    private List<int> GetZeroData() => Enumerable.Repeat(0, _periodInDays).ToList();
+        for (var i = 0; i < periodInDays; i++)
+        {
+          grouping.Add(new GroupingResponse<System.DateTime, T>
+          {
+            Key = dayCounter.Date,
+            Elements = new List<T> { }
+          });
+
+          dayCounter = dayCounter.AddDays(1);
+        }
+
+        return grouping.OrderBy(x => x.Key);
+      }
+
+      public string ToLabelFormat(DateTime date) => date.ToString("ddd", new CultureInfo("pt-BR")).ToUpper().Replace(".", "");
+    }
   }
 }
