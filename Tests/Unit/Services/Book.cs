@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using Domain.DTOs;
 using Domain.Repository;
 using Domain.Services;
 using Domain.ValueObjects;
@@ -152,7 +150,7 @@ namespace Tests.Unit.Services
       response.Error.GetType().Should().Be(typeof(ErrorObjectNotFound));
     }
 
-     [Fact]
+    [Fact]
     public void Deve_Retornar_Um_Livro_Com_Emprestimos_Por_Id()
     {
       var book = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1) { Id = 1 };
@@ -233,6 +231,104 @@ namespace Tests.Unit.Services
       groupingNewBooks.ElementAt(1).Elements.Count().Should().Be(2);
       groupingNewBooks.ElementAt(2).Key.Should().Be(lastDay.Date);
       groupingNewBooks.ElementAt(2).Elements.Count().Should().Be(1);
+    }
+
+    [Fact]
+    public void Deve_Retornar_Um_Agrupamento_Da_Quantidade_De_Livros_Adicionados_Em_Um_Determinado_Periodo_De_Meses()
+    {
+      var numberOfMonths = 12;
+      var firstDayOfFirstMonth = DateTime.Now.AddMonths(-11).FirstDayOfMonth();
+      var daySecondMonth = firstDayOfFirstMonth.AddMonths(1);
+      var dayThirdMonth = daySecondMonth.AddMonths(1);
+      var dayFourthMonth = dayThirdMonth.AddMonths(1);
+      var dayFifthMonth = dayFourthMonth.AddMonths(1);
+      var daySixthMonth = dayFifthMonth.AddMonths(1);
+      var daySeventhMonth = daySixthMonth.AddMonths(1);
+      var dayEighthMonth = daySeventhMonth.AddMonths(1);
+      var dayNinthMonth = dayEighthMonth.AddMonths(1);
+      var dayTenthMonth = dayNinthMonth.AddMonths(1);
+      var dayEleventhMonth = dayTenthMonth.AddMonths(1);
+      var dayTwelfthMonth = dayEleventhMonth.AddMonths(1);
+
+      var book = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book.SetCreatedAt(firstDayOfFirstMonth);
+      var book2 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book2.SetCreatedAt(firstDayOfFirstMonth);
+      var book3 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book3.SetCreatedAt(daySecondMonth);
+      var book4 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book4.SetCreatedAt(dayThirdMonth);
+      var book5 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book5.SetCreatedAt(dayFourthMonth);
+      var book6 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book6.SetCreatedAt(dayFourthMonth);
+      var book7 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book7.SetCreatedAt(dayFourthMonth);
+      var book8 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book8.SetCreatedAt(dayFifthMonth);
+      var book9 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book9.SetCreatedAt(daySixthMonth);
+      var book10 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book10.SetCreatedAt(daySeventhMonth);
+      var book11 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book11.SetCreatedAt(dayEighthMonth);
+      var book12 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book12.SetCreatedAt(dayNinthMonth);
+      var book13 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book13.SetCreatedAt(dayTenthMonth);
+      var book14 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book14.SetCreatedAt(dayEleventhMonth);
+      var book15 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book15.SetCreatedAt(dayEleventhMonth);
+      var book16 = new Models.Book("Clean Code", "Robert C. Martin", "8576082675", 431, 1);
+      book16.SetCreatedAt(dayTwelfthMonth);
+
+      var books = new List<Models.Book>
+      {
+        book, book2, book3, book4, book5, book6, book7, book8, book9, book10, book11, book12, book13, book14, book15, book16
+      };
+
+      _books.Setup(repository => repository.FindAll(x => x.CreatedAt >= firstDayOfFirstMonth && x.CreatedAt <= DateTime.Now)).Returns(books.AsQueryable());
+
+      var groupingNewBooks = _service.GetNumberBooksAddedInPeriodOfMonths(numberOfMonths);
+
+      groupingNewBooks.Should().HaveCount(12);
+      groupingNewBooks.ElementAt(0).Key.KeyOne.Should().Be(firstDayOfFirstMonth.Month);
+      groupingNewBooks.ElementAt(0).Key.KeyTwo.Should().Be(firstDayOfFirstMonth.Year);
+      groupingNewBooks.ElementAt(0).Elements.Count().Should().Be(2);
+      groupingNewBooks.ElementAt(1).Key.KeyOne.Should().Be(daySecondMonth.Month);
+      groupingNewBooks.ElementAt(1).Key.KeyTwo.Should().Be(daySecondMonth.Year);
+      groupingNewBooks.ElementAt(1).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(2).Key.KeyOne.Should().Be(dayThirdMonth.Month);
+      groupingNewBooks.ElementAt(2).Key.KeyTwo.Should().Be(dayThirdMonth.Year);
+      groupingNewBooks.ElementAt(2).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(3).Key.KeyOne.Should().Be(dayFourthMonth.Month);
+      groupingNewBooks.ElementAt(3).Key.KeyTwo.Should().Be(dayFourthMonth.Year);
+      groupingNewBooks.ElementAt(3).Elements.Count().Should().Be(3);
+      groupingNewBooks.ElementAt(4).Key.KeyOne.Should().Be(dayFifthMonth.Month);
+      groupingNewBooks.ElementAt(4).Key.KeyTwo.Should().Be(dayFifthMonth.Year);
+      groupingNewBooks.ElementAt(4).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(5).Key.KeyOne.Should().Be(daySixthMonth.Month);
+      groupingNewBooks.ElementAt(5).Key.KeyTwo.Should().Be(daySixthMonth.Year);
+      groupingNewBooks.ElementAt(5).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(6).Key.KeyOne.Should().Be(daySeventhMonth.Month);
+      groupingNewBooks.ElementAt(6).Key.KeyTwo.Should().Be(daySeventhMonth.Year);
+      groupingNewBooks.ElementAt(6).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(7).Key.KeyOne.Should().Be(dayEighthMonth.Month);
+      groupingNewBooks.ElementAt(7).Key.KeyTwo.Should().Be(dayEighthMonth.Year);
+      groupingNewBooks.ElementAt(7).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(8).Key.KeyOne.Should().Be(dayNinthMonth.Month);
+      groupingNewBooks.ElementAt(8).Key.KeyTwo.Should().Be(dayNinthMonth.Year);
+      groupingNewBooks.ElementAt(8).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(9).Key.KeyOne.Should().Be(dayTenthMonth.Month);
+      groupingNewBooks.ElementAt(9).Key.KeyTwo.Should().Be(dayTenthMonth.Year);
+      groupingNewBooks.ElementAt(9).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(10).Key.KeyOne.Should().Be(dayEleventhMonth.Month);
+      groupingNewBooks.ElementAt(10).Key.KeyTwo.Should().Be(dayEleventhMonth.Year);
+      groupingNewBooks.ElementAt(10).Elements.Count().Should().Be(2);
+      groupingNewBooks.ElementAt(11).Key.KeyOne.Should().Be(dayTwelfthMonth.Month);
+      groupingNewBooks.ElementAt(11).Key.KeyTwo.Should().Be(dayTwelfthMonth.Year);
+      groupingNewBooks.ElementAt(11).Elements.Count().Should().Be(1);
     }
   }
 }

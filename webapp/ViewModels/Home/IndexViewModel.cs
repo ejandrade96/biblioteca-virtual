@@ -124,14 +124,19 @@ namespace webapp.ViewModels.Home
         }
       };
 
+      var groupingNewBooksByMonth = bookService.GetNumberBooksAddedInPeriodOfMonths(_periodInMonths);
+      if (groupingNewBooksByMonth.Count() != _periodInMonths)
+      {
+        groupingNewBooksByMonth = _indexViewModelAction.ReshapeGrouping<Domain.Models.Book>(groupingNewBooksByMonth);
+      }
       GeneralChartModelOfTheYearDataTabNewBooks = new GeneralChartModelViewModel
       {
-        Labels = new List<string> { "JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ" },
+        Labels = groupingNewBooksByMonth.Select(x => _indexViewModelAction.ToLabelMonthFormat(x.Key.KeyOne)).ToList(),
         DataSets = new List<DataSetGeneralChartModelViewModel>
         {
           new DataSetGeneralChartModelViewModel
           {
-            Data = new List<int> { 80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120 }
+            Data = groupingNewBooksByMonth.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
