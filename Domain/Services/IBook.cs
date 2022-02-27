@@ -23,5 +23,7 @@ namespace Domain.Services
     IResponse<Book> GetWithLoans(int id);
 
     IEnumerable<IGroupingResponse<DateTime, Book>> GetNumberBooksAddedInPeriod(int days);
+
+    IEnumerable<IGroupingResponse<IGroupingResponseKey<int, int>, Book>> GetNumberBooksAddedInPeriodOfMonths(int months);
   }
 }

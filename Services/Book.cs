@@ -58,6 +58,14 @@ namespace Services
       return base.GetNumberRecordsAddedInPeriod(x => x.CreatedAt >= startDay && x.CreatedAt <= endDay, x => x.CreatedAt.Date);
     }
 
+    public IEnumerable<IGroupingResponse<IGroupingResponseKey<int, int>, Models.Book>> GetNumberBooksAddedInPeriodOfMonths(int months)
+    {
+      var firstDayOfFirstMonth = DateTime.Now.AddMonths(-(months - 1)).FirstDayOfMonth();
+
+      return base.GetNumberRecordsAddedInPeriodOfMonths(x => x.CreatedAt >= firstDayOfFirstMonth && x.CreatedAt <= DateTime.Now,
+                                                        x => new { x.CreatedAt.Month, x.CreatedAt.Year });
+    }
+
     public IResponse<Models.Book> GetWithLoans(int id)
     {
       var response = new Response<Models.Book>();
