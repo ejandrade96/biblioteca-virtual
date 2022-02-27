@@ -21,7 +21,8 @@
             <div class="col-lg-3" style="padding-right: 8px !important;">
               <div class="card-home card-home-chart">
                 <div class="card-home-header">
-                  <h5 class="card-home-category">Novos Alunos <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
+                  <h5 class="card-home-category">
+                    Novos Alunos <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
                   </h5>
                 </div>
                 <div class="card-home-body">
@@ -34,7 +35,8 @@
             <div class="col-lg-3" style="padding-left: 4px !important; padding-right: 8px !important;">
               <div class="card-home card-home-chart">
                 <div class="card-home-header">
-                  <h5 class="card-home-category">Novos Livros <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
+                  <h5 class="card-home-category">
+                    Novos Livros <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
                   </h5>
                 </div>
                 <div class="card-home-body">
@@ -47,7 +49,8 @@
             <div class="col-lg-3" style="padding-left: 4px !important; padding-right: 8px !important;">
               <div class="card-home card-home-chart">
                 <div class="card-home-header">
-                  <h5 class="card-home-category">Empréstimos <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
+                  <h5 class="card-home-category">
+                    Empréstimos <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
                   </h5>
                 </div>
                 <div class="card-home-body">
@@ -60,7 +63,8 @@
             <div class="col-lg-3" style="padding-left: 4px !important;">
               <div class="card-home card-home-chart">
                 <div class="card-home-header">
-                  <h5 class="card-home-category">Devoluções <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
+                  <h5 class="card-home-category">
+                    Devoluções <span style="font-size: 0.75rem;">(Últimos 5 dias)</span>
                   </h5>
                 </div>
                 <div class="card-home-body">
@@ -83,7 +87,7 @@
                     <div class="col-sm-6">
                       <div class="btn-home-group btn-home-group-toggle float-right" data-toggle="buttons">
                         <label class="btn btn-home-sm btn-home-primary btn-home-simple active"
-                          id="generalChartTabNewStudents" style="cursor: pointer !important;">
+                               id="generalChartTabNewStudents" style="cursor: pointer !important;">
                           <input type="radio" name="options" checked>
                           <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Novos Alunos</span>
                           <span class="d-block d-sm-none">
@@ -91,7 +95,7 @@
                           </span>
                         </label>
                         <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="generalChartTabNewBooks"
-                          style="cursor: pointer !important;">
+                               style="cursor: pointer !important;">
                           <input type="radio" class="d-none d-sm-none" name="options">
                           <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Novos Livros</span>
                           <span class="d-block d-sm-none">
@@ -99,7 +103,7 @@
                           </span>
                         </label>
                         <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="generalChartTabLoans"
-                          style="cursor: pointer !important;">
+                               style="cursor: pointer !important;">
                           <input type="radio" class="d-none" name="options">
                           <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Empréstimos</span>
                           <span class="d-block d-sm-none">
@@ -107,7 +111,7 @@
                           </span>
                         </label>
                         <label class="btn btn-home-sm btn-home-primary btn-home-simple" id="generalChartTabLoanReturns"
-                          style="cursor: pointer !important;">
+                               style="cursor: pointer !important;">
                           <input type="radio" class="d-none" name="options">
                           <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Devoluções</span>
                           <span class="d-block d-sm-none">
@@ -134,7 +138,8 @@
                   <h6 class="title d-inline">ALUNOS 5 ESTRELAS</h6>
                   <p class="sub-title d-inline">
                     Pegaram mais
-                    empréstimos</p>
+                    empréstimos
+                  </p>
                 </div>
                 <div class="card-home-body ">
                   <div class="table-home-full-width table-home-responsive">
@@ -161,7 +166,7 @@
                               </td>
                               <td class="td-actions text-right">
                                 <button type="button" rel="tooltip" title="" class="btn btn-home-link"
-                              data-original-title="Send Email">
+                                    data-original-title="Send Email">
                                   <i class="tim-icons icon-send"></i>
                                 </button>
                               </td>
@@ -177,10 +182,13 @@
             <div class="col-lg-6 col-md-12" style="padding-left: 8px !important;">
               <div class="card-home card-home-tasks">
                 <div class="card-home-header" style="padding: 15px 15px 0 !important;">
-                  <h6 class="title d-inline"> LIVROS 5
-                    ESTRELAS</h6>
+                  <h6 class="title d-inline">
+                    LIVROS 5
+                    ESTRELAS
+                  </h6>
                   <p class="sub-title d-inline">
-                    Mais emprestados</p>
+                    Mais emprestados
+                  </p>
                 </div>
                 <div class="card-home-body">
                   <div class="table-home-full-width table-home-responsive">
@@ -206,14 +214,14 @@
                                 @if (string.IsNullOrWhiteSpace(book.ImagePath))
                                 {
                                   <img src='@Url.Content("~/images/book/default.png")' ;" width="95" alt=""
-                              style="border-radius: 0.35rem !important;"
-                              onerror="this.onerror=null;this.src='@Url.Content("~/images/book/default.png")';">
+                                 style="border-radius: 0.35rem !important;"
+                                 onerror="this.onerror=null;this.src='@Url.Content("~/images/book/default.png")';">
                                 }
                                 else
                                 {
                                   <img src="@Url.Content(@book.ImagePath)" width="80" alt=""
-                              style="border-radius: 0.35rem !important;"
-                              onerror="this.onerror=null;this.src='@Url.Content("~/images/book/default.png")';">
+                                 style="border-radius: 0.35rem !important;"
+                                 onerror="this.onerror=null;this.src='@Url.Content("~/images/book/default.png")';">
                                 }
                               </td>
                               <td>
@@ -252,10 +260,13 @@
   var dataConfigChartLoans = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.ChartModelLoans));
   var dataConfigChartLoanReturns = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.ChartModelLoanReturns));
   var dataConfigGeneralChart = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYear));
-  var generalChartLabels = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYear.Labels));
-  var generalChartData = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYear.DataSets[0].Data));
-  var generalChartDataTabNewBooks = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabNewBooks));
-  var generalChartDataTabLoans = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoans));
-  var generalChartDataTabLoanReturns = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoanReturns));
+  var generalChartLabelsNewStudents = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYear.Labels));
+  var generalChartDataNewStudents = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYear.DataSets[0].Data));
+  var generalChartLabelsNewBooks = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabNewBooks.Labels));
+  var generalChartDataTabNewBooks = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabNewBooks.DataSets[0].Data));
+  var generalChartLabelsLoans = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoans.Labels));
+  var generalChartDataTabLoans = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoans.DataSets[0].Data));
+  var generalChartLabelsLoanReturns = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoanReturns.Labels));
+  var generalChartDataTabLoanReturns = @Html.Raw(LowercaseJsonSerializerHelper.SerializeObject(@Model.GeneralChartModelOfTheYearDataTabLoanReturns.DataSets[0].Data));
 </script>
 }
