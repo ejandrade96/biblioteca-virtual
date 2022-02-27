@@ -185,25 +185,25 @@ demo = {
     
     $("#generalChartTabNewStudents").click(function() {
       var data = myChartData.config.data;
-      data.labels = generalChartLabels;
-      data.datasets[0].data = generalChartData;
+      data.labels = generalChartLabelsNewStudents;
+      data.datasets[0].data = generalChartDataNewStudents;
       myChartData.update();
     });
     $("#generalChartTabNewBooks").click(function() {
       var data = myChartData.config.data;
-      data.labels = generalChartLabels;
+      data.labels = generalChartLabelsNewBooks;
       data.datasets[0].data = generalChartDataTabNewBooks;
       myChartData.update();
     });
     $("#generalChartTabLoans").click(function() {
       var data = myChartData.config.data;
-      data.labels = generalChartLabels;
+      data.labels = generalChartLabelsLoans;
       data.datasets[0].data = generalChartDataTabLoans;
       myChartData.update();
     });
     $("#generalChartTabLoanReturns").click(function() {
       var data = myChartData.config.data;
-      data.labels = generalChartLabels;
+      data.labels = generalChartLabelsLoanReturns;
       data.datasets[0].data = generalChartDataTabLoanReturns;
       myChartData.update();
     });

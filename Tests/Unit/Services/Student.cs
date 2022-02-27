@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
-using Domain.DTOs;
 using Domain.Repository;
 using Domain.Services;
 using Domain.ValueObjects;
@@ -11,6 +9,7 @@ using FluentAssertions;
 using Infrastructure.Errors;
 using Infrastructure.Helpers;
 using Moq;
+using Services;
 using Xunit;
 using Models = Domain.Models;
 using Service = Services;
@@ -453,6 +452,111 @@ namespace Tests.Unit.Services
       groupingNewStudents.ElementAt(1).Elements.Count().Should().Be(2);
       groupingNewStudents.ElementAt(2).Key.Should().Be(lastDay.Date);
       groupingNewStudents.ElementAt(2).Elements.Count().Should().Be(1);
+    }
+
+    [Fact]
+    public void Deve_Retornar_Um_Agrupamento_Da_Quantidade_De_Alunos_Adicionados_Em_Um_Determinado_Periodo_De_Meses()
+    {
+      var numberOfMonths = 12;
+      var firstDayOfFirstMonth = DateTime.Now.AddMonths(-11).FirstDayOfMonth();
+      var daySecondMonth = firstDayOfFirstMonth.AddMonths(1);
+      var dayThirdMonth = daySecondMonth.AddMonths(1);
+      var dayFourthMonth = dayThirdMonth.AddMonths(1);
+      var dayFifthMonth = dayFourthMonth.AddMonths(1);
+      var daySixthMonth = dayFifthMonth.AddMonths(1);
+      var daySeventhMonth = daySixthMonth.AddMonths(1);
+      var dayEighthMonth = daySeventhMonth.AddMonths(1);
+      var dayNinthMonth = dayEighthMonth.AddMonths(1);
+      var dayTenthMonth = dayNinthMonth.AddMonths(1);
+      var dayEleventhMonth = dayTenthMonth.AddMonths(1);
+      var dayTwelfthMonth = dayEleventhMonth.AddMonths(1);
+
+      var contact = new Models.Contact("joao.villar@live.com", "1154218547");
+      var streetType = StreetType.StreetTypes.First(x => x.Code == "R");
+      var state = State.States.First(x => x.Acronym == "SP");
+      var address = new Models.Address("09421700", streetType, "dos Vianas", 412, "Centro", "São Bernardo do Campo", state);
+
+      var student = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student.SetCreatedAt(firstDayOfFirstMonth);
+      var student2 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student2.SetCreatedAt(firstDayOfFirstMonth);
+      var student3 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student3.SetCreatedAt(daySecondMonth);
+      var student4 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student4.SetCreatedAt(dayThirdMonth);
+      var student5 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student5.SetCreatedAt(dayThirdMonth);
+      var student6 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student6.SetCreatedAt(dayFourthMonth);
+      var student7 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student7.SetCreatedAt(dayFifthMonth);
+      var student8 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student8.SetCreatedAt(daySixthMonth);
+      var student9 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student9.SetCreatedAt(daySixthMonth);
+      var student10 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student10.SetCreatedAt(daySixthMonth);
+      var student11 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student11.SetCreatedAt(daySeventhMonth);
+      var student12 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student12.SetCreatedAt(dayEighthMonth);
+      var student13 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student13.SetCreatedAt(dayNinthMonth);
+      var student14 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student14.SetCreatedAt(dayTenthMonth);
+      var student15 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student15.SetCreatedAt(dayEleventhMonth);
+      var student16 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student16.SetCreatedAt(dayEleventhMonth);
+      var student17 = new Models.Student("João Villar Ferreira", "joao.ferreira", 125478, contact, address);
+      student17.SetCreatedAt(dayTwelfthMonth);
+
+      var students = new List<Models.Student>
+      {
+        student, student2, student3, student4, student5, student6, student7, student8, student9, student10, student11, student12, student13, student14, student15, student16, student17
+      };
+
+      _students.Setup(repository => repository.FindAll(x => x.CreatedAt >= firstDayOfFirstMonth && x.CreatedAt <= DateTime.Now)).Returns(students.AsQueryable());
+
+      var groupingNewStudents = _service.GetNumberStudentsAddedInPeriodOfMonths(numberOfMonths);
+
+      groupingNewStudents.Should().HaveCount(12);
+      groupingNewStudents.ElementAt(0).Key.KeyOne.Should().Be(firstDayOfFirstMonth.Month);
+      groupingNewStudents.ElementAt(0).Key.KeyTwo.Should().Be(firstDayOfFirstMonth.Year);
+      groupingNewStudents.ElementAt(0).Elements.Count().Should().Be(2);
+      groupingNewStudents.ElementAt(1).Key.KeyOne.Should().Be(daySecondMonth.Month);
+      groupingNewStudents.ElementAt(1).Key.KeyTwo.Should().Be(daySecondMonth.Year);
+      groupingNewStudents.ElementAt(1).Elements.Count().Should().Be(1);
+      groupingNewStudents.ElementAt(2).Key.KeyOne.Should().Be(dayThirdMonth.Month);
+      groupingNewStudents.ElementAt(2).Key.KeyTwo.Should().Be(dayThirdMonth.Year);
+      groupingNewStudents.ElementAt(2).Elements.Count().Should().Be(2);
+      groupingNewStudents.ElementAt(3).Key.KeyOne.Should().Be(dayFourthMonth.Month);
+      groupingNewStudents.ElementAt(3).Key.KeyTwo.Should().Be(dayFourthMonth.Year);
+      groupingNewStudents.ElementAt(3).Elements.Count().Should().Be(1);
+      groupingNewStudents.ElementAt(4).Key.KeyOne.Should().Be(dayFifthMonth.Month);
+      groupingNewStudents.ElementAt(4).Key.KeyTwo.Should().Be(dayFifthMonth.Year);
+      groupingNewStudents.ElementAt(4).Elements.Count().Should().Be(1);
+      groupingNewStudents.ElementAt(5).Key.KeyOne.Should().Be(daySixthMonth.Month);
+      groupingNewStudents.ElementAt(5).Key.KeyTwo.Should().Be(daySixthMonth.Year);
+      groupingNewStudents.ElementAt(5).Elements.Count().Should().Be(3);
+      groupingNewStudents.ElementAt(6).Key.KeyOne.Should().Be(daySeventhMonth.Month);
+      groupingNewStudents.ElementAt(6).Key.KeyTwo.Should().Be(daySeventhMonth.Year);
+      groupingNewStudents.ElementAt(6).Elements.Count().Should().Be(1);
+      groupingNewStudents.ElementAt(7).Key.KeyOne.Should().Be(dayEighthMonth.Month);
+      groupingNewStudents.ElementAt(7).Key.KeyTwo.Should().Be(dayEighthMonth.Year);
+      groupingNewStudents.ElementAt(7).Elements.Count().Should().Be(1);
+      groupingNewStudents.ElementAt(8).Key.KeyOne.Should().Be(dayNinthMonth.Month);
+      groupingNewStudents.ElementAt(8).Key.KeyTwo.Should().Be(dayNinthMonth.Year);
+      groupingNewStudents.ElementAt(8).Elements.Count().Should().Be(1);
+      groupingNewStudents.ElementAt(9).Key.KeyOne.Should().Be(dayTenthMonth.Month);
+      groupingNewStudents.ElementAt(9).Key.KeyTwo.Should().Be(dayTenthMonth.Year);
+      groupingNewStudents.ElementAt(9).Elements.Count().Should().Be(1);
+      groupingNewStudents.ElementAt(10).Key.KeyOne.Should().Be(dayEleventhMonth.Month);
+      groupingNewStudents.ElementAt(10).Key.KeyTwo.Should().Be(dayEleventhMonth.Year);
+      groupingNewStudents.ElementAt(10).Elements.Count().Should().Be(2);
+      groupingNewStudents.ElementAt(11).Key.KeyOne.Should().Be(dayTwelfthMonth.Month);
+      groupingNewStudents.ElementAt(11).Key.KeyTwo.Should().Be(dayTwelfthMonth.Year);
+      groupingNewStudents.ElementAt(11).Elements.Count().Should().Be(1);
     }
   }
 }

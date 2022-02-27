@@ -20,5 +20,7 @@ namespace Domain.Services
     int GetNextRecord();
 
     IEnumerable<IGroupingResponse<DateTime, Student>> GetNumberStudentsAddedInPeriod(int days);
+
+    IEnumerable<IGroupingResponse<IGroupingResponseKey<int, int>, Student>> GetNumberStudentsAddedInPeriodOfMonths(int months);
   }
 }
