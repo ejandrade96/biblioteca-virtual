@@ -141,26 +141,36 @@ namespace webapp.ViewModels.Home
         }
       };
 
+      var groupingNewLoansByMonth = loanService.GetNumberLoansAddedInPeriodOfMonths(_periodInMonths);
+      if (groupingNewLoansByMonth.Count() != _periodInMonths)
+      {
+        groupingNewLoansByMonth = _indexViewModelAction.ReshapeGrouping<Domain.Models.Loan>(groupingNewLoansByMonth);
+      }
       GeneralChartModelOfTheYearDataTabLoans = new GeneralChartModelViewModel
       {
-        Labels = new List<string> { "JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ" },
+        Labels = groupingNewLoansByMonth.Select(x => _indexViewModelAction.ToLabelMonthFormat(x.Key.KeyOne)).ToList(),
         DataSets = new List<DataSetGeneralChartModelViewModel>
         {
           new DataSetGeneralChartModelViewModel
           {
-            Data = new List<int> { 60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130 }
+            Data = groupingNewLoansByMonth.Select(x => x.Elements.Count()).ToList()
           }
         }
       };
 
+      var groupingNewReturnsByMonth = loanService.GetNumberReturnsRecordedInPeriodOfMonths(_periodInMonths);
+      if (groupingNewReturnsByMonth.Count() != _periodInMonths)
+      {
+        groupingNewReturnsByMonth = _indexViewModelAction.ReshapeGrouping<Domain.Models.Loan>(groupingNewReturnsByMonth);
+      }
       GeneralChartModelOfTheYearDataTabLoanReturns = new GeneralChartModelViewModel
       {
-        Labels = new List<string> { "JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ" },
+        Labels = groupingNewReturnsByMonth.Select(x => _indexViewModelAction.ToLabelMonthFormat(x.Key.KeyOne)).ToList(),
         DataSets = new List<DataSetGeneralChartModelViewModel>
         {
           new DataSetGeneralChartModelViewModel
           {
-            Data = new List<int> { 130, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 500 }
+            Data = groupingNewReturnsByMonth.Select(x => x.Elements.Count()).ToList()
           }
         }
       };

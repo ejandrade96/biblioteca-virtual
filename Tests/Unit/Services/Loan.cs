@@ -175,7 +175,7 @@ namespace Tests.Unit.Services
     }
 
     [Fact]
-    public void Deve_Retornar_Um_Agrupamento_Da_Quantidade_De_Emprestimos_Efetuados_Em_Um_Determinado_Periodo()
+    public void Deve_Retornar_Um_Agrupamento_Da_Quantidade_De_Emprestimos_Efetuados_Em_Um_Determinado_Periodo_De_Dias()
     {
       var numberOfDays = 5;
       var startDay = DateTime.Now.AddDays(-(numberOfDays - 1)).StartOfDay();
@@ -211,7 +211,7 @@ namespace Tests.Unit.Services
     }
 
     [Fact]
-    public void Deve_Retornar_Um_Agrupamento_Da_Quantidade_De_Devolucoes_De_Emprestimos_Efetuadas_Em_Um_Determinado_Periodo()
+    public void Deve_Retornar_Um_Agrupamento_Da_Quantidade_De_Devolucoes_De_Emprestimos_Efetuadas_Em_Um_Determinado_Periodo_De_Dias()
     {
       var numberOfDays = 5;
       var startDay = DateTime.Now.AddDays(-(numberOfDays - 1)).StartOfDay();
@@ -244,6 +244,198 @@ namespace Tests.Unit.Services
       groupingNewReturns.ElementAt(1).Elements.Count().Should().Be(1);
       groupingNewReturns.ElementAt(2).Key.Should().Be(lastDay.Date);
       groupingNewReturns.ElementAt(2).Elements.Count().Should().Be(2);
+    }
+
+    [Fact]
+    public void Deve_Retornar_Um_Agrupamento_Da_Quantidade_De_Emprestimos_Adicionados_Em_Um_Determinado_Periodo_De_Meses()
+    {
+      var numberOfMonths = 12;
+      var firstDayOfFirstMonth = DateTime.Now.AddMonths(-11).FirstDayOfMonth();
+      var daySecondMonth = firstDayOfFirstMonth.AddMonths(1);
+      var dayThirdMonth = daySecondMonth.AddMonths(1);
+      var dayFourthMonth = dayThirdMonth.AddMonths(1);
+      var dayFifthMonth = dayFourthMonth.AddMonths(1);
+      var daySixthMonth = dayFifthMonth.AddMonths(1);
+      var daySeventhMonth = daySixthMonth.AddMonths(1);
+      var dayEighthMonth = daySeventhMonth.AddMonths(1);
+      var dayNinthMonth = dayEighthMonth.AddMonths(1);
+      var dayTenthMonth = dayNinthMonth.AddMonths(1);
+      var dayEleventhMonth = dayTenthMonth.AddMonths(1);
+      var dayTwelfthMonth = dayEleventhMonth.AddMonths(1);
+
+      var loan = CreateTestLoan();
+      loan.SetLoanDate(firstDayOfFirstMonth);
+      var loan2 = CreateTestLoan();
+      loan2.SetLoanDate(daySecondMonth);
+      var loan3 = CreateTestLoan();
+      loan3.SetLoanDate(daySecondMonth);
+      var loan4 = CreateTestLoan();
+      loan4.SetLoanDate(dayThirdMonth);
+      var loan5 = CreateTestLoan();
+      loan5.SetLoanDate(dayFourthMonth);
+      var loan6 = CreateTestLoan();
+      loan6.SetLoanDate(dayFifthMonth);
+      var loan7 = CreateTestLoan();
+      loan7.SetLoanDate(daySixthMonth);
+      var loan8 = CreateTestLoan();
+      loan8.SetLoanDate(daySeventhMonth);
+      var loan9 = CreateTestLoan();
+      loan9.SetLoanDate(daySeventhMonth);
+      var loan10 = CreateTestLoan();
+      loan10.SetLoanDate(dayEighthMonth);
+      var loan11 = CreateTestLoan();
+      loan11.SetLoanDate(dayNinthMonth);
+      var loan12 = CreateTestLoan();
+      loan12.SetLoanDate(dayTenthMonth);
+      var loan13 = CreateTestLoan();
+      loan13.SetLoanDate(dayEleventhMonth);
+      var loan14 = CreateTestLoan();
+      loan14.SetLoanDate(dayTwelfthMonth);
+      var loan15 = CreateTestLoan();
+      loan15.SetLoanDate(dayTwelfthMonth);
+
+      var loans = new List<Models.Loan>
+      {
+        loan, loan2, loan3, loan4, loan5, loan6, loan7, loan8, loan9, loan10, loan11, loan12, loan13, loan14, loan15
+      };
+
+      _loans.Setup(repository => repository.FindAll(x => x.LoanDate >= firstDayOfFirstMonth && x.LoanDate <= DateTime.Now)).Returns(loans.AsQueryable());
+
+      var groupingNewBooks = _service.GetNumberLoansAddedInPeriodOfMonths(numberOfMonths);
+
+      groupingNewBooks.Should().HaveCount(12);
+      groupingNewBooks.ElementAt(0).Key.KeyOne.Should().Be(firstDayOfFirstMonth.Month);
+      groupingNewBooks.ElementAt(0).Key.KeyTwo.Should().Be(firstDayOfFirstMonth.Year);
+      groupingNewBooks.ElementAt(0).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(1).Key.KeyOne.Should().Be(daySecondMonth.Month);
+      groupingNewBooks.ElementAt(1).Key.KeyTwo.Should().Be(daySecondMonth.Year);
+      groupingNewBooks.ElementAt(1).Elements.Count().Should().Be(2);
+      groupingNewBooks.ElementAt(2).Key.KeyOne.Should().Be(dayThirdMonth.Month);
+      groupingNewBooks.ElementAt(2).Key.KeyTwo.Should().Be(dayThirdMonth.Year);
+      groupingNewBooks.ElementAt(2).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(3).Key.KeyOne.Should().Be(dayFourthMonth.Month);
+      groupingNewBooks.ElementAt(3).Key.KeyTwo.Should().Be(dayFourthMonth.Year);
+      groupingNewBooks.ElementAt(3).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(4).Key.KeyOne.Should().Be(dayFifthMonth.Month);
+      groupingNewBooks.ElementAt(4).Key.KeyTwo.Should().Be(dayFifthMonth.Year);
+      groupingNewBooks.ElementAt(4).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(5).Key.KeyOne.Should().Be(daySixthMonth.Month);
+      groupingNewBooks.ElementAt(5).Key.KeyTwo.Should().Be(daySixthMonth.Year);
+      groupingNewBooks.ElementAt(5).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(6).Key.KeyOne.Should().Be(daySeventhMonth.Month);
+      groupingNewBooks.ElementAt(6).Key.KeyTwo.Should().Be(daySeventhMonth.Year);
+      groupingNewBooks.ElementAt(6).Elements.Count().Should().Be(2);
+      groupingNewBooks.ElementAt(7).Key.KeyOne.Should().Be(dayEighthMonth.Month);
+      groupingNewBooks.ElementAt(7).Key.KeyTwo.Should().Be(dayEighthMonth.Year);
+      groupingNewBooks.ElementAt(7).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(8).Key.KeyOne.Should().Be(dayNinthMonth.Month);
+      groupingNewBooks.ElementAt(8).Key.KeyTwo.Should().Be(dayNinthMonth.Year);
+      groupingNewBooks.ElementAt(8).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(9).Key.KeyOne.Should().Be(dayTenthMonth.Month);
+      groupingNewBooks.ElementAt(9).Key.KeyTwo.Should().Be(dayTenthMonth.Year);
+      groupingNewBooks.ElementAt(9).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(10).Key.KeyOne.Should().Be(dayEleventhMonth.Month);
+      groupingNewBooks.ElementAt(10).Key.KeyTwo.Should().Be(dayEleventhMonth.Year);
+      groupingNewBooks.ElementAt(10).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(11).Key.KeyOne.Should().Be(dayTwelfthMonth.Month);
+      groupingNewBooks.ElementAt(11).Key.KeyTwo.Should().Be(dayTwelfthMonth.Year);
+      groupingNewBooks.ElementAt(11).Elements.Count().Should().Be(2);
+    }
+
+    [Fact]
+    public void Deve_Retornar_Um_Agrupamento_Da_Quantidade_De_Devolucoes_De_Emprestimos_Adicionados_Em_Um_Determinado_Periodo_De_Meses()
+    {
+      var numberOfMonths = 12;
+      var firstDayOfFirstMonth = DateTime.Now.AddMonths(-11).FirstDayOfMonth();
+      var daySecondMonth = firstDayOfFirstMonth.AddMonths(1);
+      var dayThirdMonth = daySecondMonth.AddMonths(1);
+      var dayFourthMonth = dayThirdMonth.AddMonths(1);
+      var dayFifthMonth = dayFourthMonth.AddMonths(1);
+      var daySixthMonth = dayFifthMonth.AddMonths(1);
+      var daySeventhMonth = daySixthMonth.AddMonths(1);
+      var dayEighthMonth = daySeventhMonth.AddMonths(1);
+      var dayNinthMonth = dayEighthMonth.AddMonths(1);
+      var dayTenthMonth = dayNinthMonth.AddMonths(1);
+      var dayEleventhMonth = dayTenthMonth.AddMonths(1);
+      var dayTwelfthMonth = dayEleventhMonth.AddMonths(1);
+
+      var loan = CreateTestLoan();
+      loan.SetReturnDate(firstDayOfFirstMonth);
+      var loan2 = CreateTestLoan();
+      loan2.SetReturnDate(daySecondMonth);
+      var loan3 = CreateTestLoan();
+      loan3.SetReturnDate(dayThirdMonth);
+      var loan4 = CreateTestLoan();
+      loan4.SetReturnDate(dayFourthMonth);
+      var loan5 = CreateTestLoan();
+      loan5.SetReturnDate(dayFourthMonth);
+      var loan6 = CreateTestLoan();
+      loan6.SetReturnDate(dayFifthMonth);
+      var loan7 = CreateTestLoan();
+      loan7.SetReturnDate(daySixthMonth);
+      var loan8 = CreateTestLoan();
+      loan8.SetReturnDate(daySixthMonth);
+      var loan9 = CreateTestLoan();
+      loan9.SetReturnDate(daySeventhMonth);
+      var loan10 = CreateTestLoan();
+      loan10.SetReturnDate(dayEighthMonth);
+      var loan11 = CreateTestLoan();
+      loan11.SetReturnDate(dayNinthMonth);
+      var loan12 = CreateTestLoan();
+      loan12.SetReturnDate(dayTenthMonth);
+      var loan13 = CreateTestLoan();
+      loan13.SetReturnDate(dayEleventhMonth);
+      var loan14 = CreateTestLoan();
+      loan14.SetReturnDate(dayTwelfthMonth);
+      var loan15 = CreateTestLoan();
+      loan15.SetReturnDate(dayTwelfthMonth);
+
+      var loans = new List<Models.Loan>
+      {
+        loan, loan2, loan3, loan4, loan5, loan6, loan7, loan8, loan9, loan10, loan11, loan12, loan13, loan14, loan15
+      };
+
+      _loans.Setup(repository => repository.FindAll(x => x.ReturnDate >= firstDayOfFirstMonth && x.ReturnDate <= DateTime.Now)).Returns(loans.AsQueryable());
+
+      var groupingNewBooks = _service.GetNumberReturnsRecordedInPeriodOfMonths(numberOfMonths);
+
+      groupingNewBooks.Should().HaveCount(12);
+      groupingNewBooks.ElementAt(0).Key.KeyOne.Should().Be(firstDayOfFirstMonth.Month);
+      groupingNewBooks.ElementAt(0).Key.KeyTwo.Should().Be(firstDayOfFirstMonth.Year);
+      groupingNewBooks.ElementAt(0).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(1).Key.KeyOne.Should().Be(daySecondMonth.Month);
+      groupingNewBooks.ElementAt(1).Key.KeyTwo.Should().Be(daySecondMonth.Year);
+      groupingNewBooks.ElementAt(1).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(2).Key.KeyOne.Should().Be(dayThirdMonth.Month);
+      groupingNewBooks.ElementAt(2).Key.KeyTwo.Should().Be(dayThirdMonth.Year);
+      groupingNewBooks.ElementAt(2).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(3).Key.KeyOne.Should().Be(dayFourthMonth.Month);
+      groupingNewBooks.ElementAt(3).Key.KeyTwo.Should().Be(dayFourthMonth.Year);
+      groupingNewBooks.ElementAt(3).Elements.Count().Should().Be(2);
+      groupingNewBooks.ElementAt(4).Key.KeyOne.Should().Be(dayFifthMonth.Month);
+      groupingNewBooks.ElementAt(4).Key.KeyTwo.Should().Be(dayFifthMonth.Year);
+      groupingNewBooks.ElementAt(4).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(5).Key.KeyOne.Should().Be(daySixthMonth.Month);
+      groupingNewBooks.ElementAt(5).Key.KeyTwo.Should().Be(daySixthMonth.Year);
+      groupingNewBooks.ElementAt(5).Elements.Count().Should().Be(2);
+      groupingNewBooks.ElementAt(6).Key.KeyOne.Should().Be(daySeventhMonth.Month);
+      groupingNewBooks.ElementAt(6).Key.KeyTwo.Should().Be(daySeventhMonth.Year);
+      groupingNewBooks.ElementAt(6).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(7).Key.KeyOne.Should().Be(dayEighthMonth.Month);
+      groupingNewBooks.ElementAt(7).Key.KeyTwo.Should().Be(dayEighthMonth.Year);
+      groupingNewBooks.ElementAt(7).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(8).Key.KeyOne.Should().Be(dayNinthMonth.Month);
+      groupingNewBooks.ElementAt(8).Key.KeyTwo.Should().Be(dayNinthMonth.Year);
+      groupingNewBooks.ElementAt(8).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(9).Key.KeyOne.Should().Be(dayTenthMonth.Month);
+      groupingNewBooks.ElementAt(9).Key.KeyTwo.Should().Be(dayTenthMonth.Year);
+      groupingNewBooks.ElementAt(9).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(10).Key.KeyOne.Should().Be(dayEleventhMonth.Month);
+      groupingNewBooks.ElementAt(10).Key.KeyTwo.Should().Be(dayEleventhMonth.Year);
+      groupingNewBooks.ElementAt(10).Elements.Count().Should().Be(1);
+      groupingNewBooks.ElementAt(11).Key.KeyOne.Should().Be(dayTwelfthMonth.Month);
+      groupingNewBooks.ElementAt(11).Key.KeyTwo.Should().Be(dayTwelfthMonth.Year);
+      groupingNewBooks.ElementAt(11).Elements.Count().Should().Be(2);
     }
 
     private Models.Loan CreateTestLoan()
